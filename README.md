@@ -1,2 +1,2 @@
-# FunnyHorseGame
-A settlement type game
+# WeirdHorseGame
+A game where the player is playing against the environment. The backstory of the game is this group of people were flown and abandoned at a small ghost town and now have to survive against Mother Nature and time. The player controls the people in the town assigning them to different tasks that help the small town survive. For example, people have to go and collect wood in order to provide heat, especially during winter, or to build certain structures with. Least the person gathering materials be ware though because there is a small chance the tree could fall and kill the townsperson. As a result of that townspersons death moral goes down and if the moral runs out, everyone just gives up and the evil, ravage wumpus that feeds off a lack of moral will come and destroy everyone. It's up the player to try to keep moral up which is done by keeping the townspeople happy and fed.
