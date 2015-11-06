@@ -1,3 +1,4 @@
+package model;
 //  ENUMS
 public enum Direction {
 	NORTH, SOUTH, EAST, WEST;

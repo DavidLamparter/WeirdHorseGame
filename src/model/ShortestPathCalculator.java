@@ -1,3 +1,4 @@
+package model;
 /*
  * This Program will take in a map!
  * If you run it as is there will be 3 things that appear on the S.O.P
