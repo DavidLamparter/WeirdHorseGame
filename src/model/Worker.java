@@ -1,20 +1,28 @@
 /*================================================================================================
-|   Assignment:  Project 5: Hunt The Wumpus
+|   Assignment:  FINAL PROJECT - Settlement Management
 |      Authors:  David Lamparter (Lamparter@email.arizona.edu)
-|                Kyle Grady (kgrady1@email.arizona.edu)     
+|                Kyle Grady (kgrady1@email.arizona.edu)
+|    			 Kyle DeTar (kdeTar@email.arizona.edu)
+|	  			 Brett Cohen (brett7@email.arizona.edu)
 |                       
 |       Course:  335
 |   Instructor:  R. Mercer
-|     Due Date:  10/18/15
+|           PM:  Sean Stephens
+|     Due Date:  12/9/15
 |
-|  Description:  This program creates the Worker object that will represent our agents that can collect
-|                resources.
+|  Description:  This program creates the Worker object that will represent our agents that can
+|				 collect resources. Each worker is "born" with a set of preferences that they
+|                default to if not given any orders by the player.
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 public class Worker {
+	
+	/**************************************
+	 *          Instance Variables        *
+	 **************************************/
 	
 	// Conditions (bad stuff) begin at 0, and increment to dangerous levels
 	private int hunger;
@@ -30,6 +38,10 @@ public class Worker {
 	
 	// isAlive will be set to false if the worker dies
 	private boolean isAlive;
+	
+	/**************************************
+	 *          Worker Constructor        *
+	 **************************************/
 	
 	public Worker() {
 		
@@ -49,9 +61,9 @@ public class Worker {
 		isAlive = true;
 	}
 	
-	/*
-	 * Getters for instance variables
-	 */
+	/**************************************
+	 *   Getters for Instance Variables   *
+	 **************************************/
 	
 	public int getHunger() {
 		return hunger;
@@ -77,33 +89,48 @@ public class Worker {
 		return tool;
 	}
 	
-	/*
-	 * Setter for tool
-	 */
+	/**************************************
+	 *          Setter for tool           *
+	 **************************************/
 	
 	public void setTool(Tool tool) {
 		this.tool = tool;
 	}
 	
-	/*
-	 * Adders for conditions
-	 */
+	/**************************************
+	 *        Adders for Conditions       *
+	 **************************************/
 	
 	public void addHunger() {
+		// If hunger rises above 10, this worker dies from starvation
+		if(hunger == 10) {
+			isAlive = false;
+			return;
+		}
 		hunger += 1;
 	}
 	
 	public void addFatigue() {
+		// If fatigue rises above 10, this worker dies from exhaustion
+		if(fatigue == 10) {
+			isAlive = false;
+			return;
+		}
 		fatigue += 1;
 	}
 	
 	public void addColdness() {
+		// If coldness rises above 10, this worker dies from frostbite
+		if(fatigue == 10) {
+			isAlive = false;
+			return;
+		}
 		coldness += 1;
 	}
 	
-	/*
-	 * Subtractors for aspects
-	 */
+	/**************************************
+	 *       Subtractors for Aspects      *
+	 **************************************/
 	
 	public void subtractHappiness() {
 		happiness -= 1;
