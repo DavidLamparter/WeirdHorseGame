@@ -45,7 +45,7 @@ public class Map {
 	public void generate() {
 		//  OMAN THIS IS NOT TESTABLE CODE!!!
 		createRiver();
-		//  createOcean();
+		//createOcean();
 		createTrees();
 		spawnFood();
 		//  spawnStone();
@@ -96,38 +96,72 @@ public class Map {
 	}
 	private void spawnFish() {
 		//  Spawns Fish in the river
-		for(int i = 0; i < Math.random()*7+5; i++) {
+		for(int i = 0; i < Math.random()*7+10; i++) {
 			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
-			while(board[point.y][point.x].toString().equals("[R]")) {
+			while(!board[point.x][point.y].getLand().equals(Terrain.RIVER)) {
 				point.x = (int)(Math.random()*board.length);
 				point.y = (int)(Math.random()*board.length);
 			}
-			//board[point.x][point.y].setResource(FISH!);
+			board[point.x][point.y].setResource(Resource.FISH);
 		}
 		//  Spawns Salty Fish in the Ocean
-		for(int i = 0; i < Math.random()*30+20; i++) {
+	/*	for(int i = 0; i < Math.random()*30+20; i++) {
 			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
-			while(board[point.y][point.x].toString().equals("[O]")) { //  O for Ocean
+			while(!board[point.y][point.x].getLand().equals(Terrain.RIVER)) {
 				point.x = (int)(Math.random()*board.length);
 				point.y = (int)(Math.random()*board.length);
 			}
-			//board[point.x][point.y].setResource(SALTY_FISH!);
-		}
+			board[point.x][point.y].setResource(Resource.SALTY_FISH);
+		} */
 	}
 	private void createRiver() {
 		//  for lack of generality a random topleft point, to a random bottom right point
-		Point init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
-		Point fin = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
-		double distance = 0;
-		while((distance < ((double)(board.length))/1.5)||(Math.abs(init.x-fin.x)<4)||(Math.abs(init.y-fin.y)<4)) {
-			init.x = (int)(Math.random()*board.length);
-			init.y = (int)(Math.random()*board.length);
-			fin.x = (int)(Math.random()*board.length);
-			fin.y = (int)(Math.random()*board.length);
-			distance = Math.sqrt(Math.pow((fin.x-init.x),2)+Math.pow((fin.y-init.y),2));
+		int length = (int)((double)board.length*3); //  board.length*2 for the nile
+		Point init = null;
+		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
+		riverFilling(riverMakingSouth(init, length) ,init);
+		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
+		riverFilling(riverMakingSouth(init, length) ,init);
+	}
+	private ArrayList<Direction> riverMakingSouth(Point init, int size) {
+		ArrayList<Direction> theRiver = new ArrayList<>();
+		Direction last = Direction.NORTH;
+		for(int i = 0; i < size; i++) {
+			boolean changed = false;
+			while(!changed) {
+				changed = false;
+				double num = Math.random();
+				if(num>.65) {
+					if(!last.equals(Direction.SOUTH)) {
+						theRiver.add(Direction.SOUTH);
+						last = Direction.SOUTH;
+						changed = true;
+					}
+				}
+				else if(num >.35) {
+					if(!last.equals(Direction.EAST)) {
+					theRiver.add(Direction.EAST);
+					last = Direction.EAST;
+					changed = true;
+					}
+				}
+				else if(num >.05) {
+						if(!last.equals(Direction.WEST)) {
+					theRiver.add(Direction.WEST);
+					last = Direction.WEST;
+					changed = true;
+					}
+				}
+				else  {
+					if(!last.equals(Direction.NORTH)) {
+					theRiver.add(Direction.NORTH);
+					last = Direction.NORTH;
+					changed = true;
+					}
+				}
+			}
 		}
-		ShortestPathCalculator riverMaker = new ShortestPathCalculator(board);
-		riverFilling(riverMaker.getShortestPath(init, fin), init);
+		return theRiver;
 	}
 	//  SIMILAR TO THE MOVEMENT OF WORKERS BUT WITHOUT THE WHILE LOOP
 	private void riverFilling(ArrayList<Direction> showMeYourMoves, Point init) {
@@ -142,7 +176,7 @@ public class Map {
 				board[init.y][init.x-1].setLand(Terrain.RIVER);
 				}
 				catch(Exception e) {
-					board[init.y][init.x].setLand(Terrain.RIVER);
+					//board[init.y][init.x].setLand(Terrain.RIVER);
 				}
 				init.y--;
 			}
@@ -153,7 +187,7 @@ public class Map {
 				board[init.y][init.x-1].setLand(Terrain.RIVER);
 				}
 				catch(Exception e) {
-					board[init.y][init.x].setLand(Terrain.RIVER);
+					//board[init.y][init.x].setLand(Terrain.RIVER);
 				}
 				init.y++;
 			}
@@ -164,7 +198,7 @@ public class Map {
 				board[init.y+1][init.x].setLand(Terrain.RIVER);
 				}
 				catch(Exception e) {
-					board[init.y][init.x].setLand(Terrain.RIVER);
+					//board[init.y][init.x].setLand(Terrain.RIVER);
 				}
 				init.x++;
 			}
@@ -175,36 +209,16 @@ public class Map {
 				board[init.y+1][init.x].setLand(Terrain.RIVER);
 				}
 				catch(Exception e) {
-					board[init.y][init.x].setLand(Terrain.RIVER);
+					//board[init.y][init.x].setLand(Terrain.RIVER);
 				}
 				init.x--;
 			}
 		}
 	}
-	public static void main(String[] args) {
-		Map hodor = new Map(30);
-		System.out.println(hodor.toString());
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	//public static void main(String[] args) {
+	//	Map hodor = new Map(30);
+	//	System.out.println(hodor.toString());
+	//}	
 	public MapTile[][] getMapTiles(){
 		return board;
 	}

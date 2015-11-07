@@ -32,7 +32,7 @@ public class Main extends JFrame{
 	}
 	Main(){
 	Map map = new Map(100);
-	this.setSize(500,500);
+	this.setSize(1000,1000);
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
 	graphPanel panel = new graphPanel(map.getMapTiles());

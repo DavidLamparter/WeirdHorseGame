@@ -66,6 +66,10 @@ public class graphPanel extends JPanel {
 					g2d.drawLine(i, j, i, j);
 				}
 				// Enemies
+				else if (graph[j][i].getResource().equals(Resource.FISH)) {
+					g2d.setColor(Color.CYAN);
+					g2d.drawLine(i, j, i, j);
+				}
 				else if (graph[j][i].getLand().equals(Terrain.PLAIN)) {
 					g2d.setColor(Color.WHITE);
 					g2d.drawLine(i, j, i, j);
@@ -82,7 +86,7 @@ public class graphPanel extends JPanel {
 				}
 				}
 				catch(NullPointerException E){
-					System.out.println("Why");
+					//System.out.println("Why");
 				}
 
 			}
