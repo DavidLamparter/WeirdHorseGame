@@ -19,7 +19,7 @@ package model;
 //  ENUMS
 public enum Direction {
 	NORTH, SOUTH, EAST, WEST;
-	public Direction invert(Direction dir) {
+	public static Direction invert(Direction dir) {
 		if(dir == NORTH)
 			return SOUTH;
 		if(dir == SOUTH)
@@ -27,5 +27,23 @@ public enum Direction {
 		if(dir == EAST)
 			return WEST;
 		return EAST;
+	}
+	public static Direction rotateLeft(Direction dir) {
+		if(dir == NORTH)
+			return WEST;
+		if(dir == SOUTH)
+			return EAST;
+		if(dir == EAST)
+			return NORTH;
+		return SOUTH;
+	}
+	public static Direction rotateRight(Direction dir) {
+		if(dir == NORTH)
+			return EAST;
+		if(dir == SOUTH)
+			return WEST;
+		if(dir == EAST)
+			return SOUTH;
+		return NORTH;
 	}
 }

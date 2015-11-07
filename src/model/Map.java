@@ -124,45 +124,53 @@ public class Map {
 		int length = (int)((double)board.length*3); //  board.length*2 for the nile
 		Point init = null;
 		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
-		riverFilling(riverMakingSouth(init, length) ,init);
-		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
-		riverFilling(riverMakingSouth(init, length) ,init);
+		riverFilling(riverMakingSouth(init, Direction.SOUTH, length) ,init);
+		init = new Point((int)(Math.random()*board.length/10), (int)(Math.random()*board.length));
+		riverFilling(riverMakingSouth(init, Direction.SOUTH, length) ,init);
 	}
-	private ArrayList<Direction> riverMakingSouth(Point init, int size) {
+	private ArrayList<Direction> riverMakingSouth(Point init, Direction initial, int size) {
 		ArrayList<Direction> theRiver = new ArrayList<>();
-		Direction last = Direction.NORTH;
+		Direction last = Direction.invert(initial);
 		for(int i = 0; i < size; i++) {
 			boolean changed = false;
 			while(!changed) {
 				changed = false;
 				double num = Math.random();
 				if(num>.65) {
-					if(!last.equals(Direction.SOUTH)) {
-						theRiver.add(Direction.SOUTH);
-						last = Direction.SOUTH;
+					if(!last.equals(initial)) {
+						theRiver.add(initial);
+						last = initial;
 						changed = true;
 					}
 				}
 				else if(num >.35) {
-					if(!last.equals(Direction.EAST)) {
-					theRiver.add(Direction.EAST);
-					last = Direction.EAST;
+					if(!last.equals(Direction.rotateLeft(initial))) {
+					theRiver.add(Direction.rotateLeft(initial));
+					last = Direction.rotateLeft(initial);
 					changed = true;
 					}
 				}
 				else if(num >.05) {
-						if(!last.equals(Direction.WEST)) {
-					theRiver.add(Direction.WEST);
-					last = Direction.WEST;
+						if(!last.equals(Direction.rotateRight(initial))) {
+					theRiver.add(Direction.rotateRight(initial));
+					last = Direction.rotateRight(initial);
 					changed = true;
 					}
 				}
 				else  {
-					if(!last.equals(Direction.NORTH)) {
-					theRiver.add(Direction.NORTH);
-					last = Direction.NORTH;
+					if(!last.equals(Direction.invert(initial))) {
+					theRiver.add(Direction.invert(initial));
+					last = Direction.invert(initial);
 					changed = true;
 					}
+				}
+			}
+			if(Math.random()<.01) {
+				if(Math.random()<.5) {
+					initial = Direction.rotateLeft(initial);
+				}
+				else {
+					initial = Direction.rotateRight(initial);
 				}
 			}
 		}
