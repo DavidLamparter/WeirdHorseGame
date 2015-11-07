@@ -28,6 +28,10 @@ public class Map {
 				board[i][j] = new MapTile();
 		generate();
 	}
+	//  For all of our testing purposes
+	public Map(MapTile[][] board) {
+		this.board = board;
+	}
 	public String toString() {
 		String toReturn = "";
 		for(int i = 0; i < board.length; i++) {
@@ -39,7 +43,74 @@ public class Map {
 		return toReturn;
 	}
 	public void generate() {
+		//  OMAN THIS IS NOT TESTABLE CODE!!!
 		createRiver();
+		//  createOcean();
+		createTrees();
+		spawnFood();
+		//  spawnStone();
+		//  spwanAnimals();
+		//  Ohwell...
+	}
+	private void createTrees() {
+		int magicNumber37 = (board.length*board.length)/5; //  ? how much of the map should be trees?
+		int noOfTrees = 0;
+		while(noOfTrees<= magicNumber37) {
+			//  FOREST SIZE MUST BE AN EVEN INT >=4 for the middle tree's to work properly :)
+			int forestSize = 6;
+			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
+			while(!board[point.y][point.x].toString().equals("[ ]")) { //  [ ] for plains
+				point.x = (int)(Math.random()*board.length);
+				point.y = (int)(Math.random()*board.length);
+			}
+			//  this is the center point of the trees!
+			for(int i = point.x - forestSize; i < point.x + forestSize; i++) {
+				for(int j = point.y - forestSize; j < point.y + forestSize; j++) {
+					double chance = .20;
+					if((((point.x-(forestSize/2)))<i)&&(((point.x+(forestSize)/2))>i)
+							&&(((point.y-(forestSize/2)))<j)&&(((point.y+(forestSize)/2))>j)) {
+						chance +=.50;
+						//System.out.println("Wow!");
+					}
+					if(chance >= Math.random()) {
+						try{
+							if(board[j][i].toString().equals("[ ]")) {
+								board[j][i].setLand(Terrain.TREE);
+								noOfTrees++;
+							}
+						}
+						catch(Exception e) {
+							//System.out.print("Noes!");
+						}
+					}
+				}
+			}
+		}
+	}
+	private void spawnFood() {
+		// Spawns Fish and Berry bushes
+		spawnFish();
+		
+	}
+	private void spawnFish() {
+		//  Spawns Fish in the river
+		for(int i = 0; i < Math.random()*7+5; i++) {
+			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
+			while(board[point.y][point.x].toString().equals("[R]")) {
+				point.x = (int)(Math.random()*board.length);
+				point.y = (int)(Math.random()*board.length);
+			}
+			//board[point.x][point.y].setResource(FISH!);
+		}
+		//  Spawns Salty Fish in the Ocean
+		for(int i = 0; i < Math.random()*30+20; i++) {
+			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
+			while(board[point.y][point.x].toString().equals("[O]")) { //  O for Ocean
+				point.x = (int)(Math.random()*board.length);
+				point.y = (int)(Math.random()*board.length);
+			}
+			//board[point.x][point.y].setResource(SALTY_FISH!);
+		}
 	}
 	private void createRiver() {
 		//  for lack of generality a random topleft point, to a random bottom right point

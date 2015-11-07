@@ -17,6 +17,7 @@
 
 package model;
 
+
 public class MapTile {
 	private Resource resource;
 	private Terrain terrain;
@@ -44,6 +45,8 @@ public class MapTile {
 	public String toString() {
 		if(terrain.equals(terrain.RIVER))
 			return "[R]";
+		if(terrain.equals(terrain.TREE))
+			return "[T]";
 		if(terrain.equals(terrain.PLAIN))
 			return "[ ]";
 		return "Hodor";
