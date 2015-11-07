@@ -18,10 +18,13 @@
 package model;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Map {
+	int size;
 	private MapTile[][] board;
 	public Map(int size) {
+		this.size = size;
 		board = new MapTile[size][size];
 		for(int i = 0; i < size; i++)
 			for(int j = 0; j < size; j++)
@@ -48,18 +51,20 @@ public class Map {
 		//createOcean();
 		createTrees();
 		spawnFood();
-		//  spawnStone();
+		spawnStone();
+		spawnBushes();
+		
 		//  spwanAnimals();
 		//  Ohwell...
 	}
 	private void createTrees() {
-		double initialChance = .1;
-		double bonusChance = .4;
-		int magicNumber37 = (board.length*board.length)/5; //  ? how much of the map should be trees?
+		double initialChance = .09;
+		double bonusChance = .6;
+		int magicNumber37 = (board.length*board.length)/7; //  ? how much of the map should be trees?
 		int noOfTrees = 0;
 		while(noOfTrees<= magicNumber37) {
 			//  FOREST SIZE MUST BE AN EVEN INT >=4 for the middle tree's to work properly :)
-			int forestSize = 6;
+			int forestSize = 7;
 			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
 			while(!board[point.y][point.x].toString().equals("[ ]")) { //  [ ] for plains
 				point.x = (int)(Math.random()*board.length);
@@ -212,6 +217,62 @@ public class Map {
 					//board[init.y][init.x].setLand(Terrain.RIVER);
 				}
 				init.x--;
+			}
+		}
+	}
+	private void spawnStone(){
+		Random gen = new Random();
+
+		int Outcroppings = gen.nextInt(10) + 15;
+
+		while(Outcroppings > 0){
+		int X = gen.nextInt(size-2)+1;
+		int Y = gen.nextInt(size-2)+1;
+
+		//checks to see if the position on the land is not a river
+		if(board[X][Y].getLand() == Terrain.PLAIN &&
+			board[X+1][Y].getLand() == Terrain.PLAIN &&
+			board[X][Y+1].getLand() == Terrain.PLAIN &&
+			board[X+1][Y+1].getLand() == Terrain.PLAIN &&
+		   
+			board[X][Y].getResource() == Resource.NONE &&
+			board[X+1][Y].getResource() == Resource.NONE &&
+			board[X][Y+1].getResource() == Resource.NONE &&
+			board[X+1][Y+1].getResource() == Resource.NONE){
+				//Sets our STONE outcropping
+				board[X][Y].setResource(Resource.STONE);
+				board[X+1][Y].setResource(Resource.STONE);
+				board[X][Y+1].setResource(Resource.STONE);
+				board[X+1][Y+1].setResource(Resource.STONE);
+				
+				Outcroppings--;
+		}
+		}
+	}
+
+		private void spawnBushes(){
+		Random gen = new Random();
+		int dingDangBushes = gen.nextInt(10)+10;
+
+		while(dingDangBushes > 0){
+		int X = gen.nextInt(size-2)+1;
+		int Y = gen.nextInt(size-2)+1;
+		int treeCounter= 0;
+
+		if(board[X][Y].getResource() == Resource.NONE){
+			
+			for(int i = -1; i < 2; i++){
+				for(int j = -1; j < 2; j++){
+				if(board[X+i][Y+j].getResource() == Resource.TREE)
+				treeCounter++;
+				}
+			}
+		}
+			
+			if(treeCounter > 0 && treeCounter < 6){
+			board[X][Y].setResource(Resource.BERRY_BUSH);
+			dingDangBushes --;
+			treeCounter = 0;
 			}
 		}
 	}

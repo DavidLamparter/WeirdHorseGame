@@ -48,6 +48,9 @@ public class graphPanel extends JPanel {
 	}
 
 	private void doDrawing(Graphics g, MapTile[][] graph) {
+		Color DarkGreen = new Color(20,120,20);
+		Color LightGreen = new Color(130,190,60);
+		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.BLUE);
 
@@ -60,26 +63,38 @@ public class graphPanel extends JPanel {
 				
 				
 				try{
-				// walls
+				// Trees
 				if (graph[j][i].getResource().equals(Resource.TREE)) {
-					g2d.setColor(Color.GREEN);
+					g2d.setColor(DarkGreen);
 					g2d.drawLine(i, j, i, j);
 				}
-				// Enemies
+				//Fish
 				else if (graph[j][i].getResource().equals(Resource.FISH)) {
 					g2d.setColor(Color.CYAN);
 					g2d.drawLine(i, j, i, j);
 				}
-				else if (graph[j][i].getLand().equals(Terrain.PLAIN)) {
-					g2d.setColor(Color.WHITE);
-					g2d.drawLine(i, j, i, j);
-				}
-				// Chests
+			
+				//River
 				else if (graph[j][i].getLand().equals(Terrain.RIVER)) {
 					g2d.setColor(Color.BLUE);
 					g2d.drawLine(i, j, i, j);
 				}
-
+				//Berry Bush
+				else if (graph[j][i].getResource().equals(Resource.BERRY_BUSH)) {
+					g2d.setColor(Color.RED);
+					g2d.drawLine(i, j, i, j);
+				}
+				//Stone
+				else if (graph[j][i].getResource().equals(Resource.STONE)) {
+					g2d.setColor(Color.GRAY);
+					g2d.drawLine(i, j, i, j);
+				}
+				//Plain
+				else{
+					g2d.setColor(LightGreen);
+					g2d.drawLine(i, j, i, j);
+				}
+				
 				if (i % 10 == 0 || j % 10 == 0) {
 					g2d.setColor(Color.BLACK);
 					g2d.drawLine(i, j, i, j);
