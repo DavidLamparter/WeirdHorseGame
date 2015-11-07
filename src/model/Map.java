@@ -115,7 +115,6 @@ public class Map {
 		}
 	}
 	private void createRiver() {
-		System.out.println("WUT");
 		//  for lack of generality a random topleft point, to a random bottom right point
 		Point init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
 		Point fin = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
@@ -132,10 +131,8 @@ public class Map {
 	}
 	//  SIMILAR TO THE MOVEMENT OF WORKERS BUT WITHOUT THE WHILE LOOP
 	private void riverFilling(ArrayList<Direction> showMeYourMoves, Point init) {
-		System.out.println("FILL!");
 		Direction first = null;
 		while(!showMeYourMoves.isEmpty()) {
-			System.out.print("!EMPTY");
 			first = showMeYourMoves.get(0);
 			showMeYourMoves.remove(0);
 			if(first.equals(Direction.NORTH)) {
@@ -187,5 +184,28 @@ public class Map {
 	public static void main(String[] args) {
 		Map hodor = new Map(30);
 		System.out.println(hodor.toString());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public MapTile[][] getMapTiles(){
+		return board;
 	}
 }

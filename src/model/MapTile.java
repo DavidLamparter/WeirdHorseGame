@@ -28,14 +28,20 @@ public class MapTile {
 	public void setLand(Terrain toSet) {
 		terrain = toSet;
 	}
+	public Terrain getLand(){
+		return terrain;
+	}
 	public void setResource(Resource toSet) {
 		//System.out.println(toSet);
 		resource = toSet;
 	}
+	public Resource getResource(){
+		return resource;
+	}
 	public boolean unPassable() {
 		if(terrain.equals(terrain.PLAIN)) {
 			//  or it could be a method call from resource
-			if(resource==null){
+			if(resource==Resource.NONE){
 				return false;
 			}
 		}
