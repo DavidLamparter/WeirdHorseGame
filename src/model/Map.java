@@ -53,6 +53,8 @@ public class Map {
 		//  Ohwell...
 	}
 	private void createTrees() {
+		double initialChance = .1;
+		double bonusChance = .4;
 		int magicNumber37 = (board.length*board.length)/5; //  ? how much of the map should be trees?
 		int noOfTrees = 0;
 		while(noOfTrees<= magicNumber37) {
@@ -66,16 +68,16 @@ public class Map {
 			//  this is the center point of the trees!
 			for(int i = point.x - forestSize; i < point.x + forestSize; i++) {
 				for(int j = point.y - forestSize; j < point.y + forestSize; j++) {
-					double chance = .20;
+					double chance = initialChance;
 					if((((point.x-(forestSize/2)))<i)&&(((point.x+(forestSize)/2))>i)
 							&&(((point.y-(forestSize/2)))<j)&&(((point.y+(forestSize)/2))>j)) {
-						chance +=.50;
+						chance +=bonusChance;
 						//System.out.println("Wow!");
 					}
 					if(chance >= Math.random()) {
 						try{
 							if(board[j][i].toString().equals("[ ]")) {
-								board[j][i].setLand(Terrain.TREE);
+								board[j][i].setResource(Resource.TREE);
 								noOfTrees++;
 							}
 						}
@@ -113,6 +115,7 @@ public class Map {
 		}
 	}
 	private void createRiver() {
+		System.out.println("WUT");
 		//  for lack of generality a random topleft point, to a random bottom right point
 		Point init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
 		Point fin = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
@@ -129,8 +132,10 @@ public class Map {
 	}
 	//  SIMILAR TO THE MOVEMENT OF WORKERS BUT WITHOUT THE WHILE LOOP
 	private void riverFilling(ArrayList<Direction> showMeYourMoves, Point init) {
+		System.out.println("FILL!");
 		Direction first = null;
 		while(!showMeYourMoves.isEmpty()) {
+			System.out.print("!EMPTY");
 			first = showMeYourMoves.get(0);
 			showMeYourMoves.remove(0);
 			if(first.equals(Direction.NORTH)) {

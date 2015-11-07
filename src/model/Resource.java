@@ -18,5 +18,5 @@
 package model;
 
 public enum Resource {
-
+	FISH, SALTY_FISH, TREE, NONE;
 }

@@ -17,12 +17,11 @@
 
 package model;
 
-
 public class MapTile {
 	private Resource resource;
 	private Terrain terrain;
 	public MapTile() {
-		resource = null;
+		resource = resource.NONE;
 		terrain = terrain.PLAIN;
 	}
 	//  This will set rivers and mountains or whatever the hell we want
@@ -30,7 +29,7 @@ public class MapTile {
 		terrain = toSet;
 	}
 	public void setResource(Resource toSet) {
-		System.out.println(toSet);
+		//System.out.println(toSet);
 		resource = toSet;
 	}
 	public boolean unPassable() {
@@ -43,10 +42,17 @@ public class MapTile {
 		return true;
 	}
 	public String toString() {
+		//  RESOURCES
+		if(resource.equals(resource.TREE))
+			return "[T]";
+		if(resource.equals(resource.FISH))
+			return "[F]";
+		if(resource.equals(resource.SALTY_FISH))
+			return "[F]";
+		
+		//  TERRAIN
 		if(terrain.equals(terrain.RIVER))
 			return "[R]";
-		if(terrain.equals(terrain.TREE))
-			return "[T]";
 		if(terrain.equals(terrain.PLAIN))
 			return "[ ]";
 		return "Hodor";
