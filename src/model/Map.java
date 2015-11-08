@@ -47,15 +47,156 @@ public class Map {
 	}
 	public void generate() {
 		//  OMAN THIS IS NOT TESTABLE CODE!!!
+		createOcean();
 		createRiver();
-		//createOcean();
 		createTrees();
 		spawnFood();
 		spawnStone();
-		spawnBushes();
 		
 		//  spwanAnimals();
 		//  Ohwell...
+	}
+	private void createOcean() {
+		double num = Math.random();
+		Direction initial = null;
+		Point init = null;
+		boolean goingToLine = true;
+		boolean topLeft = true;
+		if(num<.25) {
+			initial = Direction.SOUTH;
+			init = new Point(board.length/20, 0);
+			goingToLine = true;
+		}
+		else if(num<.5) {
+			initial = Direction.SOUTH;
+			init = new Point(board.length-board.length/20, 0);
+			topLeft = false;
+			goingToLine = false;
+		}
+		else if(num<.75) {
+			initial = Direction.EAST;
+			init = new Point(0, board.length/20);
+			goingToLine = true;
+		}
+		else {
+			initial = Direction.EAST;
+			topLeft = false;
+			init = new Point(0, board.length-board.length/20);
+			goingToLine = false;
+		}
+		OceanFilling(OceanMaking(init, initial) ,initial ,init, goingToLine, topLeft);		
+	}
+	private void OceanFilling(ArrayList<Direction> oceanTiles ,Direction initial , Point init, boolean fillTo, boolean topLeft) {
+		Direction fillingDir = null;
+		if(topLeft) {
+			if(initial.equals(Direction.SOUTH)) {
+				fillingDir = Direction.rotateRight(initial);
+			}
+			else
+				fillingDir = Direction.rotateLeft(initial);
+		}
+		else {
+			if(initial.equals(Direction.SOUTH)) {
+				fillingDir = Direction.rotateLeft(initial);
+			}
+			else
+				fillingDir = Direction.rotateRight(initial);
+		}
+		Direction first = null;
+		while(!oceanTiles.isEmpty()) {
+			first = oceanTiles.get(0);
+			oceanTiles.remove(0);
+			try {
+			int i = 0;
+			if(fillingDir.equals(Direction.EAST)) {
+				board[init.y][init.x-1].setLand(Terrain.BEACH);
+				board[init.y][init.x-2].setLand(Terrain.BEACH);
+				while(true) {
+					board[init.y][init.x+i].setLand(Terrain.OCEAN);
+					i++;
+					}
+				}
+			if(fillingDir.equals(Direction.NORTH)) {
+				board[init.y+1][init.x].setLand(Terrain.BEACH);
+				board[init.y+2][init.x].setLand(Terrain.BEACH);
+				while(true) {
+					board[init.y-i][init.x].setLand(Terrain.OCEAN);
+					i++;
+					}
+				}
+			if(fillingDir.equals(Direction.WEST)) {
+				board[init.y][init.x+1].setLand(Terrain.BEACH);
+				board[init.y][init.x+2].setLand(Terrain.BEACH);
+				while(true) {
+					board[init.y][init.x-i].setLand(Terrain.OCEAN);
+					i++;
+					}
+				}
+			if(fillingDir.equals(Direction.SOUTH)) {
+				board[init.y-1][init.x].setLand(Terrain.BEACH);
+				board[init.y-2][init.x].setLand(Terrain.BEACH);
+				while(true) {
+					board[init.y+i][init.x].setLand(Terrain.OCEAN);
+					i++;
+					}
+				}
+			else {
+				break;
+			}
+			}
+			catch(Exception breakingOut) {
+				//  eyy
+			}
+			if(first.equals(Direction.NORTH)) {
+				init.y--;
+			}
+			else if(first.equals(Direction.SOUTH)) {
+				init.y++;
+			}
+			else if(first.equals(Direction.EAST)) {
+				init.x++;
+			}
+			else if(first.equals(Direction.WEST)) {
+				init.x--;
+			}
+		}
+	}
+	private ArrayList<Direction> OceanMaking(Point init, Direction initial) {
+		ArrayList<Direction> theCoast = new ArrayList<>();
+		double noLeft = .0;
+		int i = 0;
+		Direction last = Direction.invert(initial);
+		while(i < board.length) {
+			boolean changed = false;
+			while(!changed) {
+				changed = false;
+				double num = Math.random();
+				if(num>.5 +Math.abs(noLeft)) {
+					theCoast.add(initial);
+					last = initial;
+					changed = true;
+					i++;
+				}
+				else if(num >.25-noLeft) {
+					if(!last.equals(Direction.rotateLeft(initial))) {
+					theCoast.add(Direction.rotateLeft(initial));
+					last = Direction.rotateLeft(initial);
+					changed = true;
+					noLeft -= .02;
+					}
+				}
+				else {
+					if(!last.equals(Direction.rotateRight(initial))) {
+					theCoast.add(Direction.rotateRight(initial));
+					last = Direction.rotateRight(initial);
+					changed = true;
+					noLeft += .02;
+					}
+				}
+			}
+		}
+		return theCoast;
+
 	}
 	private void createTrees() {
 		double initialChance = .09;
@@ -97,6 +238,7 @@ public class Map {
 	private void spawnFood() {
 		// Spawns Fish and Berry bushes
 		spawnFish();
+		spawnBushes();
 		
 	}
 	private void spawnFish() {
@@ -110,25 +252,37 @@ public class Map {
 			board[point.x][point.y].setResource(Resource.FISH);
 		}
 		//  Spawns Salty Fish in the Ocean
-	/*	for(int i = 0; i < Math.random()*30+20; i++) {
+		for(int i = 0; i < Math.random()*30+20; i++) {
 			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
-			while(!board[point.y][point.x].getLand().equals(Terrain.RIVER)) {
+			while(!board[point.y][point.x].getLand().equals(Terrain.OCEAN)) {
 				point.x = (int)(Math.random()*board.length);
 				point.y = (int)(Math.random()*board.length);
 			}
-			board[point.x][point.y].setResource(Resource.SALTY_FISH);
-		} */
+			board[point.y][point.x].setResource(Resource.SALTY_FISH);
+		} 
 	}
+	private boolean riverNotFinished;
 	private void createRiver() {
 		//  for lack of generality a random topleft point, to a random bottom right point
 		int length = (int)((double)board.length*4); //  board.length*10 for the nile
 		Point init = null;
 		init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
-		riverFilling(riverMakingSouth(init, Direction.SOUTH, length) ,init);
-		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
-		riverFilling(riverMakingSouth(init, Direction.SOUTH, length) ,init);
+		riverNotFinished = false;
+		riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+		if(riverNotFinished) {
+			init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
+			riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+			riverNotFinished = false;
+		}
+		init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
+		riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+		if(riverNotFinished) {
+			init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
+			riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+			riverNotFinished = false;
+		}
 	}
-	private ArrayList<Direction> riverMakingSouth(Point init, Direction initial, int size) {
+	private ArrayList<Direction> riverMaking(Point init, Direction initial, int size) {
 		ArrayList<Direction> theRiver = new ArrayList<>();
 		Direction last = Direction.invert(initial);
 		for(int i = 0; i < size; i++) {
@@ -182,6 +336,14 @@ public class Map {
 		while(!showMeYourMoves.isEmpty()) {
 			first = showMeYourMoves.get(0);
 			showMeYourMoves.remove(0);
+			try {
+				if(board[init.y][init.x].getLand().equals(Terrain.OCEAN)) {
+					riverNotFinished = true;
+					return;
+				}
+			}
+			catch(Exception oops) {
+			}
 			if(first.equals(Direction.NORTH)) {
 				try {
 				board[init.y][init.x+1].setLand(Terrain.RIVER);
