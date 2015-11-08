@@ -121,11 +121,11 @@ public class Map {
 	}
 	private void createRiver() {
 		//  for lack of generality a random topleft point, to a random bottom right point
-		int length = (int)((double)board.length*3); //  board.length*2 for the nile
+		int length = (int)((double)board.length*4); //  board.length*10 for the nile
 		Point init = null;
-		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
+		init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
 		riverFilling(riverMakingSouth(init, Direction.SOUTH, length) ,init);
-		init = new Point((int)(Math.random()*board.length/10), (int)(Math.random()*board.length));
+		init = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length/10));
 		riverFilling(riverMakingSouth(init, Direction.SOUTH, length) ,init);
 	}
 	private ArrayList<Direction> riverMakingSouth(Point init, Direction initial, int size) {

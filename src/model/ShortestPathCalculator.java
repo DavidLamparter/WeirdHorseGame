@@ -343,7 +343,7 @@ public class ShortestPathCalculator{
 		boolean[][] mao = new boolean[25][25];
 		for(int i = 0; i < 25; i++) {
 			for(int j = 0; j < 25; j++)
-				if(Math.random()<.30)
+				if(Math.random()<.3)
 					mao[i][j] = true;
 		}
 		ShortestPathCalculator theCalc = new ShortestPathCalculator(mao);
