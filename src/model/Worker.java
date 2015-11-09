@@ -18,7 +18,7 @@
 *=================================================================================================*/
 
 package model;
-public class Worker {
+public abstract class Worker {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -97,18 +97,18 @@ public class Worker {
 		this.tool = tool;
 	}
 	
+	public void inDanger(int status) {
+		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.75,(status-10));
+		double rand = Math.random();
+		if(rand > (0.66 - dubStatus))
+			isAlive = false;
+	}
+	
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
 	
-	public void addHunger() {
-		// If hunger rises above 10, this worker dies from starvation
-		if(hunger == 10) {
-			isAlive = false;
-			return;
-		}
-		hunger += 1;
-	}
+	public abstract void addHunger();
 	
 	public void addFatigue() {
 		// If fatigue rises above 10, this worker dies from exhaustion
