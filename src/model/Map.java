@@ -47,9 +47,9 @@ public class Map {
 	}
 	public void generate() {
 		//  OMAN THIS IS NOT TESTABLE CODE!!!
+		//IT IS THOUGH!!
 		createOcean();
 		createRiver();
-		createTrees();
 		spawnFood();
 		spawnStone();
 		
@@ -64,24 +64,24 @@ public class Map {
 		boolean topLeft = true;
 		if(num<.25) {
 			initial = Direction.SOUTH;
-			init = new Point(board.length/20, 0);
+			init = new Point(board.length/10, 0);
 			goingToLine = true;
 		}
 		else if(num<.5) {
 			initial = Direction.SOUTH;
-			init = new Point(board.length-board.length/20, 0);
+			init = new Point(board.length-board.length/10, 0);
 			topLeft = false;
 			goingToLine = false;
 		}
 		else if(num<.75) {
 			initial = Direction.EAST;
-			init = new Point(0, board.length/20);
+			init = new Point(0, board.length/10);
 			goingToLine = true;
 		}
 		else {
 			initial = Direction.EAST;
 			topLeft = false;
-			init = new Point(0, board.length-board.length/20);
+			init = new Point(0, board.length-board.length/10);
 			goingToLine = false;
 		}
 		OceanFilling(OceanMaking(init, initial) ,initial ,init, goingToLine, topLeft);		
