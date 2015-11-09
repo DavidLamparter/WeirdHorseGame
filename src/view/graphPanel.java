@@ -5,10 +5,10 @@
 |    			 Kyle DeTar (kdeTar@email.arizona.edu)
 |	  			 Brett Cohen (brett7@email.arizona.edu)
 |                       
-|       Course:  335
+|       Course:  331
 |   Instructor:  R. Mercer
 |           PM:  Sean Stephens
-|     Due Date:  12/9/15
+|     Due Date:  12/9/11
 |
 |  Description:  simple graphic panel based on colors
 |                
@@ -37,11 +37,11 @@ public class graphPanel extends JPanel {
 
 		this.width = graph.length;
 		this.length = graph[0].length;
-		this.graph = new MapTile[(width) * 10 + 1][(length) * 10 + 1];
+		this.graph = new MapTile[(width) * 2 + 1][(length) * 2 + 1];
 		
-		for (int i = 0; i < width * 10; i++) {
-			for (int j = 0; j < length * 10; j++) {
-				this.graph[i][j] = graph[i / 10][j / 10];
+		for (int i = 0; i < width * 2; i++) {
+			for (int j = 0; j < length * 2; j++) {
+				this.graph[i][j] = graph[i / 2][j / 2];
 			}
 		}
 		repaint();
@@ -95,11 +95,14 @@ public class graphPanel extends JPanel {
 					g2d.drawLine(i, j, i, j);
 				}
 				
-				if (i % 10 == 0 || j % 10 == 0) {
+				/*
+				if (i % 2 == 0 || j % 2 == 0) {
 					g2d.setColor(Color.BLACK);
 					g2d.drawLine(i, j, i, j);
 				}
+				*/
 				}
+				
 				catch(NullPointerException E){
 					//System.out.println("Why");
 				}
