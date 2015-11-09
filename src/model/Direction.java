@@ -31,19 +31,29 @@ public enum Direction {
 	public static Direction rotateLeft(Direction dir) {
 		if(dir == NORTH)
 			return WEST;
+		if(dir == WEST)
+			return SOUTH;
 		if(dir == SOUTH)
 			return EAST;
-		if(dir == EAST)
-			return NORTH;
-		return SOUTH;
+		return NORTH;
 	}
 	public static Direction rotateRight(Direction dir) {
 		if(dir == NORTH)
 			return EAST;
-		if(dir == SOUTH)
-			return WEST;
 		if(dir == EAST)
 			return SOUTH;
+		if(dir == SOUTH)
+			return WEST;
 		return NORTH;
+	}
+	public static Direction getRandom() {
+		double num = Math.random();
+		if(num < .25)
+			return NORTH;
+		else if(num < .50)
+			return WEST;
+		else if(num < .75)
+			return SOUTH;
+		return EAST;
 	}
 }

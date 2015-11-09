@@ -79,6 +79,21 @@ public class graphPanel extends JPanel {
 					g2d.setColor(Color.BLUE);
 					g2d.drawLine(i, j, i, j);
 				}
+				//SaltyFish
+				else if (graph[j][i].getResource().equals(Resource.SALTY_FISH)) {
+					g2d.setColor(Color.magenta);
+					g2d.drawLine(i, j, i, j);
+				}
+				//Ocean
+				else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
+					g2d.setColor(new Color(20, 20, 200));
+					g2d.drawLine(i, j, i, j);
+				}
+				//Sand
+				else if (graph[j][i].getLand().equals(Terrain.BEACH)) {
+					g2d.setColor(Color.ORANGE);
+					g2d.drawLine(i, j, i, j);
+				}
 				//Berry Bush
 				else if (graph[j][i].getResource().equals(Resource.BERRY_BUSH)) {
 					g2d.setColor(Color.RED);
