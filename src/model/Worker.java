@@ -107,36 +107,39 @@ public abstract class Worker {
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
+	// Hunger helper method for sub classes
 	protected void addHunger(double hunger) {
 		this.hunger += hunger;
 	}
 	
 	public void addHunger() {
-		// If hunger rises above 10, this worker dies from starvation
+		// If hunger rises above 10, this worker may die from starvation
 		if(hunger >= 10) {
 			inDanger(hunger);
 		}
 		addHunger(1.0);
 	}
 	
+	// Fatigue helper method for sub classes
 	protected void addFatigue(double fatigue) {
 		this.fatigue += fatigue;
 	}
 	
 	public void addFatigue() {
-		// If fatigue rises above 10, this worker dies from exhaustion
+		// If fatigue rises above 10, this worker may die from exhaustion
 		if(fatigue >= 10) {
 			inDanger(fatigue);
 		}
 		addFatigue(1.0);
 	}
 	
+	// Coldness helper method for sub classes
 	protected void addColdness(double coldness) {
 		this.coldness += coldness;
 	}
 	
 	public void addColdness() {
-		// If coldness rises above 10, this worker dies from frostbite
+		// If coldness rises above 10, this worker may die from frostbite
 		if(coldness >= 10) {
 			inDanger(coldness);
 		}
@@ -146,6 +149,8 @@ public abstract class Worker {
 	/**************************************
 	 *       Subtractors for Aspects      *
 	 **************************************/
+	
+	// Happiness helper method for sub classes
 	protected void subtractHappiness(double happiness) {
 		this.happiness -= happiness;
 	}

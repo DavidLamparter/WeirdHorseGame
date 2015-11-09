@@ -1,3 +1,20 @@
+/*================================================================================================
+|   Assignment:  FINAL PROJECT - Settlement Management
+|      Authors:  David Lamparter (Lamparter@email.arizona.edu)
+|                Kyle Grady (kgrady1@email.arizona.edu)
+|    			 Kyle DeTar (kdeTar@email.arizona.edu)
+|	  			 Brett Cohen (brett7@email.arizona.edu)
+|                       
+|       Course:  335
+|   Instructor:  R. Mercer
+|           PM:  Sean Stephens
+|     Due Date:  12/9/15
+|
+|  Description:  This program creates the "Brett" worker class that gets tired more easily
+|                
+| Deficiencies:  We know of no unsatisfied requirements and no logic errors.
+*=================================================================================================*/
+
 package model;
 
 public class Brett extends Worker{
@@ -8,7 +25,7 @@ public class Brett extends Worker{
 	
 	@Override
 	public void addFatigue() {
-		// If hunger rises above 10, this worker dies from starvation
+		// If fatigue rises above 10, this worker may die from exhaustion
 		if(getFatigue() >= 10) {
 			inDanger(getFatigue());
 		}
