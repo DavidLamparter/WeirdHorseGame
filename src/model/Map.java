@@ -52,11 +52,11 @@ public class Map {
 		createTrees();
 		spawnFood();
 		spawnStone();
-		spawnPeeps();
+		spawnYoPeeps();
 		//  spwanAnimals();
 		//  Ohwell...
 	}
-	private void spawnPeeps() {
+	private void spawnYoPeeps() {
 		//  if you thought stone had alot of if's
 		Random gen = new Random();
 		int counter =0;
