@@ -16,6 +16,7 @@
 *=================================================================================================*/
 
 package model;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -50,7 +51,9 @@ public class Map {
 		//IT IS THOUGH!!
 		createOcean();
 		createRiver();
+		createTrees();
 		spawnFood();
+		System.out.println("Made it here");
 		spawnStone();
 		spawnYoPeeps();
 		//  spwanAnimals();
@@ -465,13 +468,15 @@ public class Map {
 
 		if(board[X][Y].getResource() == Resource.NONE){
 			
-			for(int i = -1; i < 2; i++){
-				for(int j = -1; j < 2; j++){
+			for(int i = -1; i < 1; i++){
+				for(int j = -1; j < 1; j++){
 				if(board[X+i][Y+j].getResource() == Resource.TREE)
 				treeCounter++;
 				}
 			}
 		}
+
+		System.out.println(dingDangBushes + " " + treeCounter);
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(Resource.BERRY_BUSH);

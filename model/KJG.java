@@ -10,25 +10,26 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program creates the "Brett" worker class that gets tired more easily
+|  Description:  This program creates the "Kyle James Grady" worker class that gets cold more easily
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 
-public class Brett extends Worker{
-	
-	public Brett() {
+
+public class KJG extends Worker{
+
+	public KJG() {
 		super();
 	}
 	
 	@Override
-	public void addFatigue() {
-		// If fatigue rises above 10, this worker may die from exhaustion
-		if(getFatigue() >= 10) {
-			inDanger(getFatigue());
+	public void addColdness() {
+		// If coldness rises above 10, this worker may die from frostbite
+		if(getColdness() >= 10) {
+			inDanger(getColdness());
 		}
-		addFatigue(1.5);
+		addColdness(1.5);
 	}
 }

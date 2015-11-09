@@ -10,25 +10,26 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program creates the "Kyle James Grady" worker class that gets cold more easily
+|  Description:  This program creates the "Kyle James DeTar" worker class that gets hungry more easily
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 
-public class KJG extends Worker{
 
-	public KJG() {
+public class KJD extends Worker {
+	
+	public KJD() {
 		super();
 	}
 	
 	@Override
-	public void addColdness() {
-		// If coldness rises above 10, this worker may die from frostbite
-		if(getColdness() >= 10) {
-			inDanger(getColdness());
+	public void addHunger() {
+		// If hunger rises above 10, this worker may die from starvation
+		if(getHunger() >= 10) {
+			inDanger(getHunger());
 		}
-		addColdness(1.5);
+		addHunger(1.5);
 	}
 }

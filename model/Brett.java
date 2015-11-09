@@ -10,25 +10,27 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program creates the "Kyle James DeTar" worker class that gets hungry more easily
+|  Description:  This program creates the "Brett" worker class that gets tired more easily
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 
-public class KJD extends Worker {
+import model.Worker;
+
+public class Brett extends Worker{
 	
-	public KJD() {
+	public Brett() {
 		super();
 	}
 	
 	@Override
-	public void addHunger() {
-		// If hunger rises above 10, this worker may die from starvation
-		if(getHunger() >= 10) {
-			inDanger(getHunger());
+	public void addFatigue() {
+		// If fatigue rises above 10, this worker may die from exhaustion
+		if(getFatigue() >= 10) {
+			inDanger(getFatigue());
 		}
-		addHunger(1.5);
+		addFatigue(1.5);
 	}
 }
