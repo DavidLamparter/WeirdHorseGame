@@ -47,14 +47,47 @@ public class Map {
 	}
 	public void generate() {
 		//  OMAN THIS IS NOT TESTABLE CODE!!!
+		//IT IS THOUGH!!
 		createOcean();
 		createRiver();
-		createTrees();
 		spawnFood();
 		spawnStone();
-		
+		spawnYoPeeps();
 		//  spwanAnimals();
 		//  Ohwell...
+	}
+	private void spawnYoPeeps() {
+		//  if you thought stone had alot of if's
+		Random gen = new Random();
+		int counter =0;
+		//  it will try 1000 times before giving up
+		int X = 0;
+		int Y = 0;
+		while(counter < 1000) {
+			X = gen.nextInt(size-5)+1;
+			Y = gen.nextInt(size-7)+1;
+	
+			//checks to see if the position on the land is not a river or ocean
+			int placeCounter = 5*7;
+			for(int i = X; i < X + 5; i++) {
+				for(int j = Y; j < Y + 7; j++) {
+					if(board[j][i].getLand().equals(Terrain.PLAIN)
+							&& (board[j][i].getResource().equals(Resource.NONE))) {
+						placeCounter--;
+					}
+				}
+			}
+			if(placeCounter == 0)
+				break;
+			counter++;
+		}
+		//  TownHall!!!!
+		for(int i = X+1; i < X + 4; i++) {
+			for(int j = Y + 1; j < Y + 6; j++) {
+				board[j][i].setLand(Terrain.BEACH);
+			}
+		}
+		
 	}
 	private void createOcean() {
 		double num = Math.random();
@@ -64,24 +97,24 @@ public class Map {
 		boolean topLeft = true;
 		if(num<.25) {
 			initial = Direction.SOUTH;
-			init = new Point(board.length/20, 0);
+			init = new Point(board.length/10, 0);
 			goingToLine = true;
 		}
 		else if(num<.5) {
 			initial = Direction.SOUTH;
-			init = new Point(board.length-board.length/20, 0);
+			init = new Point(board.length-board.length/10, 0);
 			topLeft = false;
 			goingToLine = false;
 		}
 		else if(num<.75) {
 			initial = Direction.EAST;
-			init = new Point(0, board.length/20);
+			init = new Point(0, board.length/10);
 			goingToLine = true;
 		}
 		else {
 			initial = Direction.EAST;
 			topLeft = false;
-			init = new Point(0, board.length-board.length/20);
+			init = new Point(0, board.length-board.length/10);
 			goingToLine = false;
 		}
 		OceanFilling(OceanMaking(init, initial) ,initial ,init, goingToLine, topLeft);		
@@ -222,7 +255,8 @@ public class Map {
 					}
 					if(chance >= Math.random()) {
 						try{
-							if(board[j][i].toString().equals("[ ]")) {
+							if(board[j][i].getLand().equals(Terrain.PLAIN) 
+									&& board[j][i].getResource().equals(Resource.NONE)) {
 								board[j][i].setResource(Resource.TREE);
 								noOfTrees++;
 							}
