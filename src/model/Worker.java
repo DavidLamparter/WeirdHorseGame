@@ -107,33 +107,51 @@ public abstract class Worker {
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
+	protected void addHunger(double hunger) {
+		this.hunger += hunger;
+	}
 	
-	public abstract void addHunger();
+	public void addHunger() {
+		// If hunger rises above 10, this worker dies from starvation
+		if(hunger >= 10) {
+			inDanger(hunger);
+		}
+		addHunger(1.0);
+	}
+	
+	protected void addFatigue(double fatigue) {
+		this.fatigue += fatigue;
+	}
 	
 	public void addFatigue() {
 		// If fatigue rises above 10, this worker dies from exhaustion
-		if(fatigue == 10) {
-			isAlive = false;
-			return;
+		if(fatigue >= 10) {
+			inDanger(fatigue);
 		}
-		fatigue += 1;
+		addFatigue(1.0);
+	}
+	
+	protected void addColdness(double coldness) {
+		this.coldness += coldness;
 	}
 	
 	public void addColdness() {
 		// If coldness rises above 10, this worker dies from frostbite
-		if(fatigue == 10) {
-			isAlive = false;
-			return;
+		if(coldness >= 10) {
+			inDanger(coldness);
 		}
-		coldness += 1;
+		addColdness(1.0);
 	}
 	
 	/**************************************
 	 *       Subtractors for Aspects      *
 	 **************************************/
+	protected void subtractHappiness(double happiness) {
+		this.happiness -= happiness;
+	}
 	
 	public void subtractHappiness() {
-		happiness -= 1;
+		subtractHappiness(1.0);
 	}
 	
 	public void subtractCarryingCapacity() {
