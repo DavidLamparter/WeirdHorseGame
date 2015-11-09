@@ -18,7 +18,7 @@
 *=================================================================================================*/
 
 package model;
-public class Worker {
+public abstract class Worker {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -97,43 +97,66 @@ public class Worker {
 		this.tool = tool;
 	}
 	
+	public void inDanger(int status) {
+		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.75,(status-10));
+		double rand = Math.random();
+		if(rand > (0.66 - dubStatus))
+			isAlive = false;
+	}
+	
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
+	// Hunger helper method for sub classes
+	protected void addHunger(double hunger) {
+		this.hunger += hunger;
+	}
 	
 	public void addHunger() {
-		// If hunger rises above 10, this worker dies from starvation
-		if(hunger == 10) {
-			isAlive = false;
-			return;
+		// If hunger rises above 10, this worker may die from starvation
+		if(hunger >= 10) {
+			inDanger(hunger);
 		}
-		hunger += 1;
+		addHunger(1.0);
+	}
+	
+	// Fatigue helper method for sub classes
+	protected void addFatigue(double fatigue) {
+		this.fatigue += fatigue;
 	}
 	
 	public void addFatigue() {
-		// If fatigue rises above 10, this worker dies from exhaustion
-		if(fatigue == 10) {
-			isAlive = false;
-			return;
+		// If fatigue rises above 10, this worker may die from exhaustion
+		if(fatigue >= 10) {
+			inDanger(fatigue);
 		}
-		fatigue += 1;
+		addFatigue(1.0);
+	}
+	
+	// Coldness helper method for sub classes
+	protected void addColdness(double coldness) {
+		this.coldness += coldness;
 	}
 	
 	public void addColdness() {
-		// If coldness rises above 10, this worker dies from frostbite
-		if(fatigue == 10) {
-			isAlive = false;
-			return;
+		// If coldness rises above 10, this worker may die from frostbite
+		if(coldness >= 10) {
+			inDanger(coldness);
 		}
-		coldness += 1;
+		addColdness(1.0);
 	}
 	
 	/**************************************
 	 *       Subtractors for Aspects      *
 	 **************************************/
 	
+	// Happiness helper method for sub classes
+	protected void subtractHappiness(double happiness) {
+		this.happiness -= happiness;
+	}
+	
 	public void subtractHappiness() {
-		happiness -= 1;
+		subtractHappiness(1.0);
 	}
 	
 	public void subtractCarryingCapacity() {
