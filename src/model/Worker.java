@@ -18,6 +18,10 @@
 *=================================================================================================*/
 
 package model;
+
+import java.awt.Point;
+import java.util.ArrayList;
+
 public abstract class Worker {
 	
 	/**************************************
@@ -28,6 +32,11 @@ public abstract class Worker {
 	private int hunger;
 	private int fatigue;
 	private int coldness;
+	
+	//  two things I added KG
+	private int XPos;
+	private int YPos;
+	//  END OF THINGS I ADDED
 	
 	// Aspects (good/neutral stuff) begin at max and decrement to dangerous levels
 	private int happiness;
@@ -167,4 +176,51 @@ public abstract class Worker {
 		carryingCapacity -= 1;
 	}
 	
+	/**************************************
+	 *       Points for Movements !!!     *
+	 **************************************/
+	private ArrayList<Direction> myTask = new ArrayList<>();
+	private boolean isBusy;
+	private Direction last;
+	//  May need to have a way to cancel task, As of now
+	//  workers know the directions to get somewhere but don't know what 
+	//  they are doing. Lets send people to get food then say oops
+	//  no need for that its a dumb resource how would they stop?
+	public int getX() {
+		return XPos;
+	}
+	public int getY() {
+		return YPos;
+	}
+	public Direction getLast() {
+		return last;
+	}
+	public boolean isBusy(){
+		return false;
+	}
+	public void toLocation(ArrayList<Direction> directions) {
+		myTask = directions;
+	}
+	public void move() {
+		if(!myTask.isEmpty()) {
+			Direction toGo = myTask.get(0);
+			myTask.remove(0);
+			if(toGo.equals(Direction.NORTH)) {
+				YPos--;
+				last = Direction.NORTH;
+			}
+			if(toGo.equals(Direction.SOUTH)) {
+				YPos++;
+				last = Direction.SOUTH;
+			}
+			if(toGo.equals(Direction.EAST)) {
+				XPos++;
+				last = Direction.EAST;
+			}
+			if(toGo.equals(Direction.WEST)) {
+				XPos--;
+				last = Direction.WEST;
+			}
+		}
+	}
 }
