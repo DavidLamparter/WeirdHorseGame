@@ -18,6 +18,9 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -27,6 +30,7 @@ import model.MapTile;
 
 public class SettlementGUI extends JFrame {
 	private int size;
+	private MiniMap minimap = null;
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
 		this.setSize(new Dimension(1000,600));
@@ -34,16 +38,61 @@ public class SettlementGUI extends JFrame {
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.requestFocus();
 		this.addWindowListener(new WindogeListener());
+		minimap = new MiniMap(this);
+		this.addMouseListener(new MouseExitListener());
 	}
 	public int getMapSize() {
 		return 100;
+	}
+	private class MouseExitListener implements MouseListener, MouseMotionListener{
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			minimap.relocateToBottomRight();
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			minimap.relocateToBottomRight();
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 	private class WindogeListener implements WindowListener {
 
 		@Override
 		public void windowActivated(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			minimap.relocateToBottomRight();
 		}
 
 		@Override
@@ -67,13 +116,14 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void windowDeiconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			minimap.toggleInvisible();
+			minimap.relocateToBottomRight();
 		}
 
 		@Override
 		public void windowIconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			minimap.toggleInvisible();
 		}
 
 		@Override
@@ -81,5 +131,8 @@ public class SettlementGUI extends JFrame {
 			// TODO Auto-generated method stub
 			
 		}
+	}
+	public static void main(String[] args) {
+		SettlementGUI gui = new SettlementGUI(100);
 	}
 }

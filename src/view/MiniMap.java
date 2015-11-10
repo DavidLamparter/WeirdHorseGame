@@ -61,6 +61,13 @@ public class MiniMap extends JFrame{
 	this.add(maximize);
 	this.setVisible(true);
 	}
+	public void relocateToBottomRight() {
+		setLocation(caller.getLocation().x+caller.getWidth()-getWidth(), 
+				caller.getLocation().y + caller.getHeight()-getHeight());
+	}
+	public void toggleInvisible() {
+		this.setVisible(!this.isVisible());
+	}
 	private class ClickerListener implements MouseListener {
 		private boolean firstClick = false;
 		@Override
@@ -77,8 +84,7 @@ public class MiniMap extends JFrame{
 				maximize.setVisible(false);
 				panel.setVisible(true);
 			}
-			setLocation(caller.getLocation().x+caller.getWidth()-getWidth(), 
-					caller.getLocation().y + caller.getHeight()-getHeight());
+			relocateToBottomRight();
 			maximize.setLocation(1,1);
 			maximize.setSize(getSize());
 			
