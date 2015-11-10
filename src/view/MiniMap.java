@@ -32,10 +32,10 @@ import model.Worker;
 
 public class MiniMap extends JFrame{
 	
-	public static void main(String[] args) {
+	//public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		MiniMap main = new MiniMap(new SettlementGUI(100));
-	}
+		//MiniMap main = new MiniMap(new SettlementGUI(100));
+	//}
 	private graphPanel panel = null;
 	private JLabel maximize = new JLabel(" +");
 	private SettlementGUI caller;
