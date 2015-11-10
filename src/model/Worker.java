@@ -89,6 +89,10 @@ public abstract class Worker {
 		return tool;
 	}
 	
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
 	/**************************************
 	 *          Setter for tool           *
 	 **************************************/
@@ -98,7 +102,7 @@ public abstract class Worker {
 	}
 	
 	public void inDanger(int status) {
-		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.75,(status-10));
+		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.25,(status));
 		double rand = Math.random();
 		if(rand > (0.66 - dubStatus))
 			isAlive = false;

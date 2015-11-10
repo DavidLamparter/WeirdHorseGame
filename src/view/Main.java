@@ -22,7 +22,9 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import model.KJD;
 import model.Map;
+import model.Worker;
 
 public class Main extends JFrame{
 	
