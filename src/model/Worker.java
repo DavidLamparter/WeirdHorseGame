@@ -36,7 +36,7 @@ public abstract class Worker {
 	//  two things I added KG
 	private int XPos;
 	private int YPos;
-	//  END OF THINGS I ADDED
+	//  END OF THINGS I ADDED except the bottom
 	
 	// Aspects (good/neutral stuff) begin at max and decrement to dangerous levels
 	private int happiness;
@@ -52,6 +52,7 @@ public abstract class Worker {
 	 *          Worker Constructor        *
 	 **************************************/
 	
+	//  Might want the worker to take in its starting position as an argument in the constructor
 	public Worker() {
 		
 		// Conditions being at 0, and increment to dangerous levels
@@ -182,6 +183,8 @@ public abstract class Worker {
 	private ArrayList<Direction> myTask = new ArrayList<>();
 	private boolean isBusy;
 	private Direction last;
+	private int oldXPos;
+	private int oldYPos;
 	//  May need to have a way to cancel task, As of now
 	//  workers know the directions to get somewhere but don't know what 
 	//  they are doing. Lets send people to get food then say oops
@@ -191,6 +194,18 @@ public abstract class Worker {
 	}
 	public int getY() {
 		return YPos;
+	}
+	public int getOldX() {
+		return oldXPos;
+	}
+	public int getOldY() {
+		return oldYPos;
+	}
+	public Point getOldPoint() {
+		return new Point(oldXPos, oldYPos);
+	}
+	public Point getPoint() {
+		return new Point(XPos, YPos);
 	}
 	public Direction getLast() {
 		return last;
@@ -203,6 +218,8 @@ public abstract class Worker {
 	}
 	public void move() {
 		if(!myTask.isEmpty()) {
+			oldYPos = YPos;
+			oldXPos = XPos;
 			Direction toGo = myTask.get(0);
 			myTask.remove(0);
 			if(toGo.equals(Direction.NORTH)) {
