@@ -53,7 +53,6 @@ public class Map {
 		createRiver();
 		createTrees();
 		spawnFood();
-		System.out.println("Made it here");
 		spawnStone();
 		spawnYoPeeps();
 		//  spwanAnimals();
@@ -254,7 +253,6 @@ public class Map {
 					if((((point.x-(forestSize/2)))<i)&&(((point.x+(forestSize)/2))>i)
 							&&(((point.y-(forestSize/2)))<j)&&(((point.y+(forestSize)/2))>j)) {
 						chance +=bonusChance;
-						//System.out.println("Wow!");
 					}
 					if(chance >= Math.random()) {
 						try{
@@ -265,7 +263,6 @@ public class Map {
 							}
 						}
 						catch(Exception e) {
-							//System.out.print("Noes!");
 						}
 					}
 				}
@@ -476,7 +473,6 @@ public class Map {
 			}
 		}
 
-		System.out.println(dingDangBushes + " " + treeCounter);
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(Resource.BERRY_BUSH);
@@ -487,7 +483,6 @@ public class Map {
 	}
 	//public static void main(String[] args) {
 	//	Map hodor = new Map(30);
-	//	System.out.println(hodor.toString());
 	//}	
 	public MapTile[][] getMapTiles(){
 		return board;
