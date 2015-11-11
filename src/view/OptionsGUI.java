@@ -9,15 +9,52 @@ import javax.swing.JFrame;
 
 public class OptionsGUI extends JFrame {
 	JButton close = new JButton("Close the window");
+	JButton closeThis = new JButton("Close Options");
+	JButton saver = new JButton("Save?");
+	JButton loader = new JButton("Load?");
 	SettlementGUI caller;
+	private JButton options = new JButton("Options");
+	MaxSize maxWindow = new MaxSize();
 	public OptionsGUI(SettlementGUI caller) {
 		this.caller = caller;
 		this.setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
 		this.setLocation(caller.getWidth()/3, caller.getHeight()/6);
+		this.setLayout(null);
 		this.setUndecorated(true);
-		this.setLayout(new BorderLayout());
+		
+		saver.addActionListener(new Saver());
+		saver.setSize(this.getWidth()-20, caller.getHeight()/12);
+		saver.setLocation(10, 0);
+		saver.setVisible(false);
+		
+		loader.addActionListener(new LoaderListener());
+		loader.setSize(this.getWidth()-20, caller.getHeight()/12);
+		loader.setLocation(10, 20 + saver.getHeight());
+		loader.setVisible(false);
+		
+		closeThis.addActionListener(maxWindow);
+		closeThis.setSize(this.getWidth()-20, caller.getHeight()/12);
+		closeThis.setLocation(10, 40 + saver.getHeight() + loader.getHeight());
+		closeThis.setVisible(false);
+		
 		close.addActionListener(new CloseListener());
-		this.add(close, BorderLayout.CENTER);
+		close.setSize(this.getWidth()-20, caller.getHeight()/12);
+		close.setLocation(10, saver.getHeight() + 60 + loader.getHeight() + closeThis.getHeight());
+		close.setVisible(false);
+		
+		this.setSize(150, 50);
+		//setLocation(caller.getWidth()-getWidth(), 0);
+		this.setLocation(0, caller.getHeight()-getHeight());
+		
+		options.setLocation(0, 0);
+		options.setSize(this.getSize());
+		options.addActionListener(maxWindow);
+		
+		this.add(saver);
+		this.add(closeThis);
+		this.add(options);
+		this.add(close);
+		this.add(loader);
 		this.setVisible(true);
 		this.setAlwaysOnTop(true);
 	}
@@ -27,6 +64,47 @@ public class OptionsGUI extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			caller.CloseEverything();
+		}
+	}
+	private class MaxSize implements ActionListener {
+		boolean max = false;
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			max=!max;
+			if(max) {
+				setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
+				setLocation(caller.getWidth()/3, caller.getHeight()/6);
+			}
+			else {
+				setSize(150, 50);
+				setLocation(0, caller.getHeight()-getHeight());
+				//  setLocation(caller.getWidth()-getWidth(), 0);
+			}
+			options.setVisible(!max);
+			close.setVisible(max);
+			closeThis.setVisible(max);
+			saver.setVisible(max);
+			loader.setVisible(max);
+			saver.setText("Save?");
+			loader.setText("Load?");
+		}
+	}
+	private class Saver implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			//  Do saving stuff!
+			saver.setText("Saved!");
+		}
+	}
+	private class LoaderListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			//  Do loading stuff
+			loader.setText("Your save has been loaded");
 		}
 	}
 }
