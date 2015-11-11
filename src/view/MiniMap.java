@@ -40,7 +40,7 @@ public class MiniMap extends JFrame{
 	private JLabel maximize = new JLabel(" +");
 	private SettlementGUI caller;
 	public MiniMap(SettlementGUI caller){
-	Map map = new Map(caller.getMapSize());
+	Map map = new Map(caller.getMapSize(),1234132513);
 	this.caller = caller;
 	this.setSize(200,200);
 	this.setUndecorated(true);

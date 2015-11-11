@@ -92,7 +92,6 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void windowActivated(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			minimap.relocateToBottomRight();
 		}
 
 		@Override
@@ -129,6 +128,7 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void windowOpened(WindowEvent arg0) {
 			// TODO Auto-generated method stub
+			minimap.relocateToBottomRight();
 			
 		}
 	}

@@ -23,6 +23,8 @@ import java.util.Random;
 
 public class Map {
 	int size;
+	long Seed;
+	private Random gen;
 	private MapTile[][] board;
 	public Map(int size) {
 		this.size = size;
@@ -30,11 +32,31 @@ public class Map {
 		for(int i = 0; i < size; i++)
 			for(int j = 0; j < size; j++)
 				board[i][j] = new MapTile();
+		this.Seed = Seed;
+		gen = new Random(Seed);
+		generate();
+	}
+	public Map(int size , long Seed) {
+		this.size = size;
+		board = new MapTile[size][size];
+		for(int i = 0; i < size; i++)
+			for(int j = 0; j < size; j++)
+				board[i][j] = new MapTile();
+		this.Seed = Seed;
+		gen = new Random(Seed);
 		generate();
 	}
 	//  For all of our testing purposes
 	public Map(MapTile[][] board) {
 		this.board = board;
+		size = board.length;
+		gen = new Random();
+	}
+	public Map(MapTile[][] board, long Seed) {
+		this.board = board;
+		size = board.length;
+		this.Seed = Seed;
+		gen = new Random(Seed);
 	}
 	public String toString() {
 		String toReturn = "";
@@ -60,7 +82,6 @@ public class Map {
 	}
 	private void spawnYoPeeps() {
 		//  if you thought stone had alot of if's
-		Random gen = new Random();
 		int counter =0;
 		//  it will try 1000 times before giving up
 		int X = 0;
@@ -92,7 +113,7 @@ public class Map {
 		
 	}
 	private void createOcean() {
-		double num = Math.random();
+		double num = gen.nextDouble();
 		Direction initial = null;
 		Point init = null;
 		boolean goingToLine = true;
@@ -205,7 +226,7 @@ public class Map {
 			boolean changed = false;
 			while(!changed) {
 				changed = false;
-				double num = Math.random();
+				double num = gen.nextDouble();
 				if(num>.5 +Math.abs(noLeft)) {
 					theCoast.add(initial);
 					last = initial;
@@ -241,10 +262,10 @@ public class Map {
 		while(noOfTrees<= magicNumber37) {
 			//  FOREST SIZE MUST BE AN EVEN INT >=4 for the middle tree's to work properly :)
 			int forestSize = 7;
-			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
+			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
 			while(!board[point.y][point.x].toString().equals("[ ]")) { //  [ ] for plains
-				point.x = (int)(Math.random()*board.length);
-				point.y = (int)(Math.random()*board.length);
+				point.x = gen.nextInt(size);
+				point.y = gen.nextInt(size);
 			}
 			//  this is the center point of the trees!
 			for(int i = point.x - forestSize; i < point.x + forestSize; i++) {
@@ -254,7 +275,7 @@ public class Map {
 							&&(((point.y-(forestSize/2)))<j)&&(((point.y+(forestSize)/2))>j)) {
 						chance +=bonusChance;
 					}
-					if(chance >= Math.random()) {
+					if(chance >= gen.nextDouble()) {
 						try{
 							if(board[j][i].getLand().equals(Terrain.PLAIN) 
 									&& board[j][i].getResource().equals(Resource.NONE)) {
@@ -277,20 +298,20 @@ public class Map {
 	}
 	private void spawnFish() {
 		//  Spawns Fish in the river
-		for(int i = 0; i < Math.random()*7+10; i++) {
-			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
+		for(int i = 0; i < gen.nextInt(7) + 10; i++) {
+			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
 			while(!board[point.x][point.y].getLand().equals(Terrain.RIVER)) {
-				point.x = (int)(Math.random()*board.length);
-				point.y = (int)(Math.random()*board.length);
+				point.x = gen.nextInt(size);
+				point.y = gen.nextInt(size);
 			}
 			board[point.x][point.y].setResource(Resource.FISH);
 		}
 		//  Spawns Salty Fish in the Ocean
-		for(int i = 0; i < Math.random()*30+20; i++) {
-			Point point = new Point((int)(Math.random()*board.length), (int)(Math.random()*board.length));
+		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
+			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
 			while(!board[point.y][point.x].getLand().equals(Terrain.OCEAN)) {
-				point.x = (int)(Math.random()*board.length);
-				point.y = (int)(Math.random()*board.length);
+				point.x = gen.nextInt(size);
+				point.y = gen.nextInt(size);
 			}
 			board[point.y][point.x].setResource(Resource.SALTY_FISH);
 		} 
@@ -300,19 +321,19 @@ public class Map {
 		//  for lack of generality a random topleft point, to a random bottom right point
 		int length = (int)((double)board.length*4); //  board.length*10 for the nile
 		Point init = null;
-		init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
+		init = new Point(gen.nextInt(size/2)+ size/4,gen.nextInt(size/2)+ size/4);
 		riverNotFinished = false;
-		riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+		riverFilling(riverMaking(init, Direction.getRandom(Seed), length) ,init);
 		if(riverNotFinished) {
-			init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
-			riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+			init = new Point(gen.nextInt(size/2)+ size/4,gen.nextInt(size/2)+ size/4);
+			riverFilling(riverMaking(init, Direction.getRandom(Seed), length) ,init);
 			riverNotFinished = false;
 		}
-		init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
-		riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+		init = new Point(gen.nextInt(size/2)+ size/4,gen.nextInt(size/2)+ size/4);
+		riverFilling(riverMaking(init, Direction.getRandom(Seed), length) ,init);
 		if(riverNotFinished) {
-			init = new Point((int)(Math.random()*board.length/2)+board.length/4, (int)((Math.random()*board.length/2)+board.length/4));
-			riverFilling(riverMaking(init, Direction.getRandom(), length) ,init);
+			init = new Point();
+			riverFilling(riverMaking(init, Direction.getRandom(Seed), length) ,init);
 			riverNotFinished = false;
 		}
 	}
@@ -323,7 +344,7 @@ public class Map {
 			boolean changed = false;
 			while(!changed) {
 				changed = false;
-				double num = Math.random();
+				double num = gen.nextDouble();
 				if(num>.65) {
 					if(!last.equals(initial)) {
 						theRiver.add(initial);
@@ -353,8 +374,8 @@ public class Map {
 					}
 				}
 			}
-			if(Math.random()<.01) {
-				if(Math.random()<.5) {
+			if(gen.nextDouble()<.01) {
+				if(gen.nextDouble()<.5) {
 					initial = Direction.rotateLeft(initial);
 				}
 				else {
@@ -425,8 +446,6 @@ public class Map {
 		}
 	}
 	private void spawnStone(){
-		Random gen = new Random();
-
 		int Outcroppings = gen.nextInt(10) + 15;
 
 		while(Outcroppings > 0){
@@ -455,7 +474,6 @@ public class Map {
 	}
 
 		private void spawnBushes(){
-		Random gen = new Random();
 		int dingDangBushes = gen.nextInt(10)+10;
 
 		while(dingDangBushes > 0){
