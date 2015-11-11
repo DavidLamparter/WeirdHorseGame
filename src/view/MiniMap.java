@@ -41,7 +41,7 @@ public class MiniMap extends JFrame{
 	private SettlementGUI caller;
 	
 	public MiniMap(SettlementGUI caller){
-	Map map = new Map(caller.getMapSize(),1234132513);
+	Map map = caller.getMap();
 	this.caller = caller;
 	this.setSize(200,200);
 	this.setUndecorated(true);

@@ -19,6 +19,9 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -27,32 +30,40 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
+import model.Map;
 import model.MapTile;
 
 public class SettlementGUI extends JFrame {
 	private int size;
 	private MiniMap minimap = null;
 	private OptionsGUI options = null;
-	private JPanel backgroundColor = new JPanel();
+	private MapPanel mapView = null;
+	private Map map = null;
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
-		this.setSize(new Dimension(1366, 768));
+		map = new Map(getMapSize() ,1234132513);
+		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
 		//this.setSize(new Dimension(1080, 720));
 		this.setLayout(null);
-		backgroundColor.setBackground(new Color(25,255,140));
-		backgroundColor.setSize(this.getSize());
-		backgroundColor.setLocation(0,0);
-		this.add(backgroundColor);
+		mapView = new MapPanel(this);
+		mapView.setSize(this.getSize());
+		mapView.setLocation(0,0);
+		mapView.setMaxScroll();
+		mapView.addMouseListener(new MouseExitListener());
+		this.add(mapView);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		//this.requestFocus();
 		this.addWindowListener(new WindogeListener());
 		minimap = new MiniMap(this);
+		
 		options = new OptionsGUI(this);
 		this.addMouseListener(new MouseExitListener());
 		minimap.relocateToBottomRight();
 		this.setUndecorated(true);
 		this.setVisible(true);
+		mapView.addMouseMotionListener(new MapMotionListener());
 	}
 	public void CloseEverything() {
 		minimap.dispose();
@@ -62,12 +73,86 @@ public class SettlementGUI extends JFrame {
 	public int getMapSize() {
 		return 100;
 	}
+	private boolean goingNorth = false;
+	private boolean goingSouth = false;
+	private boolean goingEast = false;
+	private boolean goingWest = false;
+	private Timer movementTimer = new Timer(69, new MapMovementAction());
+	private class MapMovementAction implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			if(goingNorth)
+				mapView.increaseY();
+			if(goingSouth)
+				mapView.decreaseY();
+			if(goingWest)
+				mapView.decreaseX();
+			if(goingEast)
+				mapView.increaseX();
+			mapView.paintIt();
+		}
+	}
+	private class MapMotionListener implements MouseMotionListener {
+		private boolean triggered = false;
+		private int dividor = 8;
+		
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+			//  Going South?
+			if(arg0.getY() < getHeight()/dividor) {
+				goingSouth = true;
+				triggered = true;
+			}
+			if(arg0.getY() >= getHeight()/dividor) {
+				goingSouth = false;
+			}
+			//  Going North by any chance?
+			if(arg0.getY() > getHeight() - getHeight()/dividor) {
+				goingNorth = true;
+				triggered = true;
+			}
+			if(arg0.getY() <= getHeight() - getHeight()/dividor) {
+				goingNorth = false;
+			}
+			//  Going West or Nah?
+			if(arg0.getX() < getWidth()/dividor) {
+				goingWest = true;
+				triggered = true;
+			}
+			if(arg0.getX() >= getWidth()/dividor) {
+				goingWest = false;
+			}
+			//  Going East by any chance?
+			if(arg0.getX() > getWidth() - getWidth()/dividor) {
+				triggered = true;
+				goingEast = true;
+			}
+			if(arg0.getX() <= getWidth() - getWidth()/dividor) {
+				goingEast = false;
+			}
+			if(triggered) {
+				movementTimer.start();
+			}
+			else {
+				movementTimer.stop();
+			}
+			triggered = false;
+			//  System.out.println("HODOR!");
+		}
+	}
 	private class MouseExitListener implements MouseListener, MouseMotionListener{
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
@@ -83,7 +168,6 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
@@ -100,7 +184,6 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void mouseMoved(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 	}
 	private class WindogeListener implements WindowListener {
@@ -145,5 +228,9 @@ public class SettlementGUI extends JFrame {
 	}
 	public static void main(String[] args) {
 		SettlementGUI gui = new SettlementGUI(100);
+	}
+	public Map getMap() {
+		// TODO Auto-generated method stub
+		return map;
 	}
 }
