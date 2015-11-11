@@ -17,6 +17,7 @@
 
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -25,6 +26,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import model.MapTile;
 
@@ -32,12 +34,16 @@ public class SettlementGUI extends JFrame {
 	private int size;
 	private MiniMap minimap = null;
 	private OptionsGUI options = null;
+	private JPanel backgroundColor = new JPanel();
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
 		this.setSize(new Dimension(1366, 768));
 		//this.setSize(new Dimension(1080, 720));
-		this.setUndecorated(true);
-		this.setVisible(true);
+		this.setLayout(null);
+		backgroundColor.setBackground(new Color(25,255,140));
+		backgroundColor.setSize(this.getSize());
+		backgroundColor.setLocation(0,0);
+		this.add(backgroundColor);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		//this.requestFocus();
 		this.addWindowListener(new WindogeListener());
@@ -45,6 +51,8 @@ public class SettlementGUI extends JFrame {
 		options = new OptionsGUI(this);
 		this.addMouseListener(new MouseExitListener());
 		minimap.relocateToBottomRight();
+		this.setUndecorated(true);
+		this.setVisible(true);
 	}
 	public void CloseEverything() {
 		minimap.dispose();

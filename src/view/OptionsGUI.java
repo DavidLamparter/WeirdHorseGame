@@ -1,17 +1,20 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class OptionsGUI extends JFrame {
-	JButton close = new JButton("Close the window");
-	JButton closeThis = new JButton("Close Options");
+	JButton close = new JButton("Exit the Game");
+	JButton closeThis = new JButton("Close this window");
 	JButton saver = new JButton("Save?");
 	JButton loader = new JButton("Load?");
+	private boolean wasSaved = false;
 	SettlementGUI caller;
 	private JButton options = new JButton("Options");
 	MaxSize maxWindow = new MaxSize();
@@ -24,22 +27,22 @@ public class OptionsGUI extends JFrame {
 		
 		saver.addActionListener(new Saver());
 		saver.setSize(this.getWidth()-20, caller.getHeight()/12);
-		saver.setLocation(10, 0);
+		saver.setLocation(10, 20);
 		saver.setVisible(false);
 		
 		loader.addActionListener(new LoaderListener());
 		loader.setSize(this.getWidth()-20, caller.getHeight()/12);
-		loader.setLocation(10, 20 + saver.getHeight());
+		loader.setLocation(10, 40 + saver.getHeight());
 		loader.setVisible(false);
 		
 		closeThis.addActionListener(maxWindow);
 		closeThis.setSize(this.getWidth()-20, caller.getHeight()/12);
-		closeThis.setLocation(10, 40 + saver.getHeight() + loader.getHeight());
+		closeThis.setLocation(10, 60 + saver.getHeight() + loader.getHeight());
 		closeThis.setVisible(false);
 		
 		close.addActionListener(new CloseListener());
 		close.setSize(this.getWidth()-20, caller.getHeight()/12);
-		close.setLocation(10, saver.getHeight() + 60 + loader.getHeight() + closeThis.getHeight());
+		close.setLocation(10, saver.getHeight() + 80 + loader.getHeight() + closeThis.getHeight());
 		close.setVisible(false);
 		
 		this.setSize(150, 50);
@@ -49,6 +52,8 @@ public class OptionsGUI extends JFrame {
 		options.setLocation(0, 0);
 		options.setSize(this.getSize());
 		options.addActionListener(maxWindow);
+		options.setBackground(new Color(25,255,140));
+		//options.setForeground(new Color(25,255,140));
 		
 		this.add(saver);
 		this.add(closeThis);
@@ -63,7 +68,21 @@ public class OptionsGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			caller.CloseEverything();
+			if(wasSaved) {
+				caller.CloseEverything();
+			}
+			else {
+				setAlwaysOnTop(false);
+				int reply = JOptionPane.showConfirmDialog(null,
+						"Are you sure you want to exit without saving?", "Save Game?", JOptionPane.YES_NO_OPTION);
+				if(reply == JOptionPane.NO_OPTION)
+					setAlwaysOnTop(true);
+				else if(reply == JOptionPane.YES_OPTION) {
+					caller.CloseEverything();
+				}
+				else
+					setAlwaysOnTop(true);
+			}
 		}
 	}
 	private class MaxSize implements ActionListener {
@@ -87,6 +106,7 @@ public class OptionsGUI extends JFrame {
 			loader.setVisible(max);
 			saver.setText("Save?");
 			loader.setText("Load?");
+			wasSaved = false;
 		}
 	}
 	private class Saver implements ActionListener {
@@ -96,6 +116,7 @@ public class OptionsGUI extends JFrame {
 			// TODO Auto-generated method stub
 			//  Do saving stuff!
 			saver.setText("Saved!");
+			wasSaved = true;
 		}
 	}
 	private class LoaderListener implements ActionListener {
