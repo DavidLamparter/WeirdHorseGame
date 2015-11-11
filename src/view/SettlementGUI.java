@@ -31,15 +31,25 @@ import model.MapTile;
 public class SettlementGUI extends JFrame {
 	private int size;
 	private MiniMap minimap = null;
+	private OptionsGUI options = null;
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
-		this.setSize(new Dimension(1000,600));
+		this.setSize(new Dimension(1366, 768));
+		//this.setSize(new Dimension(1080, 720));
+		this.setUndecorated(true);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		this.requestFocus();
+		//this.requestFocus();
 		this.addWindowListener(new WindogeListener());
 		minimap = new MiniMap(this);
+		options = new OptionsGUI(this);
 		this.addMouseListener(new MouseExitListener());
+		minimap.relocateToBottomRight();
+	}
+	public void CloseEverything() {
+		minimap.dispose();
+		options.dispose();
+		this.dispose();
 	}
 	public int getMapSize() {
 		return 100;
@@ -55,13 +65,11 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			minimap.relocateToBottomRight();
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			minimap.relocateToBottomRight();
 		}
 
 		@Override
@@ -115,21 +123,16 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void windowDeiconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			minimap.toggleInvisible();
-			minimap.relocateToBottomRight();
 		}
 
 		@Override
 		public void windowIconified(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			minimap.toggleInvisible();
 		}
 
 		@Override
 		public void windowOpened(WindowEvent arg0) {
 			// TODO Auto-generated method stub
-			minimap.relocateToBottomRight();
-			
 		}
 	}
 	public static void main(String[] args) {
