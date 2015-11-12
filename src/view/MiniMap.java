@@ -39,9 +39,10 @@ public class MiniMap extends JFrame{
 	private graphPanel panel = null;
 	private JLabel maximize = new JLabel(" +");
 	private SettlementGUI caller;
-	
+	private MapPanel mapPanel = null;
 	public MiniMap(SettlementGUI caller){
 	Map map = caller.getMap();
+	this.mapPanel = caller.getMapPanel();
 	this.caller = caller;
 	this.setSize(200,200);
 	this.setUndecorated(true);
@@ -50,7 +51,7 @@ public class MiniMap extends JFrame{
 			caller.getLocation().y + caller.getHeight()-this.getHeight());
 	this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	this.setLayout(null);
-	panel = new graphPanel(map.getMapTiles());
+	panel = new graphPanel(map.getMapTiles(), caller);
 	panel.setSize(this.getSize());
 	panel.setLocation(0,0);
 	maximize.setSize(this.getSize());
@@ -114,5 +115,9 @@ public class MiniMap extends JFrame{
 			// TODO Auto-generated method stub
 			
 		}
+	}
+	public graphPanel getGraphPanel() {
+		// TODO Auto-generated method stub
+		return panel;
 	}
 }

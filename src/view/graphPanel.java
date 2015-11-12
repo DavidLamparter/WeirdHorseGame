@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import model.Map;
 import model.MapTile;
 import model.Resource;
 import model.Terrain;
@@ -32,9 +33,13 @@ public class graphPanel extends JPanel {
 	MapTile[][] graph;
 	int width;
 	int length;
-
-	graphPanel(MapTile[][] graph) {
-
+	SettlementGUI caller = null;
+	Map map = null;
+	MapPanel mapPanel;
+	graphPanel(MapTile[][] graph, SettlementGUI caller) {
+		this.caller = caller;
+		mapPanel = caller.getMapPanel();
+		this.map = caller.getMap();
 		this.width = graph.length;
 		this.length = graph[0].length;
 		this.graph = new MapTile[(width) * 2 + 1][(length) * 2 + 1];
@@ -123,9 +128,14 @@ public class graphPanel extends JPanel {
 
 			}
 		}
-
+		//  DRAW RECTANGE AROUND LOCATION
+		g2d.setColor(new Color(255, 255, 135));
+		g2d.drawRect(mapPanel.getInitialPoint().x*2, mapPanel.getInitialPoint().y*2,
+				mapPanel.getMapWidth()*2, mapPanel.getMapHeight()*2);
 	}
-
+	public void paintIt() {
+		repaint();
+	}
 	@Override
 	public void paintComponent(Graphics g) {
 

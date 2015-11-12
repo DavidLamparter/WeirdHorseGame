@@ -165,5 +165,16 @@ public class MapPanel extends JPanel {
 	public void paintIt() {
 		repaint();
 	}
+	public Point getInitialPoint() {
+		return new Point(initialx, initialy);
+	}
+
+	public int getMapWidth() {
+		// TODO Auto-generated method stub
+		return this.getWidth()/MAP_TILE_HEIGHT +1;
+	}
+	public int getMapHeight() {
+		return this.getHeight()/MAP_TILE_WIDTH +1;
+	}
 	
 }

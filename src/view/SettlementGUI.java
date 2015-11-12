@@ -92,6 +92,7 @@ public class SettlementGUI extends JFrame {
 			if(goingEast)
 				mapView.increaseX();
 			mapView.paintIt();
+			minimap.getGraphPanel().paintIt();
 		}
 	}
 	private class MapMotionListener implements MouseMotionListener {
@@ -232,5 +233,9 @@ public class SettlementGUI extends JFrame {
 	public Map getMap() {
 		// TODO Auto-generated method stub
 		return map;
+	}
+	public MapPanel getMapPanel() {
+		// TODO Auto-generated method stub
+		return mapView;
 	}
 }
