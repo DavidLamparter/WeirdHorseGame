@@ -17,11 +17,12 @@
 
 package model;
 
+import java.awt.Point;
 
 public class David extends Worker {
 
-	public David() {
-		super();
+	public David(Point currentLocation) {
+		super(currentLocation);
 	}
 	
 	@Override

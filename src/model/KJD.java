@@ -17,11 +17,12 @@
 
 package model;
 
+import java.awt.Point;
 
 public class KJD extends Worker {
 	
-	public KJD() {
-		super();
+	public KJD(Point currentLocation) {
+		super(currentLocation);
 	}
 	
 	@Override

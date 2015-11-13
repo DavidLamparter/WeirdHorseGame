@@ -65,7 +65,7 @@ public abstract class Worker {
 	 **************************************/
 	
 	//  Might want the worker to take in its starting position as an argument in the constructor
-	public Worker() {
+	public Worker(Point currentLocation) {
 		
 		// Conditions being at 0, and increment to dangerous levels
 		hunger = 0;
@@ -81,6 +81,10 @@ public abstract class Worker {
 		
 		// isAlive begins at true
 		isAlive = true;
+		
+		// Set the current location of the worker when spawned
+		XPos = currentLocation.x;
+		YPos = currentLocation.y;
 	}
 	
 	/**************************************
