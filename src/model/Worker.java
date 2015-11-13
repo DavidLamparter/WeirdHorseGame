@@ -33,10 +33,13 @@ public abstract class Worker {
 	private int fatigue;
 	private int coldness;
 	
-	//  two things I added KG
+	// The current X and Y position this worker is located at
 	private int XPos;
 	private int YPos;
-	//  END OF THINGS I ADDED except the bottom
+	
+	// The last X and Y position the worker was located at
+	private int oldXPos;
+	private int oldYPos;
 	
 	// Aspects (good/neutral stuff) begin at max and decrement to dangerous levels
 	private int happiness;
@@ -45,8 +48,17 @@ public abstract class Worker {
 	// Tool represents what tool the worker is holding
 	private Tool tool;
 	
-	// isAlive will be set to false if the worker dies
+	// isAlive represents whether or not the worker is alive
 	private boolean isAlive;
+	
+	// isBusy represents if the worker is currently performing a task
+	private boolean isBusy;
+	
+	// Stores the list of directions for a specific task
+	private ArrayList<Direction> myTask = new ArrayList<>();
+	
+	// Stores the last direction used by the worker (for animation use)
+	private Direction last;
 	
 	/**************************************
 	 *          Worker Constructor        *
@@ -103,19 +115,44 @@ public abstract class Worker {
 		return isAlive;
 	}
 	
+	public boolean isBusy() {
+		return isBusy;
+	}
+	
+	public int getX() {
+		return XPos;
+	}
+	
+	public int getY() {
+		return YPos;
+	}
+	
+	public int getOldX() {
+		return oldXPos;
+	}
+	
+	public int getOldY() {
+		return oldYPos;
+	}
+	
+	public Point getOldPoint() {
+		return new Point(oldXPos, oldYPos);
+	}
+	
+	public Point getPoint() {
+		return new Point(XPos, YPos);
+	}
+	
+	public Direction getLast() {
+		return last;
+	}
+	
 	/**************************************
 	 *          Setter for tool           *
 	 **************************************/
 	
 	public void setTool(Tool tool) {
 		this.tool = tool;
-	}
-	
-	public void inDanger(int status) {
-		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.25,(status));
-		double rand = Math.random();
-		if(rand > (0.66 - dubStatus))
-			isAlive = false;
 	}
 	
 	/**************************************
@@ -178,44 +215,28 @@ public abstract class Worker {
 	}
 	
 	/**************************************
-	 *       Points for Movements !!!     *
+	 *          Death Calculator          *
 	 **************************************/
-	private ArrayList<Direction> myTask = new ArrayList<>();
-	private boolean isBusy;
-	private Direction last;
-	private int oldXPos;
-	private int oldYPos;
-	//  May need to have a way to cancel task, As of now
-	//  workers know the directions to get somewhere but don't know what 
-	//  they are doing. Lets send people to get food then say oops
-	//  no need for that its a dumb resource how would they stop?
-	public int getX() {
-		return XPos;
+	
+	// This method is TRIGGERED when a worker hits the cap of a condition meter. 
+	// It will calculate if the worker dies, or if they somehow survive another round
+	public void inDanger(int status) {
+		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.25,(status));
+		double rand = Math.random();
+		if(rand > (0.66 - dubStatus))
+			isAlive = false;
 	}
-	public int getY() {
-		return YPos;
-	}
-	public int getOldX() {
-		return oldXPos;
-	}
-	public int getOldY() {
-		return oldYPos;
-	}
-	public Point getOldPoint() {
-		return new Point(oldXPos, oldYPos);
-	}
-	public Point getPoint() {
-		return new Point(XPos, YPos);
-	}
-	public Direction getLast() {
-		return last;
-	}
-	public boolean isBusy(){
-		return false;
-	}
+	
+	/**************************************
+	 *          Movement Methods          *
+	 **************************************/
+	
+	// This method is used to pass a path to the worker to walk along
 	public void toLocation(ArrayList<Direction> directions) {
 		myTask = directions;
 	}
+	
+	// This method performs the actual movement for the worker
 	public void move() {
 		if(!myTask.isEmpty()) {
 			oldYPos = YPos;

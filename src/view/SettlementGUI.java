@@ -175,8 +175,8 @@ public class SettlementGUI extends JFrame {
 					"X,Y: " + point.x + ", " + point.y, "Correct?", JOptionPane.YES_NO_OPTION);
 			if(reply == JOptionPane.NO_OPTION) {
 				CloseEverything();
-				int[] oh = new int[1];
-				System.out.println(oh[2]);
+				//int[] oh = new int[1];
+				//System.out.println(oh[2]);
 				//  lel such funny joke
 				}
 			}
