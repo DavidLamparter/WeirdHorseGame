@@ -19,6 +19,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -51,7 +53,7 @@ public class SettlementGUI extends JFrame {
 		mapView.setSize(this.getSize());
 		mapView.setLocation(0,0);
 		mapView.setMaxScroll();
-		mapView.addMouseListener(new MouseExitListener());
+		mapView.addMouseListener(new ClickerListener());
 		this.add(mapView);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		//this.requestFocus();
@@ -59,7 +61,7 @@ public class SettlementGUI extends JFrame {
 		minimap = new MiniMap(this);
 		
 		options = new OptionsGUI(this);
-		this.addMouseListener(new MouseExitListener());
+		this.addMouseListener(new ClickerListener());
 		minimap.relocateToBottomRight();
 		this.setUndecorated(true);
 		this.setVisible(true);
@@ -149,11 +151,10 @@ public class SettlementGUI extends JFrame {
 			//  System.out.println("HODOR!");
 		}
 	}
-	private class MouseExitListener implements MouseListener, MouseMotionListener{
+	private class ClickerListener implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
@@ -168,8 +169,17 @@ public class SettlementGUI extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-		}
+			//System.out.println("X,Y: " + point.x + ", " + point.y);
+			Point point = mapView.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
+			int reply = JOptionPane.showConfirmDialog(null,
+					"X,Y: " + point.x + ", " + point.y, "Correct?", JOptionPane.YES_NO_OPTION);
+			if(reply == JOptionPane.NO_OPTION) {
+				CloseEverything();
+				int[] oh = new int[1];
+				System.out.println(oh[2]);
+				//  lel such funny joke
+				}
+			}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
@@ -177,15 +187,6 @@ public class SettlementGUI extends JFrame {
 			
 		}
 
-		@Override
-		public void mouseDragged(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-		}
-
-		@Override
-		public void mouseMoved(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-		}
 	}
 	private class WindogeListener implements WindowListener {
 

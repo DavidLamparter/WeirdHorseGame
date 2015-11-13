@@ -34,8 +34,8 @@ public class MapPanel extends JPanel {
 	MapTile[][] graph;
 	int width;
 	int length;
-	public static final int MAP_TILE_WIDTH = 25;
-	public static final int MAP_TILE_HEIGHT = 25;
+	public static final int MAP_TILE_WIDTH = 50;
+	public static final int MAP_TILE_HEIGHT = 50;
 	private int initialx = 0;
 	private int initialy = 0;
 	private int maxX = 0;
@@ -66,76 +66,66 @@ public class MapPanel extends JPanel {
 
 		int width = this.graph.length;
 		int length = this.graph[0].length;
-
-		// iterates through the array and blocks the colors
-		for (int ilol = 0; ilol < width; ilol++) {
-			for (int jlol = 0; jlol < length; jlol++) {
+	// iterates through the array and blocks the colors
+		int width2 = getMapWidth();
+		int length2 = getMapHeight();
+		for (int ilol = 0; ilol < width2; ilol++) {
+			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
-				try {
-					// Trees
-					if (graph[j][i].getResource().equals(Resource.TREE)) {
-						g2d.setColor(DarkGreen);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// Fish
-					else if (graph[j][i].getResource().equals(Resource.FISH)) {
-						g2d.setColor(Color.CYAN);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-
-					// River
-					else if (graph[j][i].getLand().equals(Terrain.RIVER)) {
-						g2d.setColor(Color.BLUE);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// SaltyFish
-					else if (graph[j][i].getResource().equals(
-							Resource.SALTY_FISH)) {
-						g2d.setColor(Color.magenta);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// Ocean
-					else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
-						g2d.setColor(new Color(20, 20, 200));
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// Sand
-					else if (graph[j][i].getLand().equals(Terrain.BEACH)) {
-						g2d.setColor(Color.ORANGE);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// Berry Bush
-					else if (graph[j][i].getResource().equals(
-							Resource.BERRY_BUSH)) {
-						g2d.setColor(Color.RED);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// Stone
-					else if (graph[j][i].getResource().equals(Resource.STONE)) {
-						g2d.setColor(Color.GRAY);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-					// Plain
-					else {
-						g2d.setColor(LightGreen);
-						g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-					}
-
-					/*
-					 * if (i % 2 == 0 || j % 2 == 0) {
-					 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
-					 */
+				// Trees
+				if (graph[j][i].getResource().equals(Resource.TREE)) {
+					g2d.setColor(DarkGreen);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
-				//NullPointer
-				catch (Exception E) {
-					// System.out.println("Why");
+				// Fish
+				else if (graph[j][i].getResource().equals(Resource.FISH)) {
+					g2d.setColor(Color.CYAN);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
-
+				// River
+				else if (graph[j][i].getLand().equals(Terrain.RIVER)) {
+					g2d.setColor(Color.BLUE);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				// SaltyFish
+				else if (graph[j][i].getResource().equals(Resource.SALTY_FISH)) {
+					g2d.setColor(Color.magenta);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				// Ocean
+				else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
+					g2d.setColor(new Color(20, 20, 200));
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				// Sand
+				else if (graph[j][i].getLand().equals(Terrain.BEACH)) {
+					g2d.setColor(Color.ORANGE);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				// Berry Bush
+				else if (graph[j][i].getResource().equals(Resource.BERRY_BUSH)) {
+					g2d.setColor(Color.RED);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				// Stone
+				else if (graph[j][i].getResource().equals(Resource.STONE)) {
+					g2d.setColor(Color.GRAY);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				// Plain
+				else {
+					g2d.setColor(LightGreen);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+				/*
+				 * if (i % 2 == 0 || j % 2 == 0) {
+				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
+				 */
 			}
 		}
-
 	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -175,6 +165,13 @@ public class MapPanel extends JPanel {
 	}
 	public int getMapHeight() {
 		return this.getHeight()/MAP_TILE_WIDTH +1;
+	}
+	public Point getArrayLocationOfClicked(int xCord, int yCord) {
+		xCord /= MAP_TILE_WIDTH;
+		yCord /= MAP_TILE_HEIGHT;
+		xCord += initialx;
+		yCord += initialy;
+		return new Point(xCord, yCord);
 	}
 	
 }
