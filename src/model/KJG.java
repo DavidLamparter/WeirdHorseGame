@@ -21,10 +21,16 @@ import java.awt.Point;
 
 public class KJG extends Worker{
 
+	/**************************************
+	 *           KJG Constructor          *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
 	public KJG(Point currentLocation) {
 		super(currentLocation);
 	}
 	
+	// This worker increments coldness at a faster rate than other workers
 	@Override
 	public void addColdness() {
 		// If coldness rises above 10, this worker may die from frostbite

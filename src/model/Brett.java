@@ -21,10 +21,16 @@ import java.awt.Point;
 
 public class Brett extends Worker{
 	
+	/**************************************
+	 *           Brett Constructor        *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
 	public Brett(Point currentLocation) {
 		super(currentLocation);
 	}
 	
+	// This worker increments fatigue at a faster rate than other workers
 	@Override
 	public void addFatigue() {
 		// If fatigue rises above 10, this worker may die from exhaustion
