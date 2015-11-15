@@ -32,8 +32,7 @@ public class Map {
 		for(int i = 0; i < size; i++)
 			for(int j = 0; j < size; j++)
 				board[i][j] = new MapTile();
-		this.Seed = Seed;
-		gen = new Random(Seed);
+		gen = new Random();
 		generate();
 	}
 	public Map(int size , long Seed) {
@@ -77,8 +76,6 @@ public class Map {
 		spawnFood();
 		spawnStone();
 		spawnYoPeeps();
-		//  spwanAnimals();
-		//  Ohwell...
 	}
 	private void spawnYoPeeps() {
 		//  if you thought stone had alot of if's
@@ -95,7 +92,7 @@ public class Map {
 			for(int i = X; i < X + 5; i++) {
 				for(int j = Y; j < Y + 7; j++) {
 					if(board[j][i].getLand().equals(Terrain.PLAIN)
-							&& (board[j][i].getResource().equals(Resource.NONE))) {
+							&& (board[j][i].getResource().getResourceT().equals(ResourceType.NONE))) {
 						placeCounter--;
 					}
 				}
@@ -278,8 +275,8 @@ public class Map {
 					if(chance >= gen.nextDouble()) {
 						try{
 							if(board[j][i].getLand().equals(Terrain.PLAIN) 
-									&& board[j][i].getResource().equals(Resource.NONE)) {
-								board[j][i].setResource(Resource.TREE);
+									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
+								board[j][i].setResource(new Tree());
 								noOfTrees++;
 							}
 						}
@@ -294,7 +291,17 @@ public class Map {
 		// Spawns Fish and Berry bushes
 		spawnFish();
 		spawnBushes();
-		
+		spwanAnimals();
+	}
+	private void spwanAnimals() {
+		//  Spawns some animal companions
+		Point point = new Point(gen.nextInt(size), gen.nextInt(size));
+		while(!board[point.x][point.y].getLand().equals(Terrain.PLAIN)
+				&&(board[point.x][point.y].getResource().getResourceT().equals(ResourceType.NONE))) {
+			point.x = gen.nextInt(size);
+			point.y = gen.nextInt(size);
+		}
+		board[point.x][point.y].setResource(new Meese());
 	}
 	private void spawnFish() {
 		//  Spawns Fish in the river
@@ -304,7 +311,7 @@ public class Map {
 				point.x = gen.nextInt(size);
 				point.y = gen.nextInt(size);
 			}
-			board[point.x][point.y].setResource(Resource.FISH);
+			board[point.x][point.y].setResource(new Fish());
 		}
 		//  Spawns Salty Fish in the Ocean
 		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
@@ -313,7 +320,7 @@ public class Map {
 				point.x = gen.nextInt(size);
 				point.y = gen.nextInt(size);
 			}
-			board[point.y][point.x].setResource(Resource.SALTY_FISH);
+			board[point.y][point.x].setResource(new SaltyFish());
 		} 
 	}
 	private boolean riverNotFinished;
@@ -458,15 +465,16 @@ public class Map {
 			board[X][Y+1].getLand() == Terrain.PLAIN &&
 			board[X+1][Y+1].getLand() == Terrain.PLAIN &&
 		   
-			board[X][Y].getResource() == Resource.NONE &&
-			board[X+1][Y].getResource() == Resource.NONE &&
-			board[X][Y+1].getResource() == Resource.NONE &&
-			board[X+1][Y+1].getResource() == Resource.NONE){
+			board[X][Y].getResource().getResourceT() == ResourceType.NONE &&
+			board[X+1][Y].getResource().getResourceT() == ResourceType.NONE &&
+			board[X][Y+1].getResource().getResourceT() == ResourceType.NONE &&
+			board[X+1][Y+1].getResource().getResourceT() == ResourceType.NONE){
 				//Sets our STONE outcropping
-				board[X][Y].setResource(Resource.STONE);
-				board[X+1][Y].setResource(Resource.STONE);
-				board[X][Y+1].setResource(Resource.STONE);
-				board[X+1][Y+1].setResource(Resource.STONE);
+				Stone stoned = new Stone();
+				board[X][Y].setResource(stoned);
+				board[X+1][Y].setResource(stoned);
+				board[X][Y+1].setResource(stoned);
+				board[X+1][Y+1].setResource(stoned);
 				
 				Outcroppings--;
 		}
@@ -481,11 +489,11 @@ public class Map {
 		int Y = gen.nextInt(size-2)+1;
 		int treeCounter= 0;
 
-		if(board[X][Y].getResource() == Resource.NONE){
+		if(board[X][Y].getResource().getResourceT() == ResourceType.NONE){
 			
 			for(int i = -1; i < 1; i++){
 				for(int j = -1; j < 1; j++){
-				if(board[X+i][Y+j].getResource() == Resource.TREE)
+				if(board[X+i][Y+j].getResource().getResourceT() == ResourceType.TREE)
 				treeCounter++;
 				}
 			}
@@ -493,7 +501,7 @@ public class Map {
 
 			
 			if(treeCounter > 0 && treeCounter < 6){
-			board[X][Y].setResource(Resource.BERRY_BUSH);
+			board[X][Y].setResource(new BerryBush());
 			dingDangBushes --;
 			treeCounter = 0;
 			}

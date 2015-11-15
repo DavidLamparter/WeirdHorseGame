@@ -43,6 +43,7 @@ public class SettlementGUI extends JFrame {
 	private OptionsGUI options = null;
 	private MapPanel mapView = null;
 	private Map map = null;
+	private MapTile[][] board = null;
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
 		map = new Map(getMapSize() ,1234132513);
@@ -66,6 +67,7 @@ public class SettlementGUI extends JFrame {
 		this.setUndecorated(true);
 		this.setVisible(true);
 		mapView.addMouseMotionListener(new MapMotionListener());
+		board = map.getMapTiles();
 	}
 	public void CloseEverything() {
 		minimap.dispose();
@@ -171,14 +173,11 @@ public class SettlementGUI extends JFrame {
 		public void mousePressed(MouseEvent arg0) {
 			//System.out.println("X,Y: " + point.x + ", " + point.y);
 			Point point = mapView.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
-			int reply = JOptionPane.showConfirmDialog(null,
-					"X,Y: " + point.x + ", " + point.y, "Correct?", JOptionPane.YES_NO_OPTION);
-			if(reply == JOptionPane.NO_OPTION) {
-				CloseEverything();
+			//  null needs to be our list of workers
+			ResourceFrame frame = new ResourceFrame(arg0.getPoint(), point, board[point.x][point.y].getResource(), null);
 				//int[] oh = new int[1];
 				//System.out.println(oh[2]);
 				//  lel such funny joke
-				}
 			}
 
 		@Override

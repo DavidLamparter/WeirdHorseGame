@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import model.Map;
 import model.MapTile;
 import model.Resource;
+import model.ResourceType;
 import model.Terrain;
 
 public class graphPanel extends JPanel {
@@ -68,12 +69,12 @@ public class graphPanel extends JPanel {
 
 				try {
 					// Trees
-					if (graph[j][i].getResource().equals(Resource.TREE)) {
+					if (graph[j][i].getResource().equals(ResourceType.TREE)) {
 						g2d.setColor(DarkGreen);
 						g2d.drawLine(i, j, i, j);
 					}
 					// Fish
-					else if (graph[j][i].getResource().equals(Resource.FISH)) {
+					else if (graph[j][i].getResource().equals(ResourceType.FISH)) {
 						g2d.setColor(Color.CYAN);
 						g2d.drawLine(i, j, i, j);
 					}
@@ -85,7 +86,7 @@ public class graphPanel extends JPanel {
 					}
 					// SaltyFish
 					else if (graph[j][i].getResource().equals(
-							Resource.SALTY_FISH)) {
+							ResourceType.SALTY_FISH)) {
 						g2d.setColor(Color.magenta);
 						g2d.drawLine(i, j, i, j);
 					}
@@ -101,12 +102,12 @@ public class graphPanel extends JPanel {
 					}
 					// Berry Bush
 					else if (graph[j][i].getResource().equals(
-							Resource.BERRY_BUSH)) {
+							ResourceType.BERRY_BUSH)) {
 						g2d.setColor(Color.RED);
 						g2d.drawLine(i, j, i, j);
 					}
 					// Stone
-					else if (graph[j][i].getResource().equals(Resource.STONE)) {
+					else if (graph[j][i].getResource().equals(ResourceType.STONE)) {
 						g2d.setColor(Color.GRAY);
 						g2d.drawLine(i, j, i, j);
 					}

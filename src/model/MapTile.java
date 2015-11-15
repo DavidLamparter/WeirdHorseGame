@@ -21,7 +21,7 @@ public class MapTile {
 	private Resource resource;
 	private Terrain terrain;
 	public MapTile() {
-		resource = resource.NONE;
+		resource = new Nothing();
 		terrain = terrain.PLAIN;
 	}
 	//  This will set rivers and mountains or whatever the hell we want
@@ -41,7 +41,7 @@ public class MapTile {
 	public boolean unPassable() {
 		if(terrain.equals(terrain.PLAIN)) {
 			//  or it could be a method call from resource
-			if(resource==Resource.NONE){
+			if(resource==null){
 				return false;
 			}
 		}
@@ -49,11 +49,11 @@ public class MapTile {
 	}
 	public String toString() {
 		//  RESOURCES
-		if(resource.equals(resource.TREE))
+		if(resource.getResourceT().equals(ResourceType.TREE))
 			return "[T]";
-		if(resource.equals(resource.FISH))
+		if(resource.getResourceT().equals(ResourceType.FISH))
 			return "[F]";
-		if(resource.equals(resource.SALTY_FISH))
+		if(resource.getResourceT().equals(ResourceType.SALTY_FISH))
 			return "[F]";
 		
 		//  TERRAIN

@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 import model.MapTile;
 import model.Resource;
+import model.ResourceType;
 import model.Terrain;
 
 public class MapPanel extends JPanel {
@@ -74,12 +75,12 @@ public class MapPanel extends JPanel {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
 				// Trees
-				if (graph[j][i].getResource().equals(Resource.TREE)) {
+				if (graph[j][i].getResource().equals(ResourceType.TREE)) {
 					g2d.setColor(DarkGreen);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
 				// Fish
-				else if (graph[j][i].getResource().equals(Resource.FISH)) {
+				else if (graph[j][i].getResource().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
@@ -89,7 +90,7 @@ public class MapPanel extends JPanel {
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
 				// SaltyFish
-				else if (graph[j][i].getResource().equals(Resource.SALTY_FISH)) {
+				else if (graph[j][i].getResource().equals(ResourceType.SALTY_FISH)) {
 					g2d.setColor(Color.magenta);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
@@ -104,12 +105,12 @@ public class MapPanel extends JPanel {
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
 				// Berry Bush
-				else if (graph[j][i].getResource().equals(Resource.BERRY_BUSH)) {
+				else if (graph[j][i].getResource().equals(ResourceType.BERRY_BUSH)) {
 					g2d.setColor(Color.RED);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
 				// Stone
-				else if (graph[j][i].getResource().equals(Resource.STONE)) {
+				else if (graph[j][i].getResource().equals(ResourceType.STONE)) {
 					g2d.setColor(Color.GRAY);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
