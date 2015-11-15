@@ -10,7 +10,10 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program creates the observable game class that will construct the game itself,
+|                using all of the other files. Game.java uses a timer to keep track of game length
+|                and to trigger events. It also holds a list of workers that exist, and manages their
+|                status.
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
@@ -23,81 +26,75 @@ import java.util.Observable;
 
 import javax.swing.Timer;
 
+//Our game class extends Observable, and will notify the other classes when an event occurs
 public class Game extends Observable{
+	
+	/**************************************
+	 *          Instance Variables        *
+	 **************************************/
+	
+	// Creates the map
 	private Map theMap;
+	
+	// This list holds all of the living workers
 	private ListOfWorkers list;
-	
-	//  TIMERS  //  ALL OF THE TIMERS  // 
-	private Timer hungerMeter = new Timer(5000, new HungerTimerListener());
-	private Timer sleepMeter = new Timer(5000, new SleepTimerListener());
-	private Timer coldMeter = new Timer(5000, new ColdTimerListener());
-	private Timer gameTimer = new Timer(1000, new GameTimerListener());
-	private Timer SpeedMeter = new Timer(50, new MovementTimerListener());
-	
-	//  TICS
+
+	// This variable keeps track of how long the game has been played
 	private int gameLength = 0;
+	
+	// These variables are for changing seasons in-game (winter is coming)
 	private int lengthOfSeasons;
 	private int seasonsCounter;
 	private boolean isWinter;
 	private short wintersSurvived;
 	
-	//  CONSTRUCTOR
+	// gameTimer ticks every second the game has been played and increments gameLength
+	private Timer gameTimer = new Timer(1000, new GameTimerListener());
+	
+	// SpeedMeter is responsible for NPC movement
+	private Timer SpeedMeter = new Timer(50, new MovementTimerListener());
+	
+	// Our current max number of workers is 50
 	public static final int MAX_NUMBER_OF_WORKERS = 50;
+	
+	/**************************************
+	 *          Worker Constructor        *
+	 **************************************/
+	
+	// Creates the game using a randomly generated map from map.java 
 	public Game(Map theMap) {
 		this.theMap = theMap;
 		list = new ListOfWorkers(MAX_NUMBER_OF_WORKERS);
 	}
+	
+	/**************************************
+	 *   Getters for Instance Variables   *
+	 **************************************/
+	
 	public ListOfWorkers getList() {
 		return list;
 	}
-	/* There are three ways we can do the image loading
-	 * 1st we can make an image holder that will take in a map and hold every image for each part of the map.
-	 * 2nd we can have no. 1 in the map and clear all of the saved images before saving to avoid non serializable
-	 * 3rd we can load the image every time we repaint
-	 * 
-	 * I personally like no 1 because it's an array of images for the map, However I don't know
-	 * how to animate the peeps so that could be a potential problem
-	 */
-	private class MovementTimerListener implements ActionListener {
-		private int animalTic = 0;
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(animalTic > 3) {
-				animalTic = 0;
-				//  move the animals if they are going to be added
-			}
-			list.moveYourAsses();
-			setChanged();
-			notifyObservers();
-			animalTic++;
-		}
-	}
-	private class HungerTimerListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			list.incrementHunger();
-		}
-	}
-	private class SleepTimerListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			list.incrementSleep();
-		}
-	}
-	private class ColdTimerListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			list.incrementColdness();
-		}
-	}
+	
+	/**************************************
+	 *       Timer ActionListeners        *
+	 **************************************/
+	
+	// This timer keeps track of the game play time, and initiates certain events
+	// based on gameLength
 	private class GameTimerListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			
+			// Increment workers conditions every 5 seconds
+			if((gameLength % 5) == 0) {
+				list.incrementHunger();
+				list.incrementSleep();
+				list.incrementColdness();
+			}
 			seasonsCounter++;
+			
+			// Either begin or end winter based on seasonsCounter
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
 				seasonsCounter = 0;
@@ -105,6 +102,25 @@ public class Game extends Observable{
 					wintersSurvived ++;
 			}
 			gameLength++;
+		}
+	}
+	
+	// This timer is responsible for moving NPC's. We may incorporate animal movement
+	// in the future here
+	private class MovementTimerListener implements ActionListener {
+		
+		private int animalTic = 0;
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		// This if-statement is for animal movement if we add that to our game
+			if(animalTic > 3) {
+				animalTic = 0;
+			}
+			list.moveYourAsses();
+			setChanged();
+			notifyObservers();
+			animalTic++;
 		}
 	}
 }
