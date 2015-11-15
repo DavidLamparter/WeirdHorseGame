@@ -301,7 +301,7 @@ public class Map {
 			point.x = gen.nextInt(size);
 			point.y = gen.nextInt(size);
 		}
-		board[point.x][point.y].setResource(new Meese());
+		//board[point.x][point.y].setResource(new Meese());
 	}
 	private void spawnFish() {
 		//  Spawns Fish in the river

@@ -34,6 +34,8 @@ public class ResourceFrame extends JFrame {
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
 		 */
+		this.setUndecorated(true);
+		this.setAlwaysOnTop(true);
 		this.theWorkmen = theWorkmen;
 		this.arrayPos = arrayPos;
 		curr = resource;
@@ -80,6 +82,8 @@ public class ResourceFrame extends JFrame {
 		holder.add(harvest);
 		
 		this.add(holder);
+		
+		this.setVisible(true);
 	}
 	private class HarvestListener implements ActionListener {
 
