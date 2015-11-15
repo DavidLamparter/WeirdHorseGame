@@ -29,7 +29,7 @@ public class ResourceFrame extends JFrame {
 	
 	public ResourceFrame(Point mousePos, Point arrayPos, Resource resource, ListOfWorkers theWorkmen) {
 		//  sets the size of the frame and location 10 pixels away from your mouse
-		this.setSize(150, 100);
+		this.setSize(200, 100);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
@@ -46,8 +46,9 @@ public class ResourceFrame extends JFrame {
 		holder.setLayout(null);
 		
 		//  The top section with the name and exit button
-		nameOfResource.setSize(125, 25);
+		nameOfResource.setSize(getWidth()-25, 25);
 		nameOfResource.setLocation(0,0);
+		nameOfResource.setText(curr.getName());
 		exit.setSize(25,25);
 		exit.setLocation(nameOfResource.getWidth(), 0);
 		
@@ -61,14 +62,12 @@ public class ResourceFrame extends JFrame {
 		description.setSize(imageGoesHere.getWidth(),imageGoesHere.getHeight()-25);
 		
 		//  the harvest button!
-		harvest.setLocation(imageGoesHere.getWidth(), description.getHeight());
+		harvest.setLocation(imageGoesHere.getWidth(), description.getHeight()+25);
 		harvest.setSize(imageGoesHere.getWidth(), 25);
 		
 		//  adds some text
 		nameOfResource.setText(resource.getName());
-		description.setText("Quanity: " + resource.getQuantity()
-				+ "\nUses: " 
-				+ "\n\nDescription: ");
+		description.setText("Quanity: " + resource.getQuantity());
 		
 		//  our action listeners
 		harvest.addActionListener(new HarvestListener());
@@ -82,9 +81,9 @@ public class ResourceFrame extends JFrame {
 		holder.add(harvest);
 		
 		this.add(holder);
-		
 		this.setVisible(true);
 	}
+	
 	private class HarvestListener implements ActionListener {
 
 		@Override

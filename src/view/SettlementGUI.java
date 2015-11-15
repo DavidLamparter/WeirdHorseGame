@@ -101,7 +101,7 @@ public class SettlementGUI extends JFrame {
 	}
 	private class MapMotionListener implements MouseMotionListener {
 		private boolean triggered = false;
-		private int dividor = 8;
+		private int dividor = 12;
 		
 		@Override
 		public void mouseDragged(MouseEvent arg0) {
@@ -174,7 +174,7 @@ public class SettlementGUI extends JFrame {
 			//System.out.println("X,Y: " + point.x + ", " + point.y);
 			Point point = mapView.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
 			//  null needs to be our list of workers
-			ResourceFrame frame = new ResourceFrame(arg0.getPoint(), point, board[point.x][point.y].getResource(), null);
+			ResourceFrame frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), null);
 				//int[] oh = new int[1];
 				//System.out.println(oh[2]);
 				//  lel such funny joke
