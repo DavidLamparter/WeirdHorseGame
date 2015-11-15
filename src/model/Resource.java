@@ -20,3 +20,4 @@ package model;
 public enum Resource {
 	FISH, SALTY_FISH, TREE, BERRY_BUSH, NONE, STONE, POISION_BUSH;
 }
+
