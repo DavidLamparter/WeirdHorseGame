@@ -1,23 +1,49 @@
-/*================================================================================================
-|   Assignment:  FINAL PROJECT - Settlement Management
-|      Authors:  David Lamparter (Lamparter@email.arizona.edu)
-|                Kyle Grady (kgrady1@email.arizona.edu)
-|    			 Kyle DeTar (kdeTar@email.arizona.edu)
-|	  			 Brett Cohen (brett7@email.arizona.edu)
-|                       
-|       Course:  335
-|   Instructor:  R. Mercer
-|           PM:  Sean Stephens
-|     Due Date:  12/9/15
-|
-|  Description:  This program . . .
-|                
-| Deficiencies:  We know of no unsatisfied requirements and no logic errors.
-*=================================================================================================*/
-
 package model;
 
-public enum Resource {
-	FISH, SALTY_FISH, TREE, BERRY_BUSH, NONE, STONE, POISION_BUSH;
+public abstract class Resource {
+	
+	private double quantity;
+	private ResourceType type;
+	
+	public Resource(double q, ResourceType x) {
+		quantity = q;
+		type = x;
+	}
+	
+	public double getQuantity() {
+		return quantity;
+	}
+	
+	public void addResource(double n){
+		quantity += n;
+	}
+	
+	public void subResource(double n){
+		quantity -= n;
+	}
+	
+	public ResourceType getResourceT(){
+		return type;
+	}
+	public abstract void regen();
+	public abstract String getName();
+	
+	// takes in the resource you want to change current one to.
+	/*void changeResourceT(Resource newR){
+		this.type = newR;
+	} */
+}
+class Nothing extends Resource {
+	public Nothing() {
+		super(0, ResourceType.NONE);
+	}
+	@Override
+	public void regen() {
+		//  NOTHING DOESNT REGEN?
+	}
+	@Override
+	public String getName() {
+		return "Nothing is here";
+	}
 }
 

@@ -17,12 +17,12 @@
 
 package model;
 
-import model.Worker;
+import java.awt.Point;
 
 public class Brett extends Worker{
 	
-	public Brett() {
-		super();
+	public Brett(Point currentLocation) {
+		super(currentLocation);
 	}
 	
 	@Override

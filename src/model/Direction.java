@@ -16,6 +16,9 @@
 *=================================================================================================*/
 
 package model;
+
+import java.util.Random;
+
 //  ENUMS
 public enum Direction {
 	NORTH, SOUTH, EAST, WEST;
@@ -46,8 +49,9 @@ public enum Direction {
 			return WEST;
 		return NORTH;
 	}
-	public static Direction getRandom() {
-		double num = Math.random();
+	public static Direction getRandom(long Seed) {
+		Random gen = new Random(Seed);
+		double num = gen.nextDouble();
 		if(num < .25)
 			return NORTH;
 		else if(num < .50)

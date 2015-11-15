@@ -339,7 +339,7 @@ public class ShortestPathCalculator{
 		int counter = 0;
 		int max = 0;
 		int min = 100;
-		for(int zod = 0; zod < 6000; zod++) {
+		for(int zod = 0; zod < 60000; zod++) {
 		boolean[][] mao = new boolean[25][25];
 		for(int i = 0; i < 25; i++) {
 			for(int j = 0; j < 25; j++)
@@ -349,7 +349,7 @@ public class ShortestPathCalculator{
 		ShortestPathCalculator theCalc = new ShortestPathCalculator(mao);
 		ArrayList<Direction> theDor = null;
 		if(zod<1000) {
-			theDor = theCalc.getShortestPath(new Point(4,4), new Point(20, 20));
+			theDor = theCalc.getShortestPath(new Point(4,4), new Point(20, 4));
 		}
 		else if(zod<2000) {
 			theDor = theCalc.getShortestPath(new Point(20,20), new Point(4, 4));
@@ -363,7 +363,7 @@ public class ShortestPathCalculator{
 		else if(zod < 5000)
 			theDor = theCalc.getShortestPath(new Point(20,4), new Point(4, 4));
 		else {
-			theDor = theCalc.getShortestPath(new Point(4,4), new Point(20, 4));
+			theDor = theCalc.getShortestPath(new Point(4,4), new Point(4, 5));
 		}
 		if(theDor.size()!= 0) {
 			if(theDor.size() < min)
@@ -465,6 +465,7 @@ public class ShortestPathCalculator{
 		System.out.println(min);
 		System.out.println(max);
 		System.out.println(average/counter);
+		System.out.println(counter);
 	}
 	
 }
