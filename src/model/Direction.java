@@ -10,7 +10,8 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program creates the Direction enum that represents which direction the workers
+|				 will move across the map.
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
@@ -19,9 +20,11 @@ package model;
 
 import java.util.Random;
 
-//  ENUMS
+// Defines directions for workers to move
 public enum Direction {
 	NORTH, SOUTH, EAST, WEST;
+	
+	// This method allows for a quick 180 in movement
 	public static Direction invert(Direction dir) {
 		if(dir == NORTH)
 			return SOUTH;
@@ -31,6 +34,8 @@ public enum Direction {
 			return WEST;
 		return EAST;
 	}
+	
+	// This method will rotate a worker 90 degrees left
 	public static Direction rotateLeft(Direction dir) {
 		if(dir == NORTH)
 			return WEST;
@@ -40,6 +45,8 @@ public enum Direction {
 			return EAST;
 		return NORTH;
 	}
+	
+	// This method will rotate a worker 90 degrees right
 	public static Direction rotateRight(Direction dir) {
 		if(dir == NORTH)
 			return EAST;
@@ -49,6 +56,8 @@ public enum Direction {
 			return WEST;
 		return NORTH;
 	}
+	
+	// This method selects a random direction for a spawned worker to face
 	public static Direction getRandom(long Seed) {
 		Random gen = new Random(Seed);
 		double num = gen.nextDouble();
