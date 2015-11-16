@@ -10,13 +10,15 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program creates the Terrain enum which will be used by the map when generating
+|                the game.
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 
+// Defines tools for workers to use
 public enum Terrain {
 	PLAIN, RIVER, OCEAN, BEACH;
 }

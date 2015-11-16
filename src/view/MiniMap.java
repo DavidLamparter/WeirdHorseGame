@@ -25,8 +25,6 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-
-import model.KJD;
 import model.Map;
 import model.Worker;
 
