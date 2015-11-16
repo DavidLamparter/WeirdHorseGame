@@ -10,13 +10,15 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program creates the resource enum for the game and map to use during map
+|                generaton and gameplay. 
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 
+//Defines tools for workers to use
 public enum ResourceType {
 	FISH, SALTY_FISH, TREE, BERRY_BUSH, NONE, STONE, POISION_BUSH;
 }
