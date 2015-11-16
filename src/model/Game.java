@@ -101,7 +101,7 @@ public class Game extends Observable{
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 5) == 0) {
 				list.incrementHunger();
-				list.incrementSleep();
+				list.incrementFatigue();
 				list.incrementColdness();
 			}
 			seasonsCounter++;
@@ -129,7 +129,7 @@ public class Game extends Observable{
 			if(animalTic > 3) {
 				animalTic = 0;
 			}
-			list.moveYourAsses();
+			list.moveWorkers();
 			setChanged();
 			notifyObservers(list);
 			animalTic++;

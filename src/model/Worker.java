@@ -64,7 +64,7 @@ public abstract class Worker {
 	 *          Worker Constructor        *
 	 **************************************/
 	
-	//  Might want the worker to take in its starting position as an argument in the constructor
+	//  Worker is constructed with its starting position as a parameter
 	public Worker(Point currentLocation) {
 		
 		// Conditions being at 0, and increment to dangerous levels
@@ -162,6 +162,7 @@ public abstract class Worker {
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
+	
 	// Hunger helper method for sub classes
 	protected void addHunger(double hunger) {
 		this.hunger += hunger;
@@ -264,5 +265,113 @@ public abstract class Worker {
 				last = Direction.WEST;
 			}
 		}
+	}
+}
+
+
+/******************************************************
+*~~~~~~~~~~~~~~~~~~~~ BRETT CLASS ~~~~~~~~~~~~~~~~~~~~*
+******************************************************/
+
+
+class Brett extends Worker{
+	
+	/**************************************
+	 *           Brett Constructor        *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
+	public Brett(Point currentLocation) {
+		super(currentLocation);
+	}
+	
+	// This worker increments fatigue at a faster rate than other workers
+	@Override
+	public void addFatigue() {
+		// If fatigue rises above 10, this worker may die from exhaustion
+		if(getFatigue() >= 10) {
+			inDanger(getFatigue());
+		}
+		addFatigue(1.5);
+	}
+}
+
+
+/******************************************************
+*~~~~~~~~~~~~~~~~~~~~ DAVID CLASS ~~~~~~~~~~~~~~~~~~~~*
+******************************************************/
+
+
+class David extends Worker {
+
+	/**************************************
+	 *          David Constructor         *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
+	public David(Point currentLocation) {
+		super(currentLocation);
+	}
+	
+	// This worker increments hunger at a faster rate than other workers
+	@Override
+	public void addHunger() {
+		// If hunger rises above 10, this worker may die from starvation
+		if(getHunger() >= 10) {
+			inDanger(getHunger());
+		}
+		addHunger(1.5);
+	}
+}
+
+
+/******************************************************
+*~~~~~~~~~~~~~~~~~~~~~ KJD CLASS ~~~~~~~~~~~~~~~~~~~~~*
+******************************************************/
+
+
+class KJD extends Worker {
+	
+	/**************************************
+	 *           KJD Constructor          *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
+	public KJD(Point currentLocation) {
+		super(currentLocation);
+	}
+	
+	// This worker decrements happiness at a faster rate than other workers
+	@Override
+	public void subtractHappiness() {
+		subtractHappiness(1.5);
+	}
+}
+
+
+/******************************************************
+*~~~~~~~~~~~~~~~~~~~~~ KJG CLASS ~~~~~~~~~~~~~~~~~~~~~*
+******************************************************/
+
+
+class KJG extends Worker{
+
+	/**************************************
+	 *           KJG Constructor          *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
+	public KJG(Point currentLocation) {
+		super(currentLocation);
+	}
+	
+	// This worker increments coldness at a faster rate than other workers
+	@Override
+	public void addColdness() {
+		// If coldness rises above 10, this worker may die from frostbite
+		if(getColdness() >= 10) {
+			inDanger(getColdness());
+		}
+		addColdness(1.5);
 	}
 }

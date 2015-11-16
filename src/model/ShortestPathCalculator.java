@@ -10,14 +10,16 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program will calculate the shortest path for a unit to travel to a target
+|                location. This algorithm uses recursion to calculate a path which will dodge
+|                obstacles and navigate to the target location. The map must be a perfect square
+|                for this algorithm to function correctly. 
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
 
 package model;
 /*
- * This Program will take in a map!
  * If you run it as is there will be 3 things that appear on the S.O.P
  * Min, Max, and average for 6000 runs of random mazes going up down and diagonal for 1000 times each
  * There could be room for improvement but the technology isn't there yet
@@ -26,9 +28,27 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class ShortestPathCalculator{
+	
+	/**************************************
+	 *          Instance Variables        *
+	 **************************************/
+	
+	// A boolean map that will be passed in place of the real map to lighten memory load
 	private boolean[][] map;
-	//  map size must be equal aka 50 by 50 or 100 by 100 
+	
+	// boolean that when set to true signifies that algorithm has completed
+	private boolean done = false;
+	
+	// ArrayList that holds the directions from the beginning to the end (the path)
+	private ArrayList<Direction> thePath = new ArrayList<>();
+	
+	/**************************************
+	 *             Constructors           *
+	 **************************************/
+	
 	//  A NEW CALULATOR MUST BE MADE WHEN THE MAP CHANGES!!!
+	
+	// Finds the shortest path using the actual map
 	public ShortestPathCalculator(MapTile[][] board) {
 		this.map = new boolean[board.length][board.length];
 		for(int i = 0; i < map.length; i++) {
@@ -37,7 +57,8 @@ public class ShortestPathCalculator{
 			}
 		}
 	}
-	//  A NEW CALULATOR MUST BE MADE WHEN THE MAP CHANGES!!!
+	
+	// Finds the shortest path using a boolean 2D array
 	public ShortestPathCalculator(boolean[][] board) {
 		this.map = new boolean[board.length][board.length];
 		for(int i = 0; i < map.length; i++) {
@@ -46,6 +67,12 @@ public class ShortestPathCalculator{
 			}
 		}
 	}
+	
+	/**************************************
+	 *              updateMap             *
+	 **************************************/
+	
+	// Updates the map with the newest information
 	public void updateMap(boolean[][] newMap) {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map.length; j++) {
@@ -53,18 +80,28 @@ public class ShortestPathCalculator{
 			}
 		}
 	}
-	private boolean done = false;
-	private ArrayList<Direction> thePath = new ArrayList<>();
+	
+	/**************************************
+	 *             optimize           *
+	 **************************************/
+	
+	// Optimizes the current path to decrease travel time for units
 	private void optimize() {
+
 		for(int i = 0; i < thePath.size()-2;i++) {
 			if(thePath.get(i).equals(thePath.get(i+2).invert(thePath.get(i+2)))) {//  My life... 
 				thePath.remove(i+2);
 				thePath.remove(i);
 				i = -1;
-				//System.out.println("HEYYY IM MR MEESEEKS LOOK AT ME!!!");
 			}
 		}
 	}
+	
+	/**************************************
+	 *           getShortestPath          *
+	 **************************************/
+	
+	// Returns the shortest path. Calls on the shortestPath method
 	public ArrayList<Direction> getShortestPath(Point init, Point fin) {
 		reset();
 		shortestPath(init, fin, map, true);
@@ -86,10 +123,22 @@ public class ShortestPathCalculator{
 			return firstPath;
 		return thePath;
 	}
+	
+	/**************************************
+	 *               reset                *
+	 **************************************/
+	
+	// Resets the path
 	private void reset() {
 		thePath.clear();
 		done = false;
 	}
+
+	/**************************************
+	 *             shortestPath           *
+	 **************************************/
+	
+	// Recursively calculates the shortest path between two points on the map
 	private void shortestPath(Point init, Point fin, boolean[][] mapHelper, boolean larger) {
 		if(init.equals(fin)) {
 			done = true;
@@ -217,7 +266,7 @@ public class ShortestPathCalculator{
 			}
 		}
 		/* * * * * * * * * * * * *
-		 * Y direction prefered!
+		 * Y direction preferred!
 		 * * * * * * * * * * * * */
 		else {
 			if(fin.y >= init.y) {
@@ -322,9 +371,11 @@ public class ShortestPathCalculator{
 			}
 		}
 	}
+
+
 	public static void main(String[] args) {
 	/*	System.out.print("{");
-		boolean[][] mao = {{false, false, false, false, true, false, false, false, false, false, },
+		boolean[][] map = {{false, false, false, false, true, false, false, false, false, false, },
 {false, true, true, false, true, false, true, true, false, false, },
 {false, true, false, true, false, false, false, false, false, false, },
 {false, false, false, false, false, true, false, false, false, false, },
