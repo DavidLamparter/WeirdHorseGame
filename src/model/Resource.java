@@ -216,7 +216,7 @@ class Fish extends Resource {
 		return "Fish";
 	}
 	
-	// Returns the file name of this tree. Can vary between different images
+	// Returns the file name of this fish. Can vary between different images
 	@Override
 	public String getFileName() {
 		return "";
@@ -233,13 +233,15 @@ class Fish extends Resource {
 class SaltyFish extends Resource {
 	
 	/**************************************
-	 *            Fish Constructor        *
+	 *         SaltyFish Constructor      *
 	 **************************************/
 	
-	// Fish constructed with a randomly generated quantity
+	// SaltyFish constructed with a randomly generated quantity
 	public SaltyFish() {
 		super(num.nextInt(40)+10, ResourceType.SALTY_FISH);
 	}
+	
+	// SaltyFish regenerates over time to allow more playtime
 	@Override
 	public void regen() {
 		if (this.getQuantity() == 0)
@@ -249,10 +251,14 @@ class SaltyFish extends Resource {
 		else
 			this.addResource(.1);
 	}
+	
+	// Returns the name of this resource, in this case "Salty Fish"
 	@Override
 	public String getName() {
 		return "Salty Fish";
 	}
+	
+	// Returns the file name of this SaltyFish. Can vary between different images
 	@Override
 	public String getFileName() {
 		return "";
@@ -268,17 +274,28 @@ class SaltyFish extends Resource {
 
 class Stone extends Resource {
 	
+	/**************************************
+	 *           Stone Constructor        *
+	 **************************************/
+	
+	// Stone constructed with a randomly generated quantity
 	public Stone() {
 		super(num.nextInt(200)+200, ResourceType.STONE);
 	}
+	
+	// Stone does NOT regenerate over time (limited resource)
 	@Override
 	public void regen() {
 		this.addResource(0);
 	}
+	
+	// Returns the name of this resource, in this case "Stone"
 	@Override
 	public String getName() {
 		return "Stone";
 	}
+	
+	// Returns the file name of this Stone. Can vary between different images
 	@Override
 	public String getFileName() {
 		return "";
@@ -294,17 +311,28 @@ class Stone extends Resource {
 
 class BerryBush extends Resource {
 	
+	/**************************************
+	 *        BerryBush Constructor       *
+	 **************************************/
+	
+	// BerryBush constructed with a randomly generated quantity
 	public BerryBush() {
 		super(num.nextInt(15)+50, ResourceType.BERRY_BUSH);
 	}
+	
+	// BerryBush regenerates over time to allow more playtime
 	@Override
 	public void regen() {
 		this.addResource(this.getMax());
 	}
+	
+	// Returns the name of this resource, in this case "Berry Bush"
 	@Override
 	public String getName() {
 		return "Berry Bush";
 	}
+	
+	// Returns the file name of this BerryBush. Can vary between different images
 	@Override
 	public String getFileName() {
 		return "";
