@@ -47,14 +47,14 @@ public class ListOfWorkers {
 	
 	// Gets the worker at element "i" if possible
 	// else returns null
-	public Worker getWorker(int i) {
+	public Worker get(int i) {
 		if((i >= 0) && (i < pos))
 			return theWorkmen[i];
 		return null;
 	}
 		
 	// Returns pos which is the number of living workers
-	public int getNumWorkers() {
+	public int size() {
 		return pos;
 	}
 	
