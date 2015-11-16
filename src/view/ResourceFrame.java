@@ -2,34 +2,44 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.imageio.ImageIO;
 
 import model.ListOfWorkers;
 import model.Resource;
 
+
 public class ResourceFrame extends JFrame {
 	//  Instance variables and stuffs
 	private JPanel holder = new JPanel();
-	private JPanel imageGoesHere = new JPanel();
-	private JTextField description = new JTextField();
+	private JTextArea description = new JTextArea();
 	private JTextField nameOfResource = new JTextField();
 	private JButton exit = new JButton("X");
 	private JButton harvest = new JButton("HARVEST!");
+	private Font titleFont = new Font("Arial", Font.BOLD, 20);
+	private Font descriptionFont = new Font("Arial", Font.PLAIN, 14);
+	private PicPanel imageGoesHere;
 	private ListOfWorkers theWorkmen;
 	private Resource curr;
 	private Point arrayPos;
+	
 	//Image resourcePic;  cuz that would be dope
 	
 	public ResourceFrame(Point mousePos, Point arrayPos, Resource resource, ListOfWorkers theWorkmen) {
 		//  sets the size of the frame and location 10 pixels away from your mouse
-		this.setSize(200, 100);
+		this.setSize(200, 125);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
@@ -40,7 +50,7 @@ public class ResourceFrame extends JFrame {
 		this.arrayPos = arrayPos;
 		curr = resource;
 		//  sets up all the Java Swing
-		imageGoesHere.setLayout(new BorderLayout());
+		//imageGoesHere.setLayout(new BorderLayout());
 		//  what if we added the image from what was clicked
 		holder.setSize(this.getSize());
 		holder.setLayout(null);
@@ -49,17 +59,21 @@ public class ResourceFrame extends JFrame {
 		nameOfResource.setSize(getWidth()-25, 25);
 		nameOfResource.setLocation(0,0);
 		nameOfResource.setText(curr.getName());
+		nameOfResource.setHorizontalAlignment(SwingConstants.CENTER);
+		nameOfResource.setFont(titleFont);
 		exit.setSize(25,25);
 		exit.setLocation(nameOfResource.getWidth(), 0);
 		
 		//  Sets up the image location
+		imageGoesHere = new PicPanel(curr.getFileName());
 		imageGoesHere.setSize(getWidth()/2, getHeight()-25);
-		imageGoesHere.setBackground(Color.BLUE);
+		//imageGoesHere.setBackground(Color.WHITE);
 		imageGoesHere.setLocation(0, 25);
 		
 		//  sets up a location for the description of the resource
 		description.setLocation(getWidth()/2, 25);
 		description.setSize(imageGoesHere.getWidth(),imageGoesHere.getHeight()-25);
+		description.setFont(descriptionFont);
 		
 		//  the harvest button!
 		harvest.setLocation(imageGoesHere.getWidth(), description.getHeight()+25);
@@ -67,13 +81,15 @@ public class ResourceFrame extends JFrame {
 		
 		//  adds some text
 		nameOfResource.setText(resource.getName());
-		description.setText("Quanity: " + resource.getQuantity());
+		description.setText("\nQuanity: " + (int) resource.getQuantity() +
+							"\nWorkers: " );
 		
 		//  our action listeners
 		harvest.addActionListener(new HarvestListener());
 		exit.addActionListener(new ExitListener());
 		
 		//  adds everything to holder for what purpose? yes.
+		holder.setBackground(Color.WHITE);
 		holder.add(nameOfResource);
 		holder.add(exit);
 		holder.add(imageGoesHere);

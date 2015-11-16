@@ -17,7 +17,7 @@ public abstract class Resource {
 		type = x;
 	}
 	
-	public void setMax(double number){};
+	public void setMax(double number){}
 	
 	public double getMax(){
 		return this.max;
@@ -40,7 +40,7 @@ public abstract class Resource {
 	}
 	public abstract void regen();
 	public abstract String getName();
-	
+	public abstract String getFileName();
 	// takes in the resource you want to change current one to.
 	/*void changeResourceT(Resource newR){
 		this.type = newR;
@@ -57,6 +57,10 @@ class Nothing extends Resource {
 	@Override
 	public String getName() {
 		return "Nothing is here";
+	}
+	@Override
+	public String getFileName() {
+		return "";
 	}
 }
 
@@ -77,6 +81,10 @@ class Tree extends Resource {
 	@Override
 	public String getName() {
 		return "Tree";
+	}
+	@Override
+	public String getFileName() {
+		return "./Graphics/Trees/Tree_1.png";
 	}
 	
 }
@@ -99,6 +107,10 @@ class Fish extends Resource {
 	public String getName() {
 		return "Fish";
 	}
+	@Override
+	public String getFileName() {
+		return "";
+	}
 	
 }
 
@@ -120,6 +132,10 @@ class SaltyFish extends Resource {
 	public String getName() {
 		return "Salty Fish";
 	}
+	@Override
+	public String getFileName() {
+		return "";
+	}
 	
 }
 
@@ -136,6 +152,10 @@ class Stone extends Resource {
 	public String getName() {
 		return "Stone";
 	}
+	@Override
+	public String getFileName() {
+		return "";
+	}
 	
 }
 
@@ -151,6 +171,10 @@ class BerryBush extends Resource {
 	@Override
 	public String getName() {
 		return "Berry Bush";
+	}
+	@Override
+	public String getFileName() {
+		return "";
 	}
 	
 }
