@@ -162,6 +162,7 @@ public abstract class Worker {
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
+	
 	// Hunger helper method for sub classes
 	protected void addHunger(double hunger) {
 		this.hunger += hunger;
