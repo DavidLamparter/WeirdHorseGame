@@ -10,7 +10,9 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program creates the map for the game.
+|  Description:  This program creates the map for the game. It will randomly generate a new map
+|                every time the program is run, "randomly" placing different objects across the map
+|                such as water, trees, and stone. 
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
@@ -22,11 +24,34 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Map {
-	int size;
-	long Seed;
+	
+	/**************************************
+	 *          Instance Variables        *
+	 **************************************/
+	
+	// Size of the map
+	private int size;
+	
+	// Seed for generating the board
+	private long Seed;
+	
+	// Random number
 	private Random gen;
+	
+	// A 2D array of MapTiles from MapTile.java
 	private MapTile[][] board;
+	
+	// The set of workers the player starts with when the game begins
 	private ArrayList<Worker> initialWorkers = new ArrayList<>();
+	
+	// A boolean used for the generation of the rivers on the map
+	private boolean riverNotFinished;
+	
+	/**************************************
+	 *           Map Constructors         *
+	 **************************************/
+	
+	// Creates the map given a size (perfect square)
 	public Map(int size) {
 		this.size = size;
 		board = new MapTile[size][size];
@@ -36,6 +61,8 @@ public class Map {
 		gen = new Random();
 		generate();
 	}
+	
+	// Creates the map given a size and a seed for generation (perfect square)
 	public Map(int size , long Seed) {
 		this.size = size;
 		board = new MapTile[size][size];
@@ -46,18 +73,42 @@ public class Map {
 		gen = new Random(Seed);
 		generate();
 	}
+	
 	//  For all of our testing purposes
+	// Creates the map given a 2D board of MapTiles
 	public Map(MapTile[][] board) {
 		this.board = board;
 		size = board.length;
 		gen = new Random();
 	}
+	
+	// Creates the map given a 2D board of MapTiles and a seed for generation
 	public Map(MapTile[][] board, long Seed) {
 		this.board = board;
 		size = board.length;
 		this.Seed = Seed;
 		gen = new Random(Seed);
 	}
+	
+	/**************************************
+	 *   Getters for Instance Variables   *
+	 **************************************/
+	
+	// returns the generated map
+	public MapTile[][] getMapTiles(){
+		return board;
+	}
+	
+	// Returns the list of workers that start the game
+	public ArrayList<Worker> getInitialWorkers() {
+		return initialWorkers;
+	}
+	
+	/**************************************
+	 *              toString              *
+	 **************************************/
+	
+	// toString method for text view of map
 	public String toString() {
 		String toReturn = "";
 		for(int i = 0; i < board.length; i++) {
@@ -68,77 +119,28 @@ public class Map {
 		}
 		return toReturn;
 	}
+	
+	/**************************************
+	 *              Generate              *
+	 **************************************/
+	
+	// Generates the map by calling each generate method
 	public void generate() {
-		//  OMAN THIS IS NOT TESTABLE CODE!!!
-		//IT IS THOUGH!!
 		createOcean();
 		createRiver();
 		createTrees();
 		spawnFood();
 		spawnStone();
-		spawnYoPeeps();
+		spawnWorkers();
 	}
-	private void spawnYoPeeps() {
-		//  if you thought stone had alot of if's
-		int counter =0;
-		//  it will try 1000 times before giving up
-		int X = 0;
-		int Y = 0;
-		while(counter < 1000) {
-			X = gen.nextInt(size-5)+1;
-			Y = gen.nextInt(size-7)+1;
 	
-			//checks to see if the position on the land is not a river or ocean
-			int placeCounter = 5*7;
-			for(int i = X; i < X + 5; i++) {
-				for(int j = Y; j < Y + 7; j++) {
-					if(board[j][i].getLand().equals(Terrain.PLAIN)
-							&& (board[j][i].getResource().getResourceT().equals(ResourceType.NONE))) {
-						placeCounter--;
-					}
-				}
-			}
-			if(placeCounter == 0)
-				break;
-			counter++;
-		}
-		//  TownHall!!!!
-		for(int i = X+1; i < X + 4; i++) {
-			for(int j = Y + 1; j < Y + 6; j++) {
-				board[j][i].setLand(Terrain.BEACH);
-			}
-		}		
-		int initialNoWorker = 4;
-		while(initialNoWorker!= 0) {
-			for(int i = X; i < X + 5; i++) {
-				for(int j = Y; j < Y + 7; j++) {
-					boolean broke = false;
-					while(board[j][i].getLand().equals(Terrain.BEACH)) {
-						if(j==Y+7) {
-							broke = true;
-							break;
-						}	
-						j++;
-					}
-					if(broke) {
-						System.out.println("Oh");
-						continue;
-					}
-					if(gen.nextDouble()<.25) {
-						if(initialNoWorker != 0) {
-							System.out.println(i + "," +j);
-							Worker brett = new Brett(new Point(i,j));
-							initialWorkers.add(brett);
-							initialNoWorker --;
-						}
-					}
-				}
-			}
-		}		
-	}
-	public ArrayList<Worker> getInitialWorkers() {
-		return initialWorkers;
-	}
+	/**************************************
+	 *    Create Methods (and helpers)    *
+	 **************************************/
+	
+	/**~~~~~~~~~~~~~~ OCEAN ~~~~~~~~~~~~~**/
+	
+	// Generates the ocean on one side of the map
 	private void createOcean() {
 		double num = gen.nextDouble();
 		Direction initial = null;
@@ -169,7 +171,48 @@ public class Map {
 		}
 		OceanFilling(OceanMaking(init, initial) ,initial ,init, goingToLine, topLeft);		
 	}
-	private void OceanFilling(ArrayList<Direction> oceanTiles ,Direction initial , Point init, boolean fillTo, boolean topLeft) {
+	
+	// Ensures that the ocean is generated together and doesnt turn out as a river
+	private ArrayList<Direction> OceanMaking(Point init, Direction initial) {
+		ArrayList<Direction> theCoast = new ArrayList<>();
+		double noLeft = .0;
+		int i = 0;
+		Direction last = Direction.invert(initial);
+		while(i < board.length) {
+			boolean changed = false;
+			while(!changed) {
+				changed = false;
+				double num = gen.nextDouble();
+				if(num>.5 +Math.abs(noLeft)) {
+					theCoast.add(initial);
+					last = initial;
+					changed = true;
+					i++;
+				}
+				else if(num >.25-noLeft) {
+					if(!last.equals(Direction.rotateLeft(initial))) {
+					theCoast.add(Direction.rotateLeft(initial));
+					last = Direction.rotateLeft(initial);
+					changed = true;
+					noLeft -= .02;
+					}
+				}
+				else {
+					if(!last.equals(Direction.rotateRight(initial))) {
+					theCoast.add(Direction.rotateRight(initial));
+					last = Direction.rotateRight(initial);
+					changed = true;
+					noLeft += .02;
+					}
+				}
+			}
+		}
+		return theCoast;
+
+	}
+	
+	// Fills the ocean once generated
+	private void OceanFilling(ArrayList<Direction> oceanTiles, Direction initial, Point init, boolean fillTo, boolean topLeft) {
 		Direction fillingDir = null;
 		if(topLeft) {
 			if(initial.equals(Direction.SOUTH)) {
@@ -228,7 +271,6 @@ public class Map {
 			}
 			}
 			catch(Exception breakingOut) {
-				//  eyy
 			}
 			if(first.equals(Direction.NORTH)) {
 				init.y--;
@@ -244,116 +286,11 @@ public class Map {
 			}
 		}
 	}
-	private ArrayList<Direction> OceanMaking(Point init, Direction initial) {
-		ArrayList<Direction> theCoast = new ArrayList<>();
-		double noLeft = .0;
-		int i = 0;
-		Direction last = Direction.invert(initial);
-		while(i < board.length) {
-			boolean changed = false;
-			while(!changed) {
-				changed = false;
-				double num = gen.nextDouble();
-				if(num>.5 +Math.abs(noLeft)) {
-					theCoast.add(initial);
-					last = initial;
-					changed = true;
-					i++;
-				}
-				else if(num >.25-noLeft) {
-					if(!last.equals(Direction.rotateLeft(initial))) {
-					theCoast.add(Direction.rotateLeft(initial));
-					last = Direction.rotateLeft(initial);
-					changed = true;
-					noLeft -= .02;
-					}
-				}
-				else {
-					if(!last.equals(Direction.rotateRight(initial))) {
-					theCoast.add(Direction.rotateRight(initial));
-					last = Direction.rotateRight(initial);
-					changed = true;
-					noLeft += .02;
-					}
-				}
-			}
-		}
-		return theCoast;
-
-	}
-	private void createTrees() {
-		double initialChance = .09;
-		double bonusChance = .6;
-		int magicNumber37 = (board.length*board.length)/7; //  ? how much of the map should be trees?
-		int noOfTrees = 0;
-		while(noOfTrees<= magicNumber37) {
-			//  FOREST SIZE MUST BE AN EVEN INT >=4 for the middle tree's to work properly :)
-			int forestSize = 7;
-			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
-			while(!board[point.y][point.x].toString().equals("[ ]")) { //  [ ] for plains
-				point.x = gen.nextInt(size);
-				point.y = gen.nextInt(size);
-			}
-			//  this is the center point of the trees!
-			for(int i = point.x - forestSize; i < point.x + forestSize; i++) {
-				for(int j = point.y - forestSize; j < point.y + forestSize; j++) {
-					double chance = initialChance;
-					if((((point.x-(forestSize/2)))<i)&&(((point.x+(forestSize)/2))>i)
-							&&(((point.y-(forestSize/2)))<j)&&(((point.y+(forestSize)/2))>j)) {
-						chance +=bonusChance;
-					}
-					if(chance >= gen.nextDouble()) {
-						try{
-							if(board[j][i].getLand().equals(Terrain.PLAIN) 
-									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
-								board[j][i].setResource(new Tree());
-								noOfTrees++;
-							}
-						}
-						catch(Exception e) {
-						}
-					}
-				}
-			}
-		}
-	}
-	private void spawnFood() {
-		// Spawns Fish and Berry bushes
-		spawnFish();
-		spawnBushes();
-		spwanAnimals();
-	}
-	private void spwanAnimals() {
-		//  Spawns some animal companions
-		Point point = new Point(gen.nextInt(size), gen.nextInt(size));
-		while(!board[point.x][point.y].getLand().equals(Terrain.PLAIN)
-				&&(board[point.x][point.y].getResource().getResourceT().equals(ResourceType.NONE))) {
-			point.x = gen.nextInt(size);
-			point.y = gen.nextInt(size);
-		}
-		//board[point.x][point.y].setResource(new Meese());
-	}
-	private void spawnFish() {
-		//  Spawns Fish in the river
-		for(int i = 0; i < gen.nextInt(7) + 10; i++) {
-			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
-			while(!board[point.x][point.y].getLand().equals(Terrain.RIVER)) {
-				point.x = gen.nextInt(size);
-				point.y = gen.nextInt(size);
-			}
-			board[point.x][point.y].setResource(new Fish());
-		}
-		//  Spawns Salty Fish in the Ocean
-		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
-			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
-			while(!board[point.y][point.x].getLand().equals(Terrain.OCEAN)) {
-				point.x = gen.nextInt(size);
-				point.y = gen.nextInt(size);
-			}
-			board[point.y][point.x].setResource(new SaltyFish());
-		} 
-	}
-	private boolean riverNotFinished;
+	
+	
+	/**~~~~~~~~~~~~~~ RIVERS ~~~~~~~~~~~~**/
+	
+	// Generates the rivers that flow across the map
 	private void createRiver() {
 		//  for lack of generality a random topleft point, to a random bottom right point
 		int length = (int)((double)board.length*4); //  board.length*10 for the nile
@@ -374,6 +311,8 @@ public class Map {
 			riverNotFinished = false;
 		}
 	}
+
+	// Helper method in generating the river to ensure it looks like a river
 	private ArrayList<Direction> riverMaking(Point init, Direction initial, int size) {
 		ArrayList<Direction> theRiver = new ArrayList<>();
 		Direction last = Direction.invert(initial);
@@ -422,7 +361,8 @@ public class Map {
 		}
 		return theRiver;
 	}
-	//  SIMILAR TO THE MOVEMENT OF WORKERS BUT WITHOUT THE WHILE LOOP
+	
+	// Similar to ocean, this method fills up the river
 	private void riverFilling(ArrayList<Direction> showMeYourMoves, Point init) {
 		Direction first = null;
 		while(!showMeYourMoves.isEmpty()) {
@@ -482,6 +422,125 @@ public class Map {
 			}
 		}
 	}
+
+	/**~~~~~~~~~~~~~~ TREES ~~~~~~~~~~~~**/
+	
+	// Generates the trees in spread "clusters" across the map
+	private void createTrees() {
+		double initialChance = .09;
+		double bonusChance = .6;
+		int magicNumber37 = (board.length*board.length)/7; //  ? how much of the map should be trees?
+		int noOfTrees = 0;
+		while(noOfTrees<= magicNumber37) {
+			//  FOREST SIZE MUST BE AN EVEN INT >=4 for the middle tree's to work properly :)
+			int forestSize = 7;
+			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
+			while(!board[point.y][point.x].toString().equals("[ ]")) { //  [ ] for plains
+				point.x = gen.nextInt(size);
+				point.y = gen.nextInt(size);
+			}
+			//  this is the center point of the trees!
+			for(int i = point.x - forestSize; i < point.x + forestSize; i++) {
+				for(int j = point.y - forestSize; j < point.y + forestSize; j++) {
+					double chance = initialChance;
+					if((((point.x-(forestSize/2)))<i)&&(((point.x+(forestSize)/2))>i)
+							&&(((point.y-(forestSize/2)))<j)&&(((point.y+(forestSize)/2))>j)) {
+						chance +=bonusChance;
+					}
+					if(chance >= gen.nextDouble()) {
+						try{
+							if(board[j][i].getLand().equals(Terrain.PLAIN) 
+									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
+								board[j][i].setResource(new Tree());
+								noOfTrees++;
+							}
+						}
+						catch(Exception e) {
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**************************************
+	 *            Spawn Methods           *
+	 **************************************/
+	
+	/**~~~~~~~~~~~~~~ FOOD ~~~~~~~~~~~~~**/
+	
+	// Calls spawnFish, spawnBushes, and spawnAnimals to generate all food sources
+	private void spawnFood() {
+		spawnFish();
+		spawnBushes();
+		spawnAnimals();
+	}
+	
+	// Spawns Salt water fish in the ocean, and fresh water fish in the rivers
+	private void spawnFish() {
+		//  Spawns Fish in the river
+		for(int i = 0; i < gen.nextInt(7) + 10; i++) {
+			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
+			while(!board[point.x][point.y].getLand().equals(Terrain.RIVER)) {
+				point.x = gen.nextInt(size);
+				point.y = gen.nextInt(size);
+			}
+			board[point.x][point.y].setResource(new Fish());
+		}
+		//  Spawns Salty Fish in the Ocean
+		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
+			Point point = new Point(gen.nextInt(size), gen.nextInt(size));
+			while(!board[point.y][point.x].getLand().equals(Terrain.OCEAN)) {
+				point.x = gen.nextInt(size);
+				point.y = gen.nextInt(size);
+			}
+			board[point.y][point.x].setResource(new SaltyFish());
+		} 
+	}
+	
+	// Spawns berry bushes across the map
+	private void spawnBushes(){
+		int dingDangBushes = gen.nextInt(10)+10;
+
+		while(dingDangBushes > 0){
+		int X = gen.nextInt(size-2)+1;
+		int Y = gen.nextInt(size-2)+1;
+		int treeCounter= 0;
+
+		if(board[X][Y].getResource().getResourceT() == ResourceType.NONE){
+			
+			for(int i = -1; i < 1; i++){
+				for(int j = -1; j < 1; j++){
+				if(board[X+i][Y+j].getResource().getResourceT() == ResourceType.TREE)
+				treeCounter++;
+				}
+			}
+		}
+
+			
+			if(treeCounter > 0 && treeCounter < 6){
+			board[X][Y].setResource(new BerryBush());
+			dingDangBushes --;
+			treeCounter = 0;
+			}
+		}
+	}
+	
+	// Spawns animals at start of game
+	private void spawnAnimals() {
+		//  Spawns some animal companions
+		Point point = new Point(gen.nextInt(size), gen.nextInt(size));
+		while(!board[point.x][point.y].getLand().equals(Terrain.PLAIN)
+				&&(board[point.x][point.y].getResource().getResourceT().equals(ResourceType.NONE))) {
+			point.x = gen.nextInt(size);
+			point.y = gen.nextInt(size);
+		}
+		//board[point.x][point.y].setResource(new Meese());
+	}
+	
+	/**~~~~~~~~~~~~~~ STONE ~~~~~~~~~~~~**/
+	
+	// Spawns stone across the map in small "clusters"
 	private void spawnStone(){
 		int Outcroppings = gen.nextInt(10) + 15;
 
@@ -511,36 +570,64 @@ public class Map {
 		}
 	}
 
-		private void spawnBushes(){
-		int dingDangBushes = gen.nextInt(10)+10;
-
-		while(dingDangBushes > 0){
-		int X = gen.nextInt(size-2)+1;
-		int Y = gen.nextInt(size-2)+1;
-		int treeCounter= 0;
-
-		if(board[X][Y].getResource().getResourceT() == ResourceType.NONE){
-			
-			for(int i = -1; i < 1; i++){
-				for(int j = -1; j < 1; j++){
-				if(board[X+i][Y+j].getResource().getResourceT() == ResourceType.TREE)
-				treeCounter++;
+	/**~~~~~~~~~~~~~ WORKERS ~~~~~~~~~~~**/
+	
+	// Spawns the workers at the start of the game
+	private void spawnWorkers() {
+		int counter =0;
+		//  it will try 1000 times before giving up
+		int X = 0;
+		int Y = 0;
+		while(counter < 1000) {
+			X = gen.nextInt(size-5)+1;
+			Y = gen.nextInt(size-7)+1;
+	
+			//checks to see if the position on the land is not a river or ocean
+			int placeCounter = 5*7;
+			for(int i = X; i < X + 5; i++) {
+				for(int j = Y; j < Y + 7; j++) {
+					if(board[j][i].getLand().equals(Terrain.PLAIN)
+							&& (board[j][i].getResource().getResourceT().equals(ResourceType.NONE))) {
+						placeCounter--;
+					}
 				}
 			}
+			if(placeCounter == 0)
+				break;
+			counter++;
 		}
-
-			
-			if(treeCounter > 0 && treeCounter < 6){
-			board[X][Y].setResource(new BerryBush());
-			dingDangBushes --;
-			treeCounter = 0;
+		//  TownHall!!!!
+		for(int i = X+1; i < X + 4; i++) {
+			for(int j = Y + 1; j < Y + 6; j++) {
+				board[j][i].setLand(Terrain.BEACH);
 			}
-		}
-	}
-	//public static void main(String[] args) {
-	//	Map hodor = new Map(30);
-	//}	
-	public MapTile[][] getMapTiles(){
-		return board;
+		}		
+		int initialNoWorker = 4;
+		while(initialNoWorker!= 0) {
+			for(int i = X; i < X + 5; i++) {
+				for(int j = Y; j < Y + 7; j++) {
+					boolean broke = false;
+					while(board[j][i].getLand().equals(Terrain.BEACH)) {
+						if(j==Y+7) {
+							broke = true;
+							break;
+						}	
+						j++;
+					}
+					if(broke) {
+						System.out.println("Oh");
+						continue;
+					}
+					if(gen.nextDouble()<.25) {
+						if(initialNoWorker != 0) {
+							System.out.println(i + "," +j);
+							Worker brett = new Brett(new Point(i,j));
+							initialWorkers.add(brett);
+							initialNoWorker --;
+						}
+					}
+				}
+			}
+		}		
 	}
 }

@@ -140,7 +140,7 @@ public class MapPanel extends JPanel implements Observer{
 		//  No animation yet... Sorry bois
 		if(workmen!=null) {
 			for(int i = 0; i < workmen.size(); i++) {
-				Point l = workmen.getWorker(i).getPoint();
+				Point l = workmen.get(i).getPoint();
 				g.setColor(Color.WHITE);
 				g.fillRect((l.x-initialx)*50, (l.y-initialy)*50, 50, 50);
 				//System.out.printf("Worker %d X Location: %d, Y Location: %d\n",i, l.x-initialx, l.y-initialx);
