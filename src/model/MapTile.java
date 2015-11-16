@@ -10,7 +10,8 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program creates the individual map tile to be used by the map during game
+|                generation. It is set to a specific terrain enum and resource.
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
@@ -18,26 +19,60 @@
 package model;
 
 public class MapTile {
+
+	/**************************************
+	 *          Instance Variables        *
+	 **************************************/
+	
+	// Assigns this tile as a resource (could be none)
 	private Resource resource;
+	
+	// Assigns this tile as a terrain
 	private Terrain terrain;
+	
+	/**************************************
+	 *         MapTile Constructor        *
+	 **************************************/
+	
 	public MapTile() {
 		resource = new Nothing();
 		terrain = terrain.PLAIN;
 	}
-	//  This will set rivers and mountains or whatever the hell we want
-	public void setLand(Terrain toSet) {
-		terrain = toSet;
-	}
+	
+	/**************************************
+	 *   Getters for Instance Variables   *
+	 **************************************/
+	
+	// Returns the terrain enum this tile is set to
 	public Terrain getLand(){
 		return terrain;
 	}
+	
+	// Returns the resource this tile is set to
+	public Resource getResource(){
+		return resource;
+	}
+	
+	/**************************************
+	 *   Setters for Instance Variables   *
+	 **************************************/
+	
+	// sets the tile to a terrain enum passed as a parameter
+	public void setLand(Terrain toSet) {
+		terrain = toSet;
+	}
+	
+	// sets the tile to a resource passed as a parameter
 	public void setResource(Resource toSet) {
 		//System.out.println(toSet);
 		resource = toSet;
 	}
-	public Resource getResource(){
-		return resource;
-	}
+	
+	/**************************************
+	 *             unPassable             *
+	 **************************************/
+	
+	// Determines if this tile counts as an obstacle for units trying to travel
 	public boolean unPassable() {
 		if(terrain.equals(terrain.PLAIN)) {
 			//  or it could be a method call from resource
@@ -47,6 +82,12 @@ public class MapTile {
 		}
 		return true;
 	}
+	
+	/**************************************
+	 *              toString              *
+	 **************************************/
+	
+	// ToString method for printing
 	public String toString() {
 		//  RESOURCES
 		if(resource.getResourceT().equals(ResourceType.TREE))
