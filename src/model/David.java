@@ -10,7 +10,7 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program creates the "David" worker class that is less motivated
+|  Description:  This program creates the "David" worker class that gets hungry more easily
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
@@ -21,12 +21,22 @@ import java.awt.Point;
 
 public class David extends Worker {
 
+	/**************************************
+	 *          David Constructor         *
+	 **************************************/
+	
+	//  Worker is constructed with its starting position as a parameter
 	public David(Point currentLocation) {
 		super(currentLocation);
 	}
 	
+	// This worker increments hunger at a faster rate than other workers
 	@Override
-	public void subtractHappiness() {
-		subtractHappiness(1.5);
+	public void addHunger() {
+		// If hunger rises above 10, this worker may die from starvation
+		if(getHunger() >= 10) {
+			inDanger(getHunger());
+		}
+		addHunger(1.5);
 	}
 }
