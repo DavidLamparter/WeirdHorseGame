@@ -74,7 +74,7 @@ public class MapTile {
 	
 	// Determines if this tile counts as an obstacle for units trying to travel
 	public boolean unPassable() {
-		if(terrain.equals(terrain.PLAIN)) {
+		if(terrain.equals(terrain.PLAIN)||terrain.equals(terrain.BEACH)) {
 			//  or it could be a method call from resource
 			if(resource.getResourceT().equals(ResourceType.NONE)){
 				return false;
