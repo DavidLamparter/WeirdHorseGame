@@ -22,15 +22,18 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import model.ListOfWorkers;
 import model.MapTile;
 import model.Resource;
 import model.ResourceType;
 import model.Terrain;
 
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements Observer{
 
 	MapTile[][] graph;
 	int width;
@@ -42,6 +45,7 @@ public class MapPanel extends JPanel {
 	private int maxX = 0;
 	private int maxY = 0;
 	private SettlementGUI caller;
+	private ListOfWorkers workmen;
 
 	MapPanel(SettlementGUI caller) {
 		this.caller = caller;
@@ -63,7 +67,6 @@ public class MapPanel extends JPanel {
 		Color LightGreen = new Color(130, 190, 60);
 
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.BLUE);
 
 		int width = this.graph.length;
 		int length = this.graph[0].length;
@@ -74,13 +77,8 @@ public class MapPanel extends JPanel {
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
-				// Trees
-				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
-					g2d.setColor(DarkGreen);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
 				// Fish
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
+				if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
@@ -123,6 +121,29 @@ public class MapPanel extends JPanel {
 				 * if (i % 2 == 0 || j % 2 == 0) {
 				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
 				 */
+			}
+		}
+		drawThemWorkers(g2d);
+		for (int ilol = 0; ilol < width2; ilol++) {
+			for (int jlol = 0; jlol < length2; jlol++) {
+				int i = ilol + initialx;
+				int j = jlol + initialy;
+				// Trees Go on top of workers so uhh yesah we need a nother loop
+				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
+					g2d.setColor(DarkGreen);
+					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				}
+			}
+		}
+	}
+	private void drawThemWorkers(Graphics2D g) {
+		//  No animation yet... Sorry bois
+		if(workmen!=null) {
+			for(int i = 0; i < workmen.size(); i++) {
+				Point l = workmen.get(i).getPoint();
+				g.setColor(Color.WHITE);
+				g.fillRect((l.x-initialx)*50, (l.y-initialy)*50, 50, 50);
+				//System.out.printf("Worker %d X Location: %d, Y Location: %d\n",i, l.x-initialx, l.y-initialx);
 			}
 		}
 	}
@@ -173,6 +194,12 @@ public class MapPanel extends JPanel {
 		xCord += initialx;
 		yCord += initialy;
 		return new Point(xCord, yCord);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		workmen = (ListOfWorkers)arg1;
+		repaint();
 	}
 	
 }

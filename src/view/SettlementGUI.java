@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import model.Game;
 import model.Map;
 import model.MapTile;
 import model.ResourceType;
@@ -45,6 +46,7 @@ public class SettlementGUI extends JFrame {
 	private MapPanel mapView = null;
 	private Map map = null;
 	private MapTile[][] board = null;
+	private Game game;
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
 		map = new Map(getMapSize() ,1234132513);
@@ -69,11 +71,18 @@ public class SettlementGUI extends JFrame {
 		this.setVisible(true);
 		mapView.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
+		
+		game = new Game(map);
+		game.addObserver(mapView);
+		game.setChange();
 	}
 	public void CloseEverything() {
 		minimap.dispose();
 		options.dispose();
 		this.dispose();
+	}
+	public Game getGame() {
+		return game;
 	}
 	public int getMapSize() {
 		return 100;
@@ -107,7 +116,6 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void mouseDragged(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
@@ -180,10 +188,7 @@ public class SettlementGUI extends JFrame {
 				return;
 			if (frame != null)
 				frame.dispose();
-			frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), null);
-				//int[] oh = new int[1];
-				//System.out.println(oh[2]);
-				//  lel such funny joke
+			frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), game);
 			}
 
 		@Override

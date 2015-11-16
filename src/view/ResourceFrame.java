@@ -17,8 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.imageio.ImageIO;
 
+import model.Game;
 import model.ListOfWorkers;
 import model.Resource;
+import model.ShortestPathCalculator;
+import model.Worker;
 
 
 public class ResourceFrame extends JFrame {
@@ -34,11 +37,14 @@ public class ResourceFrame extends JFrame {
 	private ListOfWorkers theWorkmen;
 	private Resource curr;
 	private Point arrayPos;
+	private Game game;
 	
 	//Image resourcePic;  cuz that would be dope
 	
-	public ResourceFrame(Point mousePos, Point arrayPos, Resource resource, ListOfWorkers theWorkmen) {
+	public ResourceFrame(Point mousePos, Point arrayPos, Resource resource, Game game) {
 		//  sets the size of the frame and location 10 pixels away from your mouse
+		this.game = game;
+		theWorkmen = game.getList();
 		this.setSize(200, 125);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
@@ -46,7 +52,6 @@ public class ResourceFrame extends JFrame {
 		 */
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
-		this.theWorkmen = theWorkmen;
 		this.arrayPos = arrayPos;
 		curr = resource;
 		//  sets up all the Java Swing
@@ -104,7 +109,12 @@ public class ResourceFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			theWorkmen.findClosest(arrayPos);  //  THIS WILL RETURN A WORKER SO .findThePath or something idk?
+			Worker theJobDoer = theWorkmen.findClosest(arrayPos);
+			Point newP = new Point(arrayPos.x,arrayPos.y+1);
+			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
+			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), newP));
+			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), newP));
+			dispose(); 
 			//  curr.incrementNumberOfHarvesters();  we could add this so they know how many workers are working this tile
 		}
 	}

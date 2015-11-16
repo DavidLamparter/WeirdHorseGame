@@ -22,7 +22,9 @@ package model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -60,11 +62,21 @@ public class Game extends Observable{
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
-	
 	// Creates the game using a randomly generated map from map.java 
 	public Game(Map theMap) {
 		this.theMap = theMap;
 		list = new ListOfWorkers(MAX_NUMBER_OF_WORKERS);
+		ArrayList<Worker> init = theMap.getInitialWorkers();
+		for(int i = 0; i < init.size(); i++) {
+			list.add(init.get(i));
+		}
+		setChanged();
+		notifyObservers(list);
+		SpeedMeter.start();
+	}
+	public void setChange() {
+		setChanged();
+		notifyObservers(list);
 	}
 	
 	/**************************************
@@ -119,8 +131,13 @@ public class Game extends Observable{
 			}
 			list.moveYourAsses();
 			setChanged();
-			notifyObservers();
+			notifyObservers(list);
 			animalTic++;
 		}
+	}
+
+	public MapTile[][] getMap() {
+		// TODO Auto-generated method stub
+		return theMap.getMapTiles();
 	}
 }

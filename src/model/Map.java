@@ -26,6 +26,7 @@ public class Map {
 	long Seed;
 	private Random gen;
 	private MapTile[][] board;
+	private ArrayList<Worker> initialWorkers = new ArrayList<>();
 	public Map(int size) {
 		this.size = size;
 		board = new MapTile[size][size];
@@ -106,8 +107,37 @@ public class Map {
 			for(int j = Y + 1; j < Y + 6; j++) {
 				board[j][i].setLand(Terrain.BEACH);
 			}
-		}
-		
+		}		
+		int initialNoWorker = 4;
+		while(initialNoWorker!= 0) {
+			for(int i = X; i < X + 5; i++) {
+				for(int j = Y; j < Y + 7; j++) {
+					boolean broke = false;
+					while(board[j][i].getLand().equals(Terrain.BEACH)) {
+						if(j==Y+7) {
+							broke = true;
+							break;
+						}	
+						j++;
+					}
+					if(broke) {
+						System.out.println("Oh");
+						continue;
+					}
+					if(gen.nextDouble()<.25) {
+						if(initialNoWorker != 0) {
+							System.out.println(i + "," +j);
+							Worker brett = new Brett(new Point(i,j));
+							initialWorkers.add(brett);
+							initialNoWorker --;
+						}
+					}
+				}
+			}
+		}		
+	}
+	public ArrayList<Worker> getInitialWorkers() {
+		return initialWorkers;
 	}
 	private void createOcean() {
 		double num = gen.nextDouble();

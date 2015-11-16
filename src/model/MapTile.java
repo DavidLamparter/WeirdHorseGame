@@ -41,7 +41,7 @@ public class MapTile {
 	public boolean unPassable() {
 		if(terrain.equals(terrain.PLAIN)) {
 			//  or it could be a method call from resource
-			if(resource==null){
+			if(resource.getResourceT().equals(ResourceType.NONE)){
 				return false;
 			}
 		}
