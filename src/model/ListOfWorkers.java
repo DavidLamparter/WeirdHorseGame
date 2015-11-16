@@ -54,7 +54,7 @@ public class ListOfWorkers {
 	}
 		
 	// Returns pos which is the number of living workers
-	public int getNumWorkers() {
+	public int size() {
 		return pos;
 	}
 	
