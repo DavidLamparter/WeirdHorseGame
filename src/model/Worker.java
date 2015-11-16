@@ -64,7 +64,7 @@ public abstract class Worker {
 	 *          Worker Constructor        *
 	 **************************************/
 	
-	//  Might want the worker to take in its starting position as an argument in the constructor
+	//  Worker is constructed with its starting position as a parameter
 	public Worker(Point currentLocation) {
 		
 		// Conditions being at 0, and increment to dangerous levels

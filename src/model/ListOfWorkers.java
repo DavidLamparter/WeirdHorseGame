@@ -10,7 +10,8 @@
 |           PM:  Sean Stephens
 |     Due Date:  12/9/15
 |
-|  Description:  This program . . .
+|  Description:  This program creates an array of all living workers to be used and referenced by
+|                other classes.
 |                
 | Deficiencies:  We know of no unsatisfied requirements and no logic errors.
 *=================================================================================================*/
@@ -20,43 +21,85 @@ package model;
 import java.awt.Point;
 
 public class ListOfWorkers {
+	
+	/**************************************
+	 *          Instance Variables        *
+	 **************************************/
+	
+	// Array to hold workers
 	private Worker[] theWorkmen;
+	
+	// This int represents the next empty slot of theWorkmen
 	private int pos;
-	private int initialSize;
+	
+	/**************************************
+	 *          Worker Constructor        *
+	 **************************************/
 	
 	public ListOfWorkers(int length) {
 		theWorkmen = new Worker[length];
-		initialSize = length;
+		pos = 0;
 	}
-	//  adds a worker to the end of the array
+	
+	/**************************************
+	 *   Getters for Instance Variables   *
+	 **************************************/
+	
+	// Gets the worker at element "i" if possible
+	// else returns null
+	public Worker getWorker(int i) {
+		if((i >= 0) && (i < pos))
+			return theWorkmen[i];
+		return null;
+	}
+		
+	// Returns pos which is the number of living workers
+	public int getNumWorkers() {
+		return pos;
+	}
+	
+	/**************************************
+	 *         Add / Remove Worker        *
+	 **************************************/
+	
+	// Adds a worker to the next available slot
 	public void add(Worker toAdd) {
-		if(pos < 0)
-			pos ++;
 		theWorkmen[pos] = toAdd;
 		pos++;
-		if(pos>=theWorkmen.length) {
-			resize();
+		
+		// If we've filled the array, grow it
+		if(pos == theWorkmen.length) {
+			reSize();
 		}
 	}
-	//  removes the worker and then shifts everything left
+	
+	// Removes the worker and then shifts everything left
 	public void removeAt(int i) {
-		if(pos >= 0) { 
-		for(int j = i; j < pos - 1; j++)
-			theWorkmen[i] = theWorkmen[i+1];
-		pos--;
+		
+		// Ensure we're removing at a valid index
+		if((i >= 0) && (i < pos)) { 
+			for(int j = i; j < (pos-1); j++)
+				theWorkmen[i] = theWorkmen[i+1];
+			pos--;
 		}
 	}
-	//  removes all of the dead workers from the list
+	
+	// Removes all of the dead workers from the list
 	public void removeDead() {
 		for(int i = 0; i < pos; i++) {
 			if(!theWorkmen[i].isAlive())
 				removeAt(i);
 		}
 	}
-	//  uses the distance formula to find the closest worker who is currently not busy with another task
+	
+	/**************************************
+	 *             findClosest            *
+	 **************************************/
+	
+	// Uses the distance formula to find the closest worker who is currently not busy with another task
 	public Worker findClosest(Point theSnacks) {
 		double min = Double.MAX_VALUE;
-		Worker closest = null;
+		Worker closest = null;		
 		for(int i = 0; i < pos; i++) {
 			double potentialMin = 
 			Math.sqrt(Math.pow(theWorkmen[i].getX()-theSnacks.x,2) +
@@ -67,63 +110,64 @@ public class ListOfWorkers {
 				min = potentialMin;
 			}
 		}
-		//  however it could return null meaning there are no workers who meet these qualifications
+		// However it could return null meaning there are no workers who meet these qualifications
 		return closest;
 	}
-	//  gets the worker at element i or null;
-	public Worker get(int i) {
-		if(i < pos)
-			return theWorkmen[i];
-		return null;
-	}
-	public int size() {
-		return pos;
-	}
-	public void incrementEverything() {
+	
+	/**************************************
+	 *        Condition Incrementors      *
+	 **************************************/
+	
+	// Increments all 3 conditions for every worker
+	public void incrementConditions() {
 		incrementHunger();
 		incrementColdness();
-		incrementSleep();
+		incrementFatigue();
 	}
-	//  increments the hunger of every worker
+	
+	// Increments the hunger of every worker
 	public void incrementHunger() {
 		for(int i = 0; i < pos; i++) {
 			theWorkmen[i].addHunger();
 		}
 	}
-	//  makes every worker chilly
+	
+	// Increments the coldness of every worker
 	public void incrementColdness() {
 		for(int i = 0; i < pos; i++) {
 			theWorkmen[i].addColdness();
 		}
 	}
-	//  makes every worker tired
-	public void incrementSleep() {
+	
+	// Increments the fatigue of every worker
+	public void incrementFatigue() {
 		for(int i = 0; i < pos; i++) {
 			theWorkmen[i].addFatigue();
 		}
 	}
-	//  makes every worker move
-	public void moveYourAsses() {
+	
+	/**************************************
+	 *             moveWorkers            *
+	 **************************************/
+	
+	// Calls the move method for every worker, allowing
+	// them to move to the next desired tile
+	public void moveWorkers() {
 		for(int i = 0; i < pos; i++) {
 			theWorkmen[i].move();
 		}
 	}
-	//  resises the array to make it 10 larger or the original size
-	//  Might remove depending on how strict the total number of workers is
-	private void resize() {
-		if(pos == theWorkmen.length) {
-			Worker[] resizeable = new Worker[theWorkmen.length+10];
-			for(int i = 0; i < theWorkmen.length; i++) {
-				resizeable[i] = theWorkmen[i];
-			}
-			theWorkmen = resizeable;
+	
+	/**************************************
+	 *               reSize               *
+	 **************************************/
+	
+	// Resizes the array by doubling its length
+	private void reSize() {
+		Worker[] resizeable = new Worker[pos * 2];
+		for(int i = 0; i < theWorkmen.length; i++) {
+			resizeable[i] = theWorkmen[i];
 		}
-		else if (pos < initialSize) {
-			Worker[] resizeable = new Worker[initialSize];
-			for(int i = 0; i < theWorkmen.length; i++) {
-				resizeable[i] = theWorkmen[i];
-			}
-			theWorkmen = resizeable;
-		}
+		theWorkmen = resizeable;
 	}
 }
