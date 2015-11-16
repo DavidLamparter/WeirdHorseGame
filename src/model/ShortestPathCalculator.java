@@ -137,7 +137,7 @@ public class ShortestPathCalculator{
 	/**************************************
 	 *             shortestPath           *
 	 **************************************/
-	
+	int recursion = 0;
 	// Recursively calculates the shortest path between two points on the map
 	private void shortestPath(Point init, Point fin, boolean[][] mapHelper, boolean larger) {
 		if(init.equals(fin)) {
@@ -287,6 +287,7 @@ public class ShortestPathCalculator{
 				catch(Exception e) {
 					//  return;
 				}
+				if(fin.x >= init.x) {
 				//  GOING RIGHT
 				try {
 					if(!mapHelper[curry][currx+1]) {
@@ -320,6 +321,41 @@ public class ShortestPathCalculator{
 					//  return;
 				}
 			}
+				else {
+					//  GOING LEFT
+					try {
+					if(!mapHelper[curry][currx-1]) {
+						mapHelper[curry][currx] = true;
+						thePath.add(Direction.WEST);
+						currx -= 1;
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						if(done)
+							return;
+						currx += 1;
+						thePath.remove(thePath.size()-1);
+					}
+					}
+					catch(Exception e) {
+						//  return;
+					}
+					//  GOING RIGHT
+					try {
+						if(!mapHelper[curry][currx+1]) {
+							mapHelper[curry][currx] = true;
+							thePath.add(Direction.EAST);
+							currx += 1;
+							shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+							if(done)
+								return;
+							currx -= 1;
+							thePath.remove(thePath.size()-1);
+						}
+						}
+					catch(Exception e) {
+						//  return;
+					}
+				}
+			}
 			try {
 			if(!mapHelper[curry-1][currx]) {
 				//  GOING UP... ON A TUESDAY
@@ -337,39 +373,75 @@ public class ShortestPathCalculator{
 			catch(Exception e) {
 				//  return;
 			}
-			//  GOING RIGHT
-			try {
-				if(!mapHelper[curry][currx+1]) {
+				if(fin.x >= init.x) {
+				//  GOING RIGHT
+				try {
+					if(!mapHelper[curry][currx+1]) {
+						mapHelper[curry][currx] = true;
+						thePath.add(Direction.EAST);
+						currx += 1;
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						if(done)
+							return;
+						currx -= 1;
+						thePath.remove(thePath.size()-1);
+					}
+					}
+				catch(Exception e) {
+					//  return;
+				}
+				//  GOING LEFT
+				try {
+				if(!mapHelper[curry][currx-1]) {
 					mapHelper[curry][currx] = true;
-					thePath.add(Direction.EAST);
-					currx += 1;
+					thePath.add(Direction.WEST);
+					currx -= 1;
 					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
 					if(done)
 						return;
-					currx -= 1;
+					currx += 1;
 					thePath.remove(thePath.size()-1);
 				}
 				}
-			catch(Exception e) {
-				//  return;
+				catch(Exception e) {
+					//  return;
+				}
 			}
-			//  GOING LEFT
-			try {
-			if(!mapHelper[curry][currx-1]) {
-				mapHelper[curry][currx] = true;
-				thePath.add(Direction.WEST);
-				currx -= 1;
-				shortestPath(new Point(currx,curry), fin, mapHelper, larger);
-				if(done)
-					return;
-				currx += 1;
-				thePath.remove(thePath.size()-1);
+				else {
+					//  GOING LEFT
+					try {
+					if(!mapHelper[curry][currx-1]) {
+						mapHelper[curry][currx] = true;
+						thePath.add(Direction.WEST);
+						currx -= 1;
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						if(done)
+							return;
+						currx += 1;
+						thePath.remove(thePath.size()-1);
+					}
+					}
+					catch(Exception e) {
+						//  return;
+					}
+					//  GOING RIGHT
+					try {
+						if(!mapHelper[curry][currx+1]) {
+							mapHelper[curry][currx] = true;
+							thePath.add(Direction.EAST);
+							currx += 1;
+							shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+							if(done)
+								return;
+							currx -= 1;
+							thePath.remove(thePath.size()-1);
+						}
+						}
+					catch(Exception e) {
+						//  return;
+					}
+				}
 			}
-			}
-			catch(Exception e) {
-				//  return;
-			}
-		}
 	}
 
 

@@ -74,6 +74,7 @@ public class SettlementGUI extends JFrame {
 		
 		game = new Game(map);
 		game.addObserver(mapView);
+		game.addObserver(minimap.getGraphPanel());
 		game.setChange();
 	}
 	public void CloseEverything() {

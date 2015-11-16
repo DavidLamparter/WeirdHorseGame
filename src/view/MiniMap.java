@@ -38,6 +38,7 @@ public class MiniMap extends JFrame{
 	private JLabel maximize = new JLabel(" +");
 	private SettlementGUI caller;
 	private MapPanel mapPanel = null;
+	
 	public MiniMap(SettlementGUI caller){
 	Map map = caller.getMap();
 	this.mapPanel = caller.getMapPanel();

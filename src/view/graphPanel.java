@@ -20,16 +20,20 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import model.ListOfWorkers;
 import model.Map;
 import model.MapTile;
 import model.Resource;
 import model.ResourceType;
 import model.Terrain;
 
-public class graphPanel extends JPanel {
+public class graphPanel extends JPanel implements Observer {
 
 	MapTile[][] graph;
 	int width;
@@ -37,6 +41,7 @@ public class graphPanel extends JPanel {
 	SettlementGUI caller = null;
 	Map map = null;
 	MapPanel mapPanel;
+	ListOfWorkers workmen;
 	graphPanel(MapTile[][] graph, SettlementGUI caller) {
 		this.caller = caller;
 		mapPanel = caller.getMapPanel();
@@ -71,50 +76,49 @@ public class graphPanel extends JPanel {
 					// Trees
 					if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
 						g2d.setColor(DarkGreen);
-						g2d.drawLine(i, j, i, j);
+						g2d.fillRect(i, j, 2, 2);
 					}
 					// Fish
 					else if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 						g2d.setColor(Color.CYAN);
-						g2d.drawLine(i, j, i, j);
-					}
-
+						g2d.fillRect(i, j, 2, 2);					
+						}
 					// River
 					else if (graph[j][i].getLand().equals(Terrain.RIVER)) {
 						g2d.setColor(Color.BLUE);
-						g2d.drawLine(i, j, i, j);
-					}
+						g2d.fillRect(i, j, 2, 2);					
+						}
 					// SaltyFish
 					else if (graph[j][i].getResource().getResourceT().equals(
 							ResourceType.SALTY_FISH)) {
 						g2d.setColor(Color.magenta);
-						g2d.drawLine(i, j, i, j);
+						g2d.fillRect(i, j, 2, 2);
 					}
 					// Ocean
 					else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
 						g2d.setColor(new Color(20, 20, 200));
-						g2d.drawLine(i, j, i, j);
-					}
+						g2d.fillRect(i, j, 2, 2);
+						}
 					// Sand
 					else if (graph[j][i].getLand().equals(Terrain.BEACH)) {
 						g2d.setColor(Color.ORANGE);
-						g2d.drawLine(i, j, i, j);
-					}
+						g2d.fillRect(i, j, 2, 2);
+						}
 					// Berry Bush
 					else if (graph[j][i].getResource().getResourceT().equals(
 							ResourceType.BERRY_BUSH)) {
 						g2d.setColor(Color.RED);
-						g2d.drawLine(i, j, i, j);
-					}
+						g2d.fillRect(i, j, 2, 2);
+						}
 					// Stone
 					else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)) {
 						g2d.setColor(Color.GRAY);
-						g2d.drawLine(i, j, i, j);
-					}
+						g2d.fillRect(i, j, 2, 2);
+						}
 					// Plain
 					else {
 						g2d.setColor(LightGreen);
-						g2d.drawLine(i, j, i, j);
+						g2d.fillRect(i, j, 2, 2);
 					}
 
 					/*
@@ -124,9 +128,16 @@ public class graphPanel extends JPanel {
 				}
 
 				catch (NullPointerException E) {
-					// System.out.println("Why");
+					//System.out.println("Why");
 				}
 
+			}
+		}
+		if(workmen!=null) {
+			for(int i = 0; i < workmen.size(); i++) {
+				Point l = workmen.get(i).getPoint();
+				g2d.setColor(Color.BLACK);
+				g2d.fillRect(l.x*2, l.y*2, 2, 2);
 			}
 		}
 		//  DRAW RECTANGE AROUND LOCATION
@@ -142,5 +153,11 @@ public class graphPanel extends JPanel {
 
 		super.paintComponent(g);
 		doDrawing(g, graph);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		workmen = (ListOfWorkers)arg;
+		repaint();		
 	}
 }
