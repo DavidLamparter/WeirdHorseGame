@@ -110,10 +110,9 @@ public class ResourceFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			Worker theJobDoer = theWorkmen.findClosest(arrayPos);
-			Point newP = new Point(arrayPos.x,arrayPos.y+1);
 			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
-			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), newP));
-			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), newP));
+			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));
+			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));
 			dispose(); 
 			//  curr.incrementNumberOfHarvesters();  we could add this so they know how many workers are working this tile
 		}
