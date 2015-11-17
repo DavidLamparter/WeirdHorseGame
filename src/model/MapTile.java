@@ -104,4 +104,10 @@ public class MapTile {
 			return "[ ]";
 		return "Hodor";
 	}
+
+	//returns the ID
+	public int getID() {
+		// TODO Auto-generated method stub
+		return resource.getID();
+	}
 }

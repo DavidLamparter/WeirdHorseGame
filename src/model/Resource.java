@@ -40,6 +40,9 @@ public abstract class Resource {
 	// The maximum amount this resource can hold
 	private double max;
 	
+	//The Graphic ID;
+	private int ID;
+	
 	/**************************************
 	 *        Resource Constructor        *
 	 **************************************/
@@ -49,12 +52,17 @@ public abstract class Resource {
 	public Resource(double q, ResourceType x) {
 		quantity = q;
 		type = x;
+		ID = num.nextInt(3);
+		
 	}
 	
 	/**************************************
 	 *   Getters for Instance Variables   *
 	 **************************************/
-	
+	//Returns ID
+	public int getID() {
+		return ID;
+	}
 	// Returns max possible value of this resource
 	public double getMax(){
 		return this.max;
@@ -177,7 +185,7 @@ class Tree extends Resource {
 	// Returns the file name of this tree. Can vary between different images
 	@Override
 	public String getFileName() {
-		return "./Graphics/Trees/Tree_1.png";
+		return "./Graphics/Trees/Tree Redux_1.png";
 	}
 	
 }
@@ -281,7 +289,7 @@ class Stone extends Resource {
 	}
 	@Override
 	public String getFileName() {
-		return "";
+		return "./Graphics/Stone/Stone_1.png";
 	}
 	
 }
