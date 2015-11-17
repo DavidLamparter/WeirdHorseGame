@@ -49,7 +49,7 @@ public class SettlementGUI extends JFrame {
 	private Game game;
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
-		map = new Map(getMapSize() ,1234132513);
+		map = new Map(getMapSize());
 		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
 		//this.setSize(new Dimension(1080, 720));
 		this.setLayout(null);

@@ -18,21 +18,23 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.ListOfWorkers;
 import model.MapTile;
-import model.Resource;
 import model.ResourceType;
 import model.Terrain;
 
@@ -49,14 +51,18 @@ public class MapPanel extends JPanel implements Observer{
 	private int maxY = 0;
 	private SettlementGUI caller;
 	private ListOfWorkers workmen;
-	
-	
+
+	//Colors
+	Color DarkGreen = new Color(20, 120, 20);
+	Color LightGreen = new Color(130, 190, 60);
 
 	MapPanel(SettlementGUI caller) {
 		this.caller = caller;
 		this.graph = caller.getMap().getMapTiles();
 		this.width = graph.length;
 		this.length = graph[0].length;
+		this.setBackground(LightGreen);
+		
 		//this.graph = new MapTile[(width) + 1][(length) + 1];
 
 	/*	for (int i = 0; i < width; i++) {
@@ -65,12 +71,12 @@ public class MapPanel extends JPanel implements Observer{
 			}
 		} */
 		repaint();
+
+		
 	}
 
 	private void doDrawing(Graphics g, MapTile[][] graph) {
-		Color DarkGreen = new Color(20, 120, 20);
-		Color LightGreen = new Color(130, 190, 60);
-
+		Random gen = new Random();
 		Graphics2D g2d = (Graphics2D) g;
 
 		int width = this.graph.length;
@@ -109,19 +115,22 @@ public class MapPanel extends JPanel implements Observer{
 				}
 				// Berry Bush
 				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
-					g2d.setColor(Color.RED);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
+					try {
+						g2d.drawImage(ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}}
 				// Stone
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)) {
-					g2d.setColor(Color.GRAY);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
-				// Plain
-				else {
-					g2d.setColor(LightGreen);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
+				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)
+						&& graph[j+1][i+1].getResource().getResourceT().equals(ResourceType.STONE)){
+					try {
+						g2d.drawImage(ImageIO.read(new File("./Graphics/Stone/Stone_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}	
 				/*
 				 * if (i % 2 == 0 || j % 2 == 0) {
 				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
@@ -134,9 +143,13 @@ public class MapPanel extends JPanel implements Observer{
 				int i = ilol + initialx;
 				int j = jlol + initialy;
 				// Trees Go on top of workers so uhh yesah we need a nother loop
-				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
-					g2d.setColor(DarkGreen);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)){
+					try {
+							g2d.drawImage(ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + (graph[j][i].getID()+1) + ".png")), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+						} catch (IOException e) {
+						// TODO Auto-generated catch block
+						System.out.println("Wrong path");
+					}
 				}
 			}
 		}
