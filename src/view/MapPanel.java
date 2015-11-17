@@ -21,10 +21,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import model.ListOfWorkers;
@@ -46,6 +49,8 @@ public class MapPanel extends JPanel implements Observer{
 	private int maxY = 0;
 	private SettlementGUI caller;
 	private ListOfWorkers workmen;
+	
+	
 
 	MapPanel(SettlementGUI caller) {
 		this.caller = caller;
@@ -136,6 +141,7 @@ public class MapPanel extends JPanel implements Observer{
 			}
 		}
 	}
+	
 	private void drawThemWorkers(Graphics2D g) {
 		//  No animation yet... Sorry bois
 		if(workmen!=null) {

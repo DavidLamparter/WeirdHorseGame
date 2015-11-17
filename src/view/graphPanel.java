@@ -20,6 +20,7 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
@@ -42,6 +43,7 @@ public class graphPanel extends JPanel implements Observer {
 	Map map = null;
 	MapPanel mapPanel;
 	ListOfWorkers workmen;
+	
 	graphPanel(MapTile[][] graph, SettlementGUI caller) {
 		this.caller = caller;
 		mapPanel = caller.getMapPanel();
