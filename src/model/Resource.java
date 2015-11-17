@@ -43,6 +43,9 @@ public abstract class Resource {
 	//The Graphic ID;
 	private int ID;
 	
+	//staggers things a little
+	public int Offset;
+	
 	/**************************************
 	 *        Resource Constructor        *
 	 **************************************/
@@ -52,8 +55,8 @@ public abstract class Resource {
 	public Resource(double q, ResourceType x) {
 		quantity = q;
 		type = x;
-		ID = num.nextInt(3);
-		
+		ID = num.nextInt(4);
+		Offset = num.nextInt(16)-8;
 	}
 	
 	/**************************************
@@ -159,7 +162,6 @@ class Tree extends Resource {
 	/**************************************
 	 *            Tree Constructor        *
 	 **************************************/
-	
 	// Tree constructed with a randomly generated quantity
 	public Tree() {
 		super(num.nextInt(50)+75, ResourceType.TREE);
