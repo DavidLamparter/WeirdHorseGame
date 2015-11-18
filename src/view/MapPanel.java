@@ -130,10 +130,6 @@ public class MapPanel extends JPanel implements Observer{
 						e.printStackTrace();
 					}
 				}	
-				/*
-				 * if (i % 2 == 0 || j % 2 == 0) {
-				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
-				 */
 			}
 		}
 		drawThemWorkers(g2d);
@@ -143,12 +139,7 @@ public class MapPanel extends JPanel implements Observer{
 				int j = jlol + initialy;
 				// Trees Go on top of workers so uhh yesah we need a nother loop
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)){
-					try {
-							g2d.drawImage(ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + (graph[j][i].getID()+1) + ".png")), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
-						} catch (IOException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Wrong path");
-					}
+					g2d.drawImage(graph[j][i].getSummerID(), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
 				}
 			}
 		}

@@ -112,7 +112,7 @@ public class SettlementGUI extends JFrame {
 	}
 	private class MapMotionListener implements MouseMotionListener {
 		private boolean triggered = false;
-		private int dividor = 12;
+		private int dividor = 14;
 		
 		@Override
 		public void mouseDragged(MouseEvent arg0) {
