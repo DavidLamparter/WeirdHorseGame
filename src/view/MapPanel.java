@@ -51,6 +51,10 @@ public class MapPanel extends JPanel implements Observer{
 	private int maxY = 0;
 	private SettlementGUI caller;
 	private ListOfWorkers workmen;
+	
+	// Variables for the array of tiles for the background
+	private Image[][] summerTiles = new Image[50][50];
+	private String[][] sTileNames = new String[50][50];
 
 	//Colors
 	Color DarkGreen = new Color(20, 120, 20);
@@ -61,7 +65,8 @@ public class MapPanel extends JPanel implements Observer{
 		this.graph = caller.getMap().getMapTiles();
 		this.width = graph.length;
 		this.length = graph[0].length;
-		this.setBackground(LightGreen);
+		//this.setBackground(LightGreen);
+		backgroundTiles(sTileNames, summerTiles);
 		
 		//this.graph = new MapTile[(width) + 1][(length) + 1];
 
@@ -74,6 +79,31 @@ public class MapPanel extends JPanel implements Observer{
 
 		
 	}
+	
+	// create the array of images for the ground in summer
+	public void backgroundTiles(String[][] sNames, Image[][] sPic){
+		int counter = 1;
+		// create the array file names first so that it's easier to read in to 2Darray
+		for (int i=0; i < 50; i++){
+			for (int j=0; j < 50; j++){
+				sTileNames[i][j] = "./Graphics/Ground/summerTiles/sTile_" + counter + ".png";
+				counter++;
+			}
+		}
+		// creates the image 2Darray from file names
+		for (int i=0; i < 50; i++){
+			for (int j=0; j < 50; j++){
+				try {
+					summerTiles[i][j] = ImageIO.read(new File(sTileNames[i][j]));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		sNames = sTileNames;
+	    sPic = summerTiles;
+		
+	}
 
 	private void doDrawing(Graphics g, MapTile[][] graph) {
 		Random gen = new Random();
@@ -84,10 +114,23 @@ public class MapPanel extends JPanel implements Observer{
 	// iterates through the array and blocks the colors
 		int width2 = getMapWidth();
 		int length2 = getMapHeight();
+		
+		//draw the ground first
+		for (int ilol = 0; ilol < width2/2; ilol++) {
+			for (int jlol = 0; jlol < length2/2; jlol++) {
+				int i = ilol + initialx/2;
+				int j = jlol + initialy/2;
+				g2d.drawImage(summerTiles[j][i], ilol*(MAP_TILE_WIDTH*2), jlol*MAP_TILE_HEIGHT*2, null);
+			}
+		}
+		
+		
+		
 		for (int ilol = 0; ilol < width2; ilol++) {
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
+				
 				// Fish
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);
@@ -122,15 +165,16 @@ public class MapPanel extends JPanel implements Observer{
 						e.printStackTrace();
 					}}
 				// Stone
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)
-						&& graph[j+1][i+1].getResource().getResourceT().equals(ResourceType.STONE)){
+				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)){
+						//&& graph[j+1][i+1].getResource().getResourceT().equals(ResourceType.STONE)){
 					try {
 						g2d.drawImage(ImageIO.read(new File("./Graphics/Stone/Stone_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}	
+				}
+				
 				/*
 				 * if (i % 2 == 0 || j % 2 == 0) {
 				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
@@ -155,6 +199,11 @@ public class MapPanel extends JPanel implements Observer{
 		}
 	}
 	
+	private void drawTheGround(Graphics2D g2d) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void drawThemWorkers(Graphics2D g) {
 		//  No animation yet... Sorry bois
 		if(workmen!=null) {
