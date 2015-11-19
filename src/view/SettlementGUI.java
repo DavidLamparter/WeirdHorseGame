@@ -72,7 +72,7 @@ public class SettlementGUI extends JFrame {
 		mapView.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
 		
-		game = new Game(map);
+		game = new Game(map);	
 		game.addObserver(mapView);
 		game.addObserver(minimap.getGraphPanel());
 		game.setChange();

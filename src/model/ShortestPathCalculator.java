@@ -35,6 +35,7 @@ public class ShortestPathCalculator{
 	
 	// A boolean map that will be passed in place of the real map to lighten memory load
 	private boolean[][] map;
+	private boolean[][] savedMap;
 	
 	// boolean that when set to true signifies that algorithm has completed
 	private boolean done = false;
@@ -51,19 +52,23 @@ public class ShortestPathCalculator{
 	// Finds the shortest path using the actual map
 	public ShortestPathCalculator(MapTile[][] board) {
 		this.map = new boolean[board.length][board.length];
+		this.savedMap = new boolean[board.length][board.length];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map.length; j++) {
 				this.map[i][j] = board[i][j].unPassable();
+				this.savedMap[i][j] = board[i][j].unPassable();
 			}
 		}
 	}
 	
 	// Finds the shortest path using a boolean 2D array
 	public ShortestPathCalculator(boolean[][] board) {
+		this.savedMap = new boolean[board.length][board.length];
 		this.map = new boolean[board.length][board.length];
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map.length; j++) {
 				this.map[i][j] = board[i][j];
+				this.savedMap[i][j] = board[i][j];
 			}
 		}
 	}
@@ -77,6 +82,7 @@ public class ShortestPathCalculator{
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map.length; j++) {
 				this.map[i][j] = newMap[i][j];
+				this.savedMap[i][j] = newMap[i][j];
 			}
 		}
 	}
@@ -94,9 +100,113 @@ public class ShortestPathCalculator{
 				thePath.remove(i);
 				i = -1;
 			}
+			else if(thePath.get(i).equals(Direction.invert(thePath.get(i+1)))) {
+				thePath.remove(i+1);
+				thePath.remove(i);
+				i = -1;
+			}
 		}
 	}
-	
+	//  For some reason unbeknown to me, these numbers will cause you to sometimes walk over rivers if they l/t is > 5
+	private int lowerBound = 10;
+	private int tightness = 3;
+	private boolean supaOptimize(Point init, Point fin, boolean b) {
+		//  Now with Better Variable Names! <33
+		boolean onlyOnce = false;
+		b=!b;
+		ArrayList<Direction> theShortestPath = new ArrayList<>();
+		theShortestPath.addAll(thePath);
+		int curry = init.y;
+		int currx = init.x;
+		int successCounter = 0;
+		for(int i = 0; i < theShortestPath.size()-1;i++) {
+			if(onlyOnce)
+				break;
+			Direction toGo1 = theShortestPath.get(i);
+			if(toGo1.equals(Direction.NORTH))
+				curry--;
+			if(toGo1.equals(Direction.SOUTH))
+				curry++;
+			if(toGo1.equals(Direction.EAST))
+				currx++;
+			if(toGo1.equals(Direction.WEST))
+				currx--;
+			Point location = new Point(currx, curry);
+			int dankCounter = 0;
+			for(int j = i+1; j < theShortestPath.size()-2; j++) {
+				if(onlyOnce)
+					break;
+				Direction toGo = theShortestPath.get(j);
+				if(toGo.equals(Direction.NORTH))
+					location.y--;
+				if(toGo.equals(Direction.SOUTH))
+					location.y++;
+				if(toGo.equals(Direction.EAST))
+					location.x++;
+				if(toGo.equals(Direction.WEST))
+					location.x--;
+				if(dankCounter>=lowerBound)
+				if((Math.abs(curry-location.y)+Math.abs(currx-location.x))<=lowerBound/tightness) {
+						ArrayList<Direction> eyy = new ArrayList<>();
+						ArrayList<Direction> temp = new ArrayList<>();
+						ArrayList<Direction> endPart = new ArrayList<>();
+						//System.out.println("SIZE BEFORE " + theShortestPathIsAlwaysTheDankest.size());
+						for(int k = 0; k <= i; k++) {
+							eyy.add(theShortestPath.get(k));
+							//System.out.println(eyy);
+						}
+						for(int k = i+1; k <= j; k++) {
+							temp.add(theShortestPath.get(k));
+						}
+						for(int k = j+1; k < theShortestPath.size(); k++) {
+							endPart.add(theShortestPath.get(k));
+						}
+						reset();
+						shortestPath(new Point(currx,curry), new Point(location.x,location.y), map, b, false);
+						optimize();
+
+						if(thePath.isEmpty()) {
+							reset();
+							shortestPath(new Point(currx,curry), new Point(location.x,location.y), map, !b, false);
+							optimize();
+						}
+						if((thePath.size()<temp.size())&&(thePath.size()!=0)) {
+							eyy.addAll(thePath);
+						//	System.out.printf("Better : curr x,y = %d,%d location = %d,%d\n",currx,curry,location.x,location.y);
+						//	dankCounter = 0;
+						//  System.out.println("ThePath " + thePath.size());
+						//  System.out.println("Replaces: " + temp.size());
+							//j = i;
+							//location = new Point(currx, curry);
+							successCounter++;
+							onlyOnce = true;
+						}
+						else {
+							eyy.addAll(temp);
+						//	System.out.printf("Worse : curr x,y = %d,%d location = %d,%d\n",currx,curry,location.x,location.y);
+						//	System.out.println("ThePath " + thePath);
+						//	System.out.println("Worse Than: " + temp);
+						} 
+						
+						//eyy.addAll(temp);
+						
+						//int tempVal = endPart.size();
+						eyy.addAll(endPart);
+						theShortestPath.clear();
+						theShortestPath.addAll(eyy);
+						//System.out.printf("i = %d, j = %d, dankCounter = %d, Size = %d\n\n", i,j,dankCounter, theShortestPathIsAlwaysTheDankest.size()+tempVal);
+						//System.out.println(theShortestPathIsAlwaysTheDankest);
+						//System.out.println(eyy.size()+"\n");
+				}
+				dankCounter++;
+			}
+		}
+		//System.out.println(successCounter);
+		thePath.clear();
+		thePath.addAll(theShortestPath);
+		return onlyOnce;
+			//  MUCH PATH
+	}
 	/**************************************
 	 *           getShortestPath          *
 	 **************************************/
@@ -104,13 +214,15 @@ public class ShortestPathCalculator{
 	// Returns the shortest path. Calls on the shortestPath method
 	public ArrayList<Direction> getShortestPath(Point init, Point fin) {
 		reset();
-		shortestPath(init, fin, map, true);
+		shortestPath(init, fin, map, true, true);
 		ArrayList<Direction> firstPath = new ArrayList<>();
 		optimize();
+		while(supaOptimize(init, fin, true));
 		firstPath.addAll(thePath);
 		reset();
-		shortestPath(init, fin, map, false);
+		shortestPath(init, fin, map, false, true);
 		optimize();
+		while(supaOptimize(fin, fin, false));
 		
 		//  Because even the worst path is better than no path
 		if(thePath.size() == 0)
@@ -132,15 +244,28 @@ public class ShortestPathCalculator{
 	private void reset() {
 		thePath.clear();
 		done = false;
+		for(int i = 0; i < map.length; i++) {
+			for(int j = 0; j < map.length; j++) {
+				map[i][j] = savedMap[i][j];
+			}
+		}
 	}
 
 	/**************************************
 	 *             shortestPath           *
 	 **************************************/
 	// Recursively calculates the shortest path between two points on the map
-	private void shortestPath(Point init, Point fin, boolean[][] mapHelper, boolean larger) {
-		if((Math.abs(init.x-fin.x)<=1)&&(Math.abs(init.y-fin.y)<=1)) {
-			if(!((Math.abs(init.x-fin.x)==1)&&(Math.abs(init.y-fin.y)==1))) {
+	private void shortestPath(Point init, Point fin, boolean[][] mapHelper, boolean larger, boolean endCondition) {
+		if(endCondition) {
+			if((Math.abs(init.x-fin.x)<=1)&&(Math.abs(init.y-fin.y)<=1)) {
+				if(!((Math.abs(init.x-fin.x)==1)&&(Math.abs(init.y-fin.y)==1))) {
+					done = true;
+					return;
+				}
+			}
+		}
+		else {
+			if((Math.abs(init.x-fin.x)<=0)&&(Math.abs(init.y-fin.y)<=0)) {
 				done = true;
 				return;
 			}
@@ -166,7 +291,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.EAST);
 					currx += 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					currx -= 1;
@@ -184,7 +309,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.SOUTH);
 						curry += 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						//  RECURSION WILL RETURN HERE
 						if(done)
 							return;
@@ -201,7 +326,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.NORTH);
 					curry -= 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					//  RECURSION WILL RETURN HERE
 					if(done)
 						return;
@@ -220,7 +345,7 @@ public class ShortestPathCalculator{
 							mapHelper[curry][currx] = true;
 							thePath.add(Direction.NORTH);
 							curry -= 1;
-							shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+							shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 							//  RECURSION WILL RETURN HERE
 							if(done)
 								return;
@@ -237,7 +362,7 @@ public class ShortestPathCalculator{
 							mapHelper[curry][currx] = true;
 							thePath.add(Direction.SOUTH);
 							curry += 1;
-							shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+							shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 							//  RECURSION WILL RETURN HERE
 							if(done)
 								return;
@@ -255,7 +380,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.WEST);
 					currx -= 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					currx += 1;
@@ -274,7 +399,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.WEST);
 					currx -= 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					currx += 1;
@@ -291,7 +416,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.SOUTH);
 					curry += 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					//  RECURSION WILL RETURN HERE
 					if(done)
 						return;
@@ -308,7 +433,7 @@ public class ShortestPathCalculator{
 				mapHelper[curry][currx] = true;
 				thePath.add(Direction.NORTH);
 				curry -= 1;
-				shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+				shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 				//  RECURSION WILL RETURN HERE
 				if(done)
 					return;
@@ -327,7 +452,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.NORTH);
 						curry -= 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						//  RECURSION WILL RETURN HERE
 						if(done)
 							return;
@@ -344,7 +469,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.SOUTH);
 						curry += 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						//  RECURSION WILL RETURN HERE
 						if(done)
 							return;
@@ -361,7 +486,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.EAST);
 					currx += 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					currx -= 1;
@@ -386,7 +511,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.SOUTH);
 					curry += 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					//  RECURSION WILL RETURN HERE
@@ -404,7 +529,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.EAST);
 						currx += 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						if(done)
 							return;
 						currx -= 1;
@@ -420,7 +545,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.WEST);
 					currx -= 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					currx += 1;
@@ -438,7 +563,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.WEST);
 						currx -= 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						if(done)
 							return;
 						currx += 1;
@@ -454,7 +579,7 @@ public class ShortestPathCalculator{
 							mapHelper[curry][currx] = true;
 							thePath.add(Direction.EAST);
 							currx += 1;
-							shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+							shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 							if(done)
 								return;
 							currx -= 1;
@@ -471,7 +596,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.NORTH);
 						curry -= 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						if(done)
 							return;
 						//  RECURSION WILL RETURN HERE
@@ -490,7 +615,7 @@ public class ShortestPathCalculator{
 				mapHelper[curry][currx] = true;
 				thePath.add(Direction.NORTH);
 				curry -= 1;
-				shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+				shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 				if(done)
 					return;
 				//  RECURSION WILL RETURN HERE
@@ -508,7 +633,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.EAST);
 						currx += 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						if(done)
 							return;
 						currx -= 1;
@@ -524,7 +649,7 @@ public class ShortestPathCalculator{
 					mapHelper[curry][currx] = true;
 					thePath.add(Direction.WEST);
 					currx -= 1;
-					shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+					shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 					if(done)
 						return;
 					currx += 1;
@@ -542,7 +667,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.WEST);
 						currx -= 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						if(done)
 							return;
 						currx += 1;
@@ -558,7 +683,7 @@ public class ShortestPathCalculator{
 							mapHelper[curry][currx] = true;
 							thePath.add(Direction.EAST);
 							currx += 1;
-							shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+							shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 							if(done)
 								return;
 							currx -= 1;
@@ -575,7 +700,7 @@ public class ShortestPathCalculator{
 						mapHelper[curry][currx] = true;
 						thePath.add(Direction.SOUTH);
 						curry += 1;
-						shortestPath(new Point(currx,curry), fin, mapHelper, larger);
+						shortestPath(new Point(currx,curry), fin, mapHelper, larger, endCondition);
 						if(done)
 							return;
 						//  RECURSION WILL RETURN HERE
@@ -607,32 +732,32 @@ public class ShortestPathCalculator{
 		double average = 0;
 		int counter = 0;
 		int max = 0;
-		int min = 100;
-		for(int zod = 0; zod < 6000; zod++) {
-		boolean[][] mao = new boolean[25][25];
-		for(int i = 0; i < 25; i++) {
-			for(int j = 0; j < 25; j++)
+		int min = 1000;
+		for(int zod = 0; zod < 60000; zod++) {
+		boolean[][] mao = new boolean[100][100];
+		for(int i = 0; i < 100; i++) {
+			for(int j = 0; j <100; j++)
 				if(Math.random()<.3)
 					mao[i][j] = true;
 		}
 		ShortestPathCalculator theCalc = new ShortestPathCalculator(mao);
 		ArrayList<Direction> theDor = null;
 		if(zod<1000) {
-			theDor = theCalc.getShortestPath(new Point(4,4), new Point(20, 4));
+			theDor = theCalc.getShortestPath(new Point(4,4), new Point(75, 4));
 		}
 		else if(zod<2000) {
-			theDor = theCalc.getShortestPath(new Point(20,20), new Point(4, 4));
+			theDor = theCalc.getShortestPath(new Point(75,75), new Point(4, 4));
 		}
 		else if(zod<3000) {
-			theDor = theCalc.getShortestPath(new Point(4,4), new Point(4, 20));
+			theDor = theCalc.getShortestPath(new Point(4,4), new Point(4, 75));
 		}
 		else if(zod<4000) {
-			theDor = theCalc.getShortestPath(new Point(4,20), new Point(4, 4));
+			theDor = theCalc.getShortestPath(new Point(4,75), new Point(4, 4));
 		}
 		else if(zod < 5000)
-			theDor = theCalc.getShortestPath(new Point(20,4), new Point(4, 4));
+			theDor = theCalc.getShortestPath(new Point(75,75), new Point(4, 4));
 		else {
-			theDor = theCalc.getShortestPath(new Point(4,4), new Point(20, 20));
+			theDor = theCalc.getShortestPath(new Point(4,4), new Point(75, 75));
 		}
 		if(theDor.size()!= 0) {
 			if(theDor.size() < min)
