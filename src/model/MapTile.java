@@ -19,6 +19,10 @@
 package model;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class MapTile {
 
@@ -32,6 +36,10 @@ public class MapTile {
 	// Assigns this tile as a terrain
 	private Terrain terrain;
 	
+	// Variables for the array of tiles for the background
+	private Image[][] summerTiles = new Image[50][50];
+	private String[][] sTileNames = new String[50][50];
+	
 	/**************************************
 	 *         MapTile Constructor        *
 	 **************************************/
@@ -39,6 +47,30 @@ public class MapTile {
 	public MapTile() {
 		resource = new Nothing();
 		terrain = terrain.PLAIN;
+	}
+	
+	// create the array of images for the ground in summer
+	public void backgroundTiles(){
+		int counter = 1;
+		// create the array file names first so that it's easier to read in to 2Darray
+		for (int i=0; i < 50; i++){
+			for (int j=0; j < 50; j++){
+				sTileNames[i][j] = "./Graphics/Ground/summerTiles/sTile_" + counter + ".png";
+				counter++;
+			}
+		}
+		// creates the image 2Darray from file names
+		for (int i=0; i < 50; i++){
+			for (int j=0; j < 50; j++){
+				try {
+					summerTiles[i][j] = ImageIO.read(new File(sTileNames[i][j]));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 	
 	/**************************************

@@ -20,6 +20,7 @@ package view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
@@ -50,10 +51,10 @@ public class MapPanel extends JPanel implements Observer{
 	private int maxY = 0;
 	private SettlementGUI caller;
 	private ListOfWorkers workmen;
+
 	//Colors
 	Color DarkGreen = new Color(20, 120, 20);
 	Color LightGreen = new Color(130, 190, 60);
-	
 
 	MapPanel(SettlementGUI caller) {
 		this.caller = caller;
@@ -144,6 +145,7 @@ public class MapPanel extends JPanel implements Observer{
 			}
 		}
 	}
+	
 	private void drawThemWorkers(Graphics2D g) {
 		//  No animation yet... Sorry bois
 		if(workmen!=null) {
