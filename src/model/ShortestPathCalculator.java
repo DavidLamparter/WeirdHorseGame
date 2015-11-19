@@ -217,12 +217,12 @@ public class ShortestPathCalculator{
 		shortestPath(init, fin, map, true, true);
 		ArrayList<Direction> firstPath = new ArrayList<>();
 		optimize();
-	//	while(supaOptimize(init, fin, true));
+		while(supaOptimize(init, fin, true));
 		firstPath.addAll(thePath);
 		reset();
 		shortestPath(init, fin, map, false, true);
 		optimize();
-	//	while(supaOptimize(fin, fin, false));
+		while(supaOptimize(fin, fin, false));
 		
 		//  Because even the worst path is better than no path
 		if(thePath.size() == 0)
