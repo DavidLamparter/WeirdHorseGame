@@ -18,6 +18,12 @@
 
 package model;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 public class MapTile {
 
 	/**************************************
@@ -29,6 +35,7 @@ public class MapTile {
 	
 	// Assigns this tile as a terrain
 	private Terrain terrain;
+	
 	
 	/**************************************
 	 *         MapTile Constructor        *
