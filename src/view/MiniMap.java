@@ -19,8 +19,12 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -58,6 +62,7 @@ public class MiniMap extends JFrame{
 	maximize.setFont(new Font("Comic Sans Ms", Font.PLAIN, 28));
 	
 	this.addMouseListener(new ClickerListener());
+	this.addMouseMotionListener(new ClickerListener());
     this.add(panel);
 	this.add(maximize);
 	this.setVisible(true);
@@ -69,11 +74,10 @@ public class MiniMap extends JFrame{
 	public void toggleInvisible() {
 		this.setVisible(!this.isVisible());
 	}
-	private class ClickerListener implements MouseListener {
+	private class MinimizeListener implements ActionListener {
 		private boolean firstClick = false;
 		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+		public void actionPerformed(ActionEvent arg0) {
 			firstClick = !firstClick;
 			if(firstClick) {
 				setSize(new Dimension(25,25));
@@ -89,6 +93,16 @@ public class MiniMap extends JFrame{
 			maximize.setLocation(1,1);
 			maximize.setSize(getSize());
 			
+		}
+		
+	}
+	private class ClickerListener implements MouseListener, MouseMotionListener {
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			caller.getMapPanel().setInitialPoint(new Point(
+					(int)(arg0.getLocationOnScreen().x-caller.getWidth()+getWidth()),
+					(int)(arg0.getLocationOnScreen().y-caller.getHeight()+getHeight())));
 		}
 
 		@Override
@@ -111,6 +125,19 @@ public class MiniMap extends JFrame{
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			caller.getMapPanel().setInitialPoint(new Point(
+					(int)(arg0.getLocationOnScreen().x-caller.getWidth()+getWidth()),
+					(int)(arg0.getLocationOnScreen().y-caller.getHeight()+getHeight())));
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}

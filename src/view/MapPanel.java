@@ -265,5 +265,18 @@ public class MapPanel extends JPanel implements Observer{
 		workmen = (ListOfWorkers)arg1;
 		repaint();
 	}
+
+	public void setInitialPoint(Point point) {
+		initialx = point.x / 2 - caller.getWidth()/MAP_TILE_WIDTH/2; //  it just takes some time
+		initialy = point.y / 2 - caller.getHeight()/MAP_TILE_HEIGHT/2; //  the middle 
+		if(initialx <= 0)
+			initialx = 0;
+		if(initialy <= 0)
+			initialy = 0;
+		if(initialx >= (MAP_TILE_WIDTH*caller.getMapSize()-caller.getWidth())/MAP_TILE_WIDTH)
+			initialx = (MAP_TILE_WIDTH*caller.getMapSize()-caller.getWidth())/MAP_TILE_WIDTH;
+		if(initialy >= (MAP_TILE_HEIGHT*caller.getMapSize()-caller.getHeight())/MAP_TILE_HEIGHT) 
+			initialy = (MAP_TILE_HEIGHT*caller.getMapSize()-caller.getHeight())/MAP_TILE_HEIGHT;
+	}
 	
 }
