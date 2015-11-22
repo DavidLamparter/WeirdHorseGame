@@ -87,8 +87,7 @@ public abstract class Storage extends Buildable {
 	public void addResource(ResourceType toAdd) {
 		theGoods.add(toAdd);
 	}
-	
-	abstract Image getImage();
+	public abstract Image getImage();
 }
 class TownHall extends Storage {
 
@@ -98,7 +97,7 @@ class TownHall extends Storage {
 	}
 
 	@Override
-	Image getImage() {
+	public Image getImage() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -111,7 +110,7 @@ class Storehouse extends Storage {
 	}
 
 	@Override
-	Image getImage() {
+	public Image getImage() {
 		// TODO Auto-generated method stub
 		return null;
 	}

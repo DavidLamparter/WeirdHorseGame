@@ -44,7 +44,7 @@ public abstract class Buildable {
 		return built;
 	}
 	
-	abstract Image getImage();
+	public abstract Image getImage();
 	
 	//  abstract whateverTheHellItReturns whateverTheHellItDoes(Object whateverTheHellItTakes);
 }
@@ -55,7 +55,7 @@ class House extends Buildable {
 	}
 
 	@Override
-	Image getImage() {
+	public Image getImage() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -68,7 +68,7 @@ class Bridge extends Buildable {
 	}
 	
 	@Override
-	Image getImage() {
+	public Image getImage() {
 		// TODO Auto-generated method stub
 		return null;
 	}

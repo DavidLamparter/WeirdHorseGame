@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.Buildable;
 import model.ListOfWorkers;
 import model.MapTile;
 import model.ResourceType;
