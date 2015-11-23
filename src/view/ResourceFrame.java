@@ -127,7 +127,7 @@ public class ResourceFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			game.addJob(new Job(arrayPos, nameOfResource.getText()));
+			game.addJob(new Job(arrayPos, curr));
 			/*Worker theJobDoer = theWorkmen.findClosest(arrayPos);
 			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
 			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));

@@ -21,24 +21,28 @@ package model;
 import java.awt.Point;
 
 public class Job {
-	String name = "";
+	Resource resource;
 	Point location = null;
 	
-	public Job(Point location, String name){
+	public Job(Point location, Resource resource){
 		this.location = location;
-		this.name = name;
-		giveCoolName();
+		this.resource = resource;
+		//  giveCoolName();
 	}
 
 	public String getName() {
-		return name;
+		return resource.getName();
+	}
+	
+	public Resource getResource() {
+		return resource;
 	}
 	
 	public Point getLocation() {
 		return location;
 	}
 	
-	private void giveCoolName() {
+	/*private void giveCoolName() {
 		if(name.equals("Tree")) {
 			name = "Chop down ALL THE TREES";
 		}
@@ -48,5 +52,5 @@ public class Job {
 		if(name.equals("Salty Fish")) {
 			name = "Get to the salt!";
 		}
-	}
+	}*/
 }

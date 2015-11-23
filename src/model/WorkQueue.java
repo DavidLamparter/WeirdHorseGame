@@ -39,16 +39,16 @@ public class WorkQueue extends Observable {
 	//  origin is the worker
 	public Job findClosest(Point origin) {
 		double min = Double.MAX_VALUE;
-		String jobTitle = queue.get(0).getName();
 		Point minPoint = queue.get(0).getLocation();
+		Resource res = queue.get(0).getResource();
 		for(int i = 0; i < queue.size(); i++) {
 			double potentialMin = origin.distance(queue.get(i).getLocation());
 			if(potentialMin < min) {
 				minPoint = queue.get(i).getLocation();
-				jobTitle = queue.get(i).getName();
+				res = queue.get(i).getResource();
 			}
 		}
-		return new Job(minPoint, jobTitle);
+		return new Job(minPoint, res);
 		
 	}
 	
@@ -65,7 +65,7 @@ public class WorkQueue extends Observable {
 	//  origin is the workers location
 	public Job getRelativeCloseness(Point origin) {
 		double min = origin.distance(queue.get(0).getLocation());
-		String jobTitle = queue.get(0).getName();
+		Resource jobTitle = queue.get(0).getResource();
 		Point minPoint = queue.get(0).getLocation();
 		int tightness = 6;  //  tightness is how close they will try to be. Ex a tree 10 ft away and a fish 5 ft away
 		//  with tightness of 6 it will do the 5 ft away first
@@ -75,7 +75,7 @@ public class WorkQueue extends Observable {
 			if(potentialMin < min) {
 				if(potentialMin >= originalDistance - tightness) {
 					minPoint = queue.get(i).getLocation();
-					jobTitle = queue.get(i).getName();
+					jobTitle = queue.get(i).getResource();
 				}
 			}
 		}
