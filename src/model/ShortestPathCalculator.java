@@ -94,8 +94,10 @@ public class ShortestPathCalculator{
 	// Optimizes the current path to decrease travel time for units
 	private void optimize() {
 
-		for(int i = 0; i < thePath.size()-2;i++) {
+		int pathSize = thePath.size()-2;
+		for(int i = 0; i < pathSize;i++) {
 			if(thePath.get(i).equals(thePath.get(i+2).invert(thePath.get(i+2)))) {//  My life... 
+				pathSize -= 2;
 				thePath.remove(i+2);
 				thePath.remove(i);
 				i = -1;
@@ -119,7 +121,8 @@ public class ShortestPathCalculator{
 		int curry = init.y;
 		int currx = init.x;
 		int successCounter = 0;
-		for(int i = 0; i < theShortestPath.size()-1;i++) {
+		int shortPathSize = theShortestPath.size();
+		for(int i = 0; i < shortPathSize - 1;i++) {
 			if(onlyOnce)
 				break;
 			Direction toGo1 = theShortestPath.get(i);
@@ -133,7 +136,7 @@ public class ShortestPathCalculator{
 				currx--;
 			Point location = new Point(currx, curry);
 			int dankCounter = 0;
-			for(int j = i+1; j < theShortestPath.size()-2; j++) {
+			for(int j = i+1; j < shortPathSize-2; j++) {
 				if(onlyOnce)
 					break;
 				Direction toGo = theShortestPath.get(j);
@@ -158,7 +161,7 @@ public class ShortestPathCalculator{
 						for(int k = i+1; k <= j; k++) {
 							temp.add(theShortestPath.get(k));
 						}
-						for(int k = j+1; k < theShortestPath.size(); k++) {
+						for(int k = j+1; k < shortPathSize; k++) {
 							endPart.add(theShortestPath.get(k));
 						}
 						reset();

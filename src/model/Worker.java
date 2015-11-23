@@ -60,6 +60,9 @@ public abstract class Worker {
 	// Stores the last direction used by the worker (for animation use)
 	private Direction last;
 	
+	// keeps track of the workers preferance
+	private ResourceType preference;
+	
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
@@ -85,6 +88,22 @@ public abstract class Worker {
 		// Set the current location of the worker when spawned
 		XPos = currentLocation.x;
 		YPos = currentLocation.y;
+		
+		// Sets the Preference
+		double randomize = Math.random();
+		
+		if(randomize < .33){
+			preference = ResourceType.TREE;
+		}
+		if(randomize < .66){
+			preference = ResourceType.STONE;
+		}
+		if(randomize < .83){
+			preference = ResourceType.BERRY_BUSH;
+		}
+		if(randomize < 1){
+			preference = ResourceType.FISH;
+		}
 	}
 	
 	/**************************************
@@ -279,7 +298,6 @@ public abstract class Worker {
 	}
 }
 
-
 /******************************************************
 *~~~~~~~~~~~~~~~~~~~~ BRETT CLASS ~~~~~~~~~~~~~~~~~~~~*
 ******************************************************/
@@ -386,3 +404,4 @@ class KJG extends Worker{
 		addColdness(1.5);
 	}
 }
+

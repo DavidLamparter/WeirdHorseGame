@@ -204,7 +204,8 @@ public class MapPanel extends JPanel implements Observer{
 	private void drawThemWorkers(Graphics2D g) {
 		//  No animation yet... Sorry bois
 		if(workmen!=null) {
-			for(int i = 0; i < workmen.size(); i++) {
+			int workmenSize = workmen.size();
+			for(int i = 0; i < workmenSize; i++) {
 				Point l = workmen.get(i).getPoint();
 				g.setColor(Color.WHITE);
 				g.fillRect((l.x-initialx)*50, (l.y-initialy)*50, 50, 50);

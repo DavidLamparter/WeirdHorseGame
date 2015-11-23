@@ -16,7 +16,8 @@ public abstract class Storage extends Buildable {
 	public ArrayList<ResourceType> getFood(int quanity) {
 		//  I made a funny joke
 		ArrayList<ResourceType> toGit = new ArrayList<>();
-		for(int i = 0; i < theGoods.size(); i++) {
+		int goodsSize = theGoods.size();
+		for(int i = 0; i < goodsSize; i++) {
 			if(toGit.size() >= quanity)
 				break;
 			if(theGoods.get(i).equals(ResourceType.BERRY_BUSH)) {
@@ -45,7 +46,8 @@ public abstract class Storage extends Buildable {
 	public ArrayList<ResourceType> getResource(ResourceType type, int quanity) {
 		//  I made a funny joke
 		ArrayList<ResourceType> toGit = new ArrayList<>();
-		for(int i = 0; i < theGoods.size(); i++) {
+		int goodsSize = theGoods.size();
+		for(int i = 0; i < goodsSize; i++) {
 			if(toGit.size() >= quanity)
 				break;
 			if(theGoods.get(i).equals(ResourceType.STONE)) {
@@ -93,12 +95,10 @@ class TownHall extends Storage {
 
 	public TownHall(Point topLeftPoint, Point bottomRightPoint) {
 		super(topLeftPoint, bottomRightPoint);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Image getImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
@@ -106,12 +106,10 @@ class Storehouse extends Storage {
 
 	public Storehouse(Point topLeftPoint, Point bottomRightPoint) {
 		super(topLeftPoint, bottomRightPoint);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Image getImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

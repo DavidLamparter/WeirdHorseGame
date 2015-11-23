@@ -93,6 +93,7 @@ public class SettlementGUI extends JFrame {
 		options.dispose();
 		buildings.dispose();
 		this.dispose();
+		System.exit(0);
 	}
 	public Game getGame() {
 		return game;

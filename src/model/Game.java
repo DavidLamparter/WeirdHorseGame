@@ -71,7 +71,8 @@ public class Game extends Observable{
 		this.theMap = theMap;
 		list = new ListOfWorkers(MAX_NUMBER_OF_WORKERS);
 		ArrayList<Worker> init = theMap.getInitialWorkers();
-		for(int i = 0; i < init.size(); i++) {
+		int initSize = init.size();
+		for(int i = 0; i < initSize; i++) {
 			list.add(init.get(i));
 		}
 		setChanged();
@@ -130,7 +131,8 @@ public class Game extends Observable{
 			}
 			gameLength++;
 			if(!workQueue.isEmpty()) {
-				for(int i = 0; i < workQueue.size(); i++) {
+				int queueSize = workQueue.size();
+				for(int i = 0; i < queueSize; i++) {
 					Worker jobDoer = list.findAnyone();
 					//  everyone is supa busy
 					if(jobDoer == null)
@@ -142,8 +144,10 @@ public class Game extends Observable{
 					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
 					//  didn't find a path
 					System.out.printf("Count:%d Job: %s\n", i, dest.getName());
-					if(toThere.isEmpty())
+					if(toThere.isEmpty()){
+						workQueue.removeJob(dest);
 						continue;
+					}
 					jobDoer.toLocation(toThere);
 					workQueue.removeJob(dest);
 					jobDoer.setBusy(true);

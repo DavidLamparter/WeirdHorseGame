@@ -47,6 +47,11 @@ public class Map {
 	// A boolean used for the generation of the rivers on the map
 	private boolean riverNotFinished;
 	
+	//Arrays of the resources, used to determine closest Resource of working type
+	private ArrayList<Point> TreeList = new ArrayList<Point>();
+	private ArrayList<Point> StoneList = new ArrayList<Point>();
+	private ArrayList<Point> FoodList = new ArrayList<Point>();
+	
 	/**************************************
 	 *           Map Constructors         *
 	 **************************************/
@@ -452,6 +457,7 @@ public class Map {
 							if(board[j][i].getLand().equals(Terrain.PLAIN) 
 									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
 								board[j][i].setResource(new Tree());
+								TreeList.add(new Point(j,i));
 								noOfTrees++;
 							}
 						}
@@ -486,6 +492,7 @@ public class Map {
 				point.y = gen.nextInt(size);
 			}
 			board[point.x][point.y].setResource(new Fish());
+			FoodList.add(new Point(point.x,point.y));
 		}
 		//  Spawns Salty Fish in the Ocean
 		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
@@ -495,6 +502,7 @@ public class Map {
 				point.y = gen.nextInt(size);
 			}
 			board[point.y][point.x].setResource(new SaltyFish());
+			FoodList.add(new Point(point.x,point.y));
 		} 
 	}
 	
@@ -520,6 +528,7 @@ public class Map {
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(new BerryBush());
+			FoodList.add(new Point(X,Y));
 			dingDangBushes --;
 			treeCounter = 0;
 			}
@@ -565,6 +574,11 @@ public class Map {
 				board[X][Y+1].setResource(stoned);
 				board[X+1][Y+1].setResource(stoned);
 				
+				StoneList.add(new Point(X,Y));
+				StoneList.add(new Point(X+1,Y));
+				StoneList.add(new Point(X,Y+1));
+				StoneList.add(new Point(X+1,Y+1));
+				
 				Outcroppings--;
 		}
 		}
@@ -597,6 +611,7 @@ public class Map {
 			counter++;
 		}
 		//  TownHall!!!!
+		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1),new Point(X + 4,Y + 5));
 		for(int i = X+1; i < X + 4; i++) {
 			for(int j = Y + 1; j < Y + 6; j++) {
 				board[j][i].setLand(Terrain.BEACH);

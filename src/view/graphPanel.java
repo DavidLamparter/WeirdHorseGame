@@ -136,7 +136,8 @@ public class graphPanel extends JPanel implements Observer {
 			}
 		}
 		if(workmen!=null) {
-			for(int i = 0; i < workmen.size(); i++) {
+			int workSize = workmen.size();
+			for(int i = 0; i < workSize; i++) {
 				Point l = workmen.get(i).getPoint();
 				g2d.setColor(Color.BLACK);
 				g2d.fillRect(l.x*2, l.y*2, 2, 2);
