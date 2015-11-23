@@ -20,6 +20,7 @@
 
 package model;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class Game extends Observable{
 	
 	// This list holds all of the living workers
 	private ListOfWorkers list;
+	
+	//  This is the worker queue
+	private WorkQueue workQueue = new WorkQueue();
 
 	// This variable keeps track of how long the game has been played
 	private int gameLength = 0;
@@ -73,10 +77,21 @@ public class Game extends Observable{
 		setChanged();
 		notifyObservers(list);
 		SpeedMeter.start();
+		gameTimer.start();
 	}
 	public void setChange() {
 		setChanged();
 		notifyObservers(list);
+	}
+	
+	public WorkQueue getWorkQueue() {
+		return workQueue;
+	}
+	/**************************************
+	 *   Adding An Job to the Queue       *
+	 **************************************/
+	public void addJob(Job theJob) {
+		workQueue.add(theJob);
 	}
 	
 	/**************************************
@@ -114,6 +129,26 @@ public class Game extends Observable{
 					wintersSurvived ++;
 			}
 			gameLength++;
+			if(!workQueue.isEmpty()) {
+				for(int i = 0; i < workQueue.size(); i++) {
+					Worker jobDoer = list.findAnyone();
+					//  everyone is supa busy
+					if(jobDoer == null)
+						break;
+					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
+					//  wanting to get salty fish when it's impossible leading to nothing happening Q.Q
+					Job dest = workQueue.findClosest(jobDoer.getPoint());
+					ShortestPathCalculator calc = new ShortestPathCalculator(getMap());
+					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
+					//  didn't find a path
+					System.out.printf("Count:%d Job: %s\n", i, dest.getName());
+					if(toThere.isEmpty())
+						continue;
+					jobDoer.toLocation(toThere);
+					workQueue.removeJob(dest);
+					jobDoer.setBusy(true);
+				}
+			}
 		}
 	}
 	

@@ -233,6 +233,14 @@ public abstract class Worker {
 	}
 	
 	/**************************************
+	 *          To be busy or not         *
+	 **************************************/
+	
+	public void setBusy(boolean isBusy) {
+		this.isBusy = isBusy;
+	}
+	
+	/**************************************
 	 *          Movement Methods          *
 	 **************************************/
 	
@@ -265,6 +273,9 @@ public abstract class Worker {
 				last = Direction.WEST;
 			}
 		}
+		//  Will need to be something else an intermediary but this will be cool to see goons run around
+		else
+			isBusy = false;
 	}
 }
 

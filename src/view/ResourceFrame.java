@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 import javax.imageio.ImageIO;
 
 import model.Game;
+import model.Job;
 import model.ListOfWorkers;
 import model.Resource;
 import model.ShortestPathCalculator;
@@ -126,10 +127,11 @@ public class ResourceFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			Worker theJobDoer = theWorkmen.findClosest(arrayPos);
+			game.addJob(new Job(arrayPos, nameOfResource.getText()));
+			/*Worker theJobDoer = theWorkmen.findClosest(arrayPos);
 			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
 			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));
-			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));
+			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), arrayPos)); */
 			dispose(); 
 			//  curr.incrementNumberOfHarvesters();  we could add this so they know how many workers are working this tile
 		}

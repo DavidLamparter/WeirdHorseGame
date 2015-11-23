@@ -115,6 +115,19 @@ public class ListOfWorkers {
 	}
 	
 	/**************************************
+	 *         findANotBusyGoon           *
+	 **************************************/
+	
+	//  returns the first not busy worker
+	public Worker findAnyone() {
+		for(int i = 0; i < pos; i++) {
+			if(!theWorkmen[i].isBusy()&&(theWorkmen[i].isAlive()))
+				return theWorkmen[i];
+		}
+		return null;
+	}
+	
+	/**************************************
 	 *        Condition Incrementors      *
 	 **************************************/
 	

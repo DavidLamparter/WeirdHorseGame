@@ -47,6 +47,7 @@ public class SettlementGUI extends JFrame {
 	private OptionsGUI options = null;
 	private MapPanel mapPanel = null;
 	private BuildingPanel buildings;
+	private QueueFrame theQueueFrame;
 	private Map map = null;
 	private MapTile[][] board = null;
 	private Game game;
@@ -75,12 +76,17 @@ public class SettlementGUI extends JFrame {
 		this.setVisible(true);
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
+		
 		buildings = new BuildingPanel(this, 3);
+		
+		theQueueFrame = new QueueFrame(this);
 		
 		game = new Game(map);	
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
 		game.setChange();
+		
+		game.getWorkQueue().addObserver(theQueueFrame);
 	}
 	public void CloseEverything() {
 		minimap.dispose();
