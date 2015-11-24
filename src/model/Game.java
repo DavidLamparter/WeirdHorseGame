@@ -58,7 +58,7 @@ public class Game extends Observable{
 	private Timer gameTimer = new Timer(1000, new GameTimerListener());
 	
 	// SpeedMeter is responsible for NPC movement
-	private Timer SpeedMeter = new Timer(50, new MovementTimerListener());
+	private Timer SpeedMeter = new Timer(200, new MovementTimerListener());
 	
 	// Our current max number of workers is 50
 	public static final int MAX_NUMBER_OF_WORKERS = 50;
@@ -116,9 +116,9 @@ public class Game extends Observable{
 			
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 5) == 0) {
-				list.incrementHunger();
-				list.incrementFatigue();
-				list.incrementColdness();
+				//list.incrementHunger();
+				//list.incrementFatigue();
+				//list.incrementColdness();
 			}
 			seasonsCounter++;
 			
@@ -133,13 +133,18 @@ public class Game extends Observable{
 			if(!workQueue.isEmpty()) {
 				int queueSize = workQueue.size();
 				for(int i = 0; i < queueSize; i++) {
-					Worker jobDoer = list.findAnyone();
+					Job dest = workQueue.getFirst();
+					if(dest == null)
+						return;
+					
+					Worker jobDoer = list.findClosest(dest.getLocation());
 					//  everyone is supa busy
-					if(jobDoer == null)
+					if(jobDoer == null) {
 						break;
+					}
+					
 					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
 					//  wanting to get salty fish when it's impossible leading to nothing happening Q.Q
-					Job dest = workQueue.findClosest(jobDoer.getPoint());
 					ShortestPathCalculator calc = new ShortestPathCalculator(getMap());
 					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
 					//  didn't find a path

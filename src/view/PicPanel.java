@@ -37,7 +37,7 @@ public class PicPanel extends JPanel{
 			img= ImageIO.read(new File(fileName));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		repaint();
 	}

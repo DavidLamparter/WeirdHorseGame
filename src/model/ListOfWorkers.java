@@ -83,7 +83,14 @@ public class ListOfWorkers {
 			pos--;
 		}
 	}
-	
+	//  gets the worker at the point
+	public Worker getAt(Point point) {
+		for(int i = 0; i < pos; i++) {
+			if(theWorkmen[i].getPoint().equals(point))
+				return theWorkmen[i];
+		}
+		return null;
+	}
 	// Removes all of the dead workers from the list
 	public void removeDead() {
 		for(int i = 0; i < pos; i++) {

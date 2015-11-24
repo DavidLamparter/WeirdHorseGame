@@ -28,6 +28,7 @@ public class QueueFrame extends JFrame implements Observer {
 		displayList.setSize(this.getSize());
 		displayList.setLocation(0, 0);
 		displayList.setModel(queueListModel);
+		//  displayList.setOpaque(false);
 		this.add(displayList);
 		this.setAlwaysOnTop(true);
 		this.setVisible(true);

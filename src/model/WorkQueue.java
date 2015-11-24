@@ -54,11 +54,16 @@ public class WorkQueue extends Observable {
 	
 	//  for the ambitious types
 	public Job getFirst() {
+		try {
 		Job temp = queue.get(0);
 		queue.remove(0);
 		setChanged();
 		notifyObservers(this);
 		return temp;
+		}
+		catch(IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 	
 	//  for the relativly lazy

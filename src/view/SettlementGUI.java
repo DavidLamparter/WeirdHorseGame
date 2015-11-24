@@ -40,6 +40,7 @@ import model.Map;
 import model.MapTile;
 import model.ResourceType;
 import model.Storage;
+import model.Worker;
 
 public class SettlementGUI extends JFrame {
 	private int size;
@@ -236,6 +237,7 @@ public class SettlementGUI extends JFrame {
 	}
 	private class ClickerListener implements MouseListener{
 		private ResourceFrame frame;
+		private WorkerFrame workFrame;
 		
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -256,12 +258,23 @@ public class SettlementGUI extends JFrame {
 			//System.out.println("X,Y: " + point.x + ", " + point.y);
 			Point point = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
 			//  null needs to be our list of workers
-			if(board[point.y][point.x].getResource().getResourceT().equals(ResourceType.NONE))
+			if(board[point.y][point.x].getResource().getResourceT().equals(ResourceType.NONE)) {
+				worker(point, arg0);
 				return;
+			}
 			if (frame != null)
 				frame.dispose();
 			frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), game);
 			}
+
+		private void worker(Point point, MouseEvent arg0) {
+			Worker clicked = game.getList().getAt(point);
+			if(clicked != null) {
+				if(workFrame != null)
+					workFrame.dispose();
+				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked);
+			}
+		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
