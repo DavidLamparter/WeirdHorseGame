@@ -101,12 +101,26 @@ public class WorkerFrame extends JFrame {
 		//  adds some text
 		//  nameOfResource.setText(resource.getName());
 		if(workmen.isBusy()) {
-			description.setText("\nThey are busy");
+			description.setText("They are busy");
 		}
 		else {
-			description.setText("\nThey are idle");
+			description.setText("They are idle");
 		}
 		
+		double tempDistribution = .01;
+		//  0 to 4 times
+		//  running times
+		int timesToRun = (int)(Math.random()*3);
+		for(int i = 0; i < timesToRun; i++) {
+			tempDistribution-=.001;
+		}
+			description.setText(description.getText() + "\nHunger: "
+					+ workmen.getHunger() + "\nFatigue: "
+					+ workmen.getFatigue() + "\nTemp: "
+					+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) + "");
+					//  this is a formula that will take the normal body temp 98.6 and slowly drop it
+					//  till it gets below 94.5 I don't think this should change unless it's winter
+			
 		//  our action listeners
 		harvest.addActionListener(new HarvestListener());
 		exit.addActionListener(new ExitListener());
@@ -121,6 +135,13 @@ public class WorkerFrame extends JFrame {
 		
 		this.add(holder);
 		this.setVisible(true);
+	}
+	//  Rounds to 2 decimal places
+	private double round(double toRound) {
+		toRound *= 100;
+		toRound = (int)toRound;
+		toRound /= 100;
+		return toRound;
 	}
 	
 	private class HarvestListener implements ActionListener {
