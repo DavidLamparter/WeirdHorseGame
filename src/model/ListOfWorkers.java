@@ -92,11 +92,15 @@ public class ListOfWorkers {
 		return null;
 	}
 	// Removes all of the dead workers from the list
-	public void removeDead() {
+	public boolean removeDead() {
+		boolean changed = false;
 		for(int i = 0; i < pos; i++) {
-			if(!theWorkmen[i].isAlive())
+			if(!theWorkmen[i].isAlive()) {
 				removeAt(i);
+				changed = true;
+				}
 		}
+		return changed;
 	}
 	
 	/**************************************
