@@ -118,7 +118,7 @@ public class Game extends Observable{
 			int listSize = list.size();
 			for(int i = 0; i <listSize; i++){
 				if(!list.get(i).isBusy()){
-					
+					list.get(i).getClosestPreference(theMap);
 				}
 			}
 			

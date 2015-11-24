@@ -110,6 +110,29 @@ public class Map {
 		return initialWorkers;
 	}
 	
+
+	public ArrayList getBerryList() {
+		// TODO Auto-generated method stub
+		return BerryList;
+	}
+	
+
+	public ArrayList getStoneList() {
+		// TODO Auto-generated method stub
+		return StoneList;
+	}
+	
+
+	public ArrayList getTreeList() {
+		// TODO Auto-generated method stub
+		return TreeList;
+	}
+	
+	public ArrayList getFishList() {
+		// TODO Auto-generated method stub
+		return FishList;
+	}
+	
 	/**************************************
 	 *              toString              *
 	 **************************************/
@@ -645,4 +668,5 @@ public class Map {
 			}
 		}		
 	}
+
 }
