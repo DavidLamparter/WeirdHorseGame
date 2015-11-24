@@ -50,7 +50,8 @@ public class Map {
 	//Arrays of the resources, used to determine closest Resource of working type
 	private ArrayList<Point> TreeList = new ArrayList<Point>();
 	private ArrayList<Point> StoneList = new ArrayList<Point>();
-	private ArrayList<Point> FoodList = new ArrayList<Point>();
+	private ArrayList<Point> BerryList = new ArrayList<Point>();
+	private ArrayList<Point> FishList = new ArrayList<Point>();
 	
 	/**************************************
 	 *           Map Constructors         *
@@ -107,6 +108,29 @@ public class Map {
 	// Returns the list of workers that start the game
 	public ArrayList<Worker> getInitialWorkers() {
 		return initialWorkers;
+	}
+	
+
+	public ArrayList getBerryList() {
+		// TODO Auto-generated method stub
+		return BerryList;
+	}
+	
+
+	public ArrayList getStoneList() {
+		// TODO Auto-generated method stub
+		return StoneList;
+	}
+	
+
+	public ArrayList getTreeList() {
+		// TODO Auto-generated method stub
+		return TreeList;
+	}
+	
+	public ArrayList getFishList() {
+		// TODO Auto-generated method stub
+		return FishList;
 	}
 	
 	/**************************************
@@ -492,7 +516,7 @@ public class Map {
 				point.y = gen.nextInt(size);
 			}
 			board[point.x][point.y].setResource(new Fish());
-			FoodList.add(new Point(point.x,point.y));
+			FishList.add(new Point(point.x,point.y));
 		}
 		//  Spawns Salty Fish in the Ocean
 		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
@@ -502,7 +526,6 @@ public class Map {
 				point.y = gen.nextInt(size);
 			}
 			board[point.y][point.x].setResource(new SaltyFish());
-			FoodList.add(new Point(point.x,point.y));
 		} 
 	}
 	
@@ -528,7 +551,7 @@ public class Map {
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(new BerryBush());
-			FoodList.add(new Point(X,Y));
+			BerryList.add(new Point(X,Y));
 			dingDangBushes --;
 			treeCounter = 0;
 			}
@@ -645,4 +668,5 @@ public class Map {
 			}
 		}		
 	}
+
 }

@@ -19,8 +19,9 @@
 package model;
 
 import java.awt.Point;
+import java.util.Iterator;
 
-public class ListOfWorkers {
+public class ListOfWorkers{
 	
 	/**************************************
 	 *          Instance Variables        *

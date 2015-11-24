@@ -22,7 +22,7 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public abstract class Worker {
+public abstract class Worker{
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -297,6 +297,91 @@ public abstract class Worker {
 			isBusy = false;
 		}
 	}
+
+	public void getClosestPreference(Map theMap) {
+		double distance = 5000;
+		Point closest = new Point();
+
+		//for if the preference is berry
+		if(preference == ResourceType.BERRY_BUSH){			
+			ArrayList<Point> BerryList = theMap.getBerryList();
+			int size = BerryList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int BerryX = BerryList.get(i).x;
+			int BerryY = BerryList.get(i).y;
+			
+			double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(BerryX,BerryY);
+			}
+			}
+		}
+		
+		//for if the preference is Fish
+		if(preference == ResourceType.FISH){			
+			ArrayList<Point> FishList = theMap.getFishList();
+			int size = FishList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int FishX = FishList.get(i).x;
+			int FishY = FishList.get(i).y;
+			
+			double distanceToResource = Math.sqrt(Math.pow((XPos - FishX),2) + Math.pow((YPos - FishY),2));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(FishX,FishY);
+			}
+			}
+		}
+
+		//for if the preference is Tree
+		if(preference == ResourceType.TREE){			
+			ArrayList<Point> TreeList = theMap.getTreeList();
+			int size = TreeList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int TreeX = TreeList.get(i).x;
+			int TreeY = TreeList.get(i).y;
+			
+			double distanceToResource = Math.sqrt(Math.pow((XPos - TreeX),2) + Math.pow((YPos - TreeY),2));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(TreeX,TreeY);
+			}
+			}
+		}
+		
+		//for if the preference is Tree
+		if(preference == ResourceType.STONE){			
+			ArrayList<Point> StoneList = theMap.getStoneList();
+			int size = StoneList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int StoneX = StoneList.get(i).x;
+			int StoneY = StoneList.get(i).y;
+			
+			double distanceToResource = Math.sqrt(Math.pow((XPos - StoneX),2) + Math.pow((YPos - StoneY),2));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(StoneX,StoneY);
+			}
+			}
+		}
+	}
+	//sends the worker to harvest the closest of preference if they are idle
+	//help Kyle, I don't know how to call the method to make him go to the place
+	//pretty please
+	
 }
 
 /******************************************************
