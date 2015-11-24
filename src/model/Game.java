@@ -144,7 +144,7 @@ public class Game extends Observable{
 					Worker jobDoer = list.findClosest(dest.getLocation());
 					//  everyone is supa busy
 					if(jobDoer == null) {
-						break;
+						return;
 					}
 					
 					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through

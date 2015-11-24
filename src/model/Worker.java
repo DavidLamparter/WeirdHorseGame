@@ -293,8 +293,9 @@ public abstract class Worker {
 			}
 		}
 		//  Will need to be something else an intermediary but this will be cool to see goons run around
-		else
+		else {
 			isBusy = false;
+		}
 	}
 }
 

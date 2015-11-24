@@ -25,7 +25,6 @@ public class WorkQueue extends Observable {
 	private ArrayList<Job> queue = new ArrayList<>();
 	
 	public WorkQueue() {
-		
 	}
 	public void add(Job toAdd) {
 		queue.add(toAdd);
@@ -56,7 +55,6 @@ public class WorkQueue extends Observable {
 	public Job getFirst() {
 		try {
 		Job temp = queue.get(0);
-		queue.remove(0);
 		setChanged();
 		notifyObservers(this);
 		return temp;
