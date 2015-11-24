@@ -377,11 +377,10 @@ public abstract class Worker{
 			}
 			}
 		}
-	}
-	//sends the worker to harvest the closest of preference if they are idle
-	//help Kyle, I don't know how to call the method to make him go to the place
-	//pretty please
-	
+		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+		myTask = calc.getShortestPath(getPoint(), new Point(closest.y,closest.x));
+		isBusy = true;
+	}	
 }
 
 /******************************************************
