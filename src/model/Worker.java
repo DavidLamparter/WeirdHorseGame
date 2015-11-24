@@ -22,7 +22,7 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public abstract class Worker {
+public abstract class Worker{
 	
 	/**************************************
 	 *          Instance Variables        *

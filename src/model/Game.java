@@ -110,9 +110,17 @@ public class Game extends Observable{
 	// This timer keeps track of the game play time, and initiates certain events
 	// based on gameLength
 	private class GameTimerListener implements ActionListener {
-
+		
+		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			//checks for idle
+			int listSize = list.size();
+			for(int i = 0; i <listSize; i++){
+				if(!list.get(i).isBusy()){
+					
+				}
+			}
 			
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 5) == 0) {
