@@ -95,13 +95,13 @@ public abstract class Worker{
 		if(randomize < .33){
 			preference = ResourceType.TREE;
 		}
-		if(randomize < .66){
+		else if(randomize < .66){
 			preference = ResourceType.STONE;
 		}
-		if(randomize < .83){
+		else if(randomize < .83){
 			preference = ResourceType.BERRY_BUSH;
 		}
-		if(randomize < 1){
+		else if(randomize < 1){
 			preference = ResourceType.FISH;
 		}
 	}
@@ -168,6 +168,9 @@ public abstract class Worker{
 	
 	public Direction getLast() {
 		return last;
+	}
+	public ResourceType getPreference() {
+		return preference;
 	}
 	
 	/**************************************

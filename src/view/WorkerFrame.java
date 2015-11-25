@@ -58,7 +58,7 @@ public class WorkerFrame extends JFrame {
 	//Image resourcePic;  cuz that would be dope
 	
 	public WorkerFrame(Point mousePos, Point arrayPos, Worker workmen) {
-		this.setSize(200, 125);
+		this.setSize(200, 200);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
@@ -117,7 +117,8 @@ public class WorkerFrame extends JFrame {
 			description.setText(description.getText() + "\nHunger: "
 					+ workmen.getHunger() + "\nFatigue: "
 					+ workmen.getFatigue() + "\nTemp: "
-					+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) + "");
+					+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) 
+					+ "\nPref: " + workmen.getPreference());
 					//  this is a formula that will take the normal body temp 98.6 and slowly drop it
 					//  till it gets below 94.5 I don't think this should change unless it's winter
 			

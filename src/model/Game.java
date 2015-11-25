@@ -113,15 +113,7 @@ public class Game extends Observable{
 		
 		
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//checks for idle
-			int listSize = list.size();
-			for(int i = 0; i <listSize; i++){
-				if(!list.get(i).isBusy()){
-					list.get(i).getClosestPreference(theMap);
-				}
-			}
-			
+		public void actionPerformed(ActionEvent arg0) {			
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 5) == 0) {
 				//list.incrementHunger();
@@ -147,12 +139,12 @@ public class Game extends Observable{
 				for(int i = 0; i < queueSize; i++) {
 					Job dest = workQueue.getFirst();
 					if(dest == null)
-						return;
+						break;
 					
 					Worker jobDoer = list.findClosest(dest.getLocation());
 					//  everyone is supa busy
 					if(jobDoer == null) {
-						return;
+						break;
 					}
 					
 					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
@@ -168,6 +160,13 @@ public class Game extends Observable{
 					jobDoer.toLocation(toThere);
 					workQueue.removeJob(dest);
 					jobDoer.setBusy(true);
+				}
+			}
+			//checks for idle
+			int listSize = list.size();
+			for(int i = 0; i <listSize; i++){
+				if(!list.get(i).isBusy()){
+					list.get(i).getClosestPreference(theMap);
 				}
 			}
 		}
