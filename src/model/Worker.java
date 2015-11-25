@@ -302,7 +302,7 @@ public abstract class Worker{
 	}
 
 	public void getClosestPreference(Map theMap) {
-		double distance = 5000;
+		double distance = Double.MAX_VALUE;
 		Point closest = new Point();
 
 		//for if the preference is berry
@@ -315,7 +315,8 @@ public abstract class Worker{
 			int BerryX = BerryList.get(i).x;
 			int BerryY = BerryList.get(i).y;
 			
-			double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
+			double distanceToResource = getPoint().distance(BerryList.get(i));
 			
 			if(distanceToResource < distance){
 				distance = distanceToResource;
@@ -334,8 +335,9 @@ public abstract class Worker{
 			int FishX = FishList.get(i).x;
 			int FishY = FishList.get(i).y;
 			
-			double distanceToResource = Math.sqrt(Math.pow((XPos - FishX),2) + Math.pow((YPos - FishY),2));
-			
+//			double distanceToResource = Math.sqrt(Math.pow((XPos - FishX),2) + Math.pow((YPos - FishY),2));
+				double distanceToResource = getPoint().distance(FishList.get(i));
+		
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(FishX,FishY);
@@ -353,8 +355,10 @@ public abstract class Worker{
 			int TreeX = TreeList.get(i).x;
 			int TreeY = TreeList.get(i).y;
 			
-			double distanceToResource = Math.sqrt(Math.pow((XPos - TreeX),2) + Math.pow((YPos - TreeY),2));
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - TreeX),2) + Math.pow((YPos - TreeY),2));
 			
+			double distanceToResource = getPoint().distance(TreeList.get(i));
+
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(TreeX,TreeY);
@@ -372,7 +376,9 @@ public abstract class Worker{
 			int StoneX = StoneList.get(i).x;
 			int StoneY = StoneList.get(i).y;
 			
-			double distanceToResource = Math.sqrt(Math.pow((XPos - StoneX),2) + Math.pow((YPos - StoneY),2));
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - StoneX),2) + Math.pow((YPos - StoneY),2));
+			
+			double distanceToResource = getPoint().distance(StoneList.get(i));
 			
 			if(distanceToResource < distance){
 				distance = distanceToResource;

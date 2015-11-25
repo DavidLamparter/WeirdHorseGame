@@ -118,7 +118,7 @@ public class Game extends Observable{
 			if((gameLength % 5) == 0) {
 				//list.incrementHunger();
 				//list.incrementFatigue();
-				list.incrementColdness();
+				//list.incrementColdness();
 				if(list.removeDead()) {
 					setChanged();
 					notifyObservers(list);
