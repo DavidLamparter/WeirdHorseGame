@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.Buildable;
 import model.ListOfWorkers;
 import model.MapTile;
 import model.ResourceType;
@@ -173,6 +174,7 @@ public class MapPanel extends JPanel implements Observer{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+
 				}
 				
 				/*
@@ -188,12 +190,7 @@ public class MapPanel extends JPanel implements Observer{
 				int j = jlol + initialy;
 				// Trees Go on top of workers so uhh yesah we need a nother loop
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)){
-					try {
-							g2d.drawImage(ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + (graph[j][i].getID()+1) + ".png")), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
-						} catch (IOException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Wrong path");
-					}
+					g2d.drawImage(graph[j][i].getSummerID(), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
 				}
 			}
 		}
@@ -207,7 +204,8 @@ public class MapPanel extends JPanel implements Observer{
 	private void drawThemWorkers(Graphics2D g) {
 		//  No animation yet... Sorry bois
 		if(workmen!=null) {
-			for(int i = 0; i < workmen.size(); i++) {
+			int workmenSize = workmen.size();
+			for(int i = 0; i < workmenSize; i++) {
 				Point l = workmen.get(i).getPoint();
 				g.setColor(Color.WHITE);
 				g.fillRect((l.x-initialx)*50, (l.y-initialy)*50, 50, 50);
@@ -268,6 +266,19 @@ public class MapPanel extends JPanel implements Observer{
 	public void update(Observable arg0, Object arg1) {
 		workmen = (ListOfWorkers)arg1;
 		repaint();
+	}
+
+	public void setInitialPoint(Point point) {
+		initialx = point.x / 2 - caller.getWidth()/MAP_TILE_WIDTH/2; //  it just takes some time
+		initialy = point.y / 2 - caller.getHeight()/MAP_TILE_HEIGHT/2; //  the middle 
+		if(initialx <= 0)
+			initialx = 0;
+		if(initialy <= 0)
+			initialy = 0;
+		if(initialx >= (MAP_TILE_WIDTH*caller.getMapSize()-caller.getWidth())/MAP_TILE_WIDTH)
+			initialx = (MAP_TILE_WIDTH*caller.getMapSize()-caller.getWidth())/MAP_TILE_WIDTH;
+		if(initialy >= (MAP_TILE_HEIGHT*caller.getMapSize()-caller.getHeight())/MAP_TILE_HEIGHT) 
+			initialy = (MAP_TILE_HEIGHT*caller.getMapSize()-caller.getHeight())/MAP_TILE_HEIGHT;
 	}
 	
 }

@@ -42,7 +42,7 @@ import model.ShortestPathCalculator;
 import model.Worker;
 
 
-public class ResourceFrame extends JFrame {
+public class WorkerFrame extends JFrame {
 	//  Instance variables and stuffs
 	private JPanel holder = new JPanel();
 	private JTextArea description = new JTextArea();
@@ -52,26 +52,22 @@ public class ResourceFrame extends JFrame {
 	private Font titleFont = new Font("Arial", Font.BOLD, 20);
 	private Font descriptionFont = new Font("Arial", Font.PLAIN, 14);
 	private PicPanel imageGoesHere;
-	private ListOfWorkers theWorkmen;
-	private Resource curr;
+	private Worker workmen;
 	private Point arrayPos;
-	private Game game;
 	
 	//Image resourcePic;  cuz that would be dope
 	
-	public ResourceFrame(Point mousePos, Point arrayPos, Resource resource, Game game) {
-		//  sets the size of the frame and location 10 pixels away from your mouse
-		this.game = game;
-		theWorkmen = game.getList();
-		this.setSize(200, 125);
+	public WorkerFrame(Point mousePos, Point arrayPos, Worker workmen) {
+		this.setSize(200, 200);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
 		 */
+		this.workmen = workmen;
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
 		this.arrayPos = arrayPos;
-		curr = resource;
+		
 		//  sets up all the Java Swing
 		//imageGoesHere.setLayout(new BorderLayout());
 		//  what if we added the image from what was clicked
@@ -81,16 +77,16 @@ public class ResourceFrame extends JFrame {
 		//  The top section with the name and exit button
 		nameOfResource.setSize(getWidth()-25, 25);
 		nameOfResource.setLocation(0,0);
-		nameOfResource.setText(curr.getName());
+		//  nameOfResource.setText(workmen.getName());
 		nameOfResource.setHorizontalAlignment(SwingConstants.CENTER);
 		nameOfResource.setFont(titleFont);
 		exit.setSize(25,25);
 		exit.setLocation(nameOfResource.getWidth(), 0);
 		
 		//  Sets up the image location
-		imageGoesHere = new PicPanel(curr.getFileName());
+		imageGoesHere = new PicPanel("0");
 		imageGoesHere.setSize(getWidth()/2, getHeight()-25);
-		//imageGoesHere.setBackground(Color.WHITE);
+		imageGoesHere.setBackground(Color.WHITE);
 		imageGoesHere.setLocation(0, 25);
 		
 		//  sets up a location for the description of the resource
@@ -103,10 +99,29 @@ public class ResourceFrame extends JFrame {
 		harvest.setSize(imageGoesHere.getWidth(), 25);
 		
 		//  adds some text
-		nameOfResource.setText(resource.getName());
-		description.setText("\nQuanity: " + (int) resource.getQuantity() +
-							"\nWorkers: " );
+		//  nameOfResource.setText(resource.getName());
+		if(workmen.isBusy()) {
+			description.setText("They are busy");
+		}
+		else {
+			description.setText("They are idle");
+		}
 		
+		double tempDistribution = .01;
+		//  0 to 4 times
+		//  running times
+		int timesToRun = (int)(Math.random()*3);
+		for(int i = 0; i < timesToRun; i++) {
+			tempDistribution-=.001;
+		}
+			description.setText(description.getText() + "\nHunger: "
+					+ workmen.getHunger() + "\nFatigue: "
+					+ workmen.getFatigue() + "\nTemp: "
+					+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) 
+					+ "\nPref: " + workmen.getPreference());
+					//  this is a formula that will take the normal body temp 98.6 and slowly drop it
+					//  till it gets below 94.5 I don't think this should change unless it's winter
+			
 		//  our action listeners
 		harvest.addActionListener(new HarvestListener());
 		exit.addActionListener(new ExitListener());
@@ -122,12 +137,19 @@ public class ResourceFrame extends JFrame {
 		this.add(holder);
 		this.setVisible(true);
 	}
+	//  Rounds to 2 decimal places
+	private double round(double toRound) {
+		toRound *= 100;
+		toRound = (int)toRound;
+		toRound /= 100;
+		return toRound;
+	}
 	
 	private class HarvestListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			game.addJob(new Job(arrayPos, curr));
+			//  game.addJob(new Job(arrayPos, curr));
 			/*Worker theJobDoer = theWorkmen.findClosest(arrayPos);
 			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
 			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));

@@ -113,7 +113,11 @@ public class MapTile {
 	}
 
 	//returns the ID
-	public int getID() {
+	public Image getSummerID() {
+		// TODO Auto-generated method stub
+		return resource.getID();
+	}
+	public Image getWinterID() {
 		// TODO Auto-generated method stub
 		return resource.getID();
 	}

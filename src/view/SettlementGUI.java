@@ -34,16 +34,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import model.Buildable;
 import model.Game;
 import model.Map;
 import model.MapTile;
 import model.ResourceType;
+import model.Storage;
+import model.Worker;
 
 public class SettlementGUI extends JFrame {
 	private int size;
 	private MiniMap minimap = null;
 	private OptionsGUI options = null;
-	private MapPanel mapView = null;
+	private MapPanel mapPanel = null;
+	private BuildingPanel buildings;
+	private QueueFrame theQueueFrame;
 	private Map map = null;
 	private MapTile[][] board = null;
 	private Game game;
@@ -53,36 +58,44 @@ public class SettlementGUI extends JFrame {
 		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
 		//this.setSize(new Dimension(1080, 720));
 		this.setLayout(null);
-		mapView = new MapPanel(this);
-		mapView.setSize(this.getSize());
-		mapView.setLocation(0,0);
-		mapView.setMaxScroll();
-		mapView.addMouseListener(new ClickerListener());
-		this.add(mapView);
+		mapPanel = new MapPanel(this);
+		mapPanel.setSize(this.getSize());
+		mapPanel.setLocation(0,0);
+		mapPanel.setMaxScroll();
+		mapPanel.addMouseListener(new ClickerListener());
+		this.add(mapPanel);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		//this.requestFocus();
 		this.addWindowListener(new WindogeListener());
 		minimap = new MiniMap(this);
 		
 		options = new OptionsGUI(this);
+		
 		this.addMouseListener(new ClickerListener());
 		minimap.relocateToBottomRight();
 		this.setUndecorated(true);
 		this.setVisible(true);
-		mapView.addMouseMotionListener(new MapMotionListener());
+		mapPanel.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
 		
-		game = new Game(map);
-		game.addObserver(mapView);
+		buildings = new BuildingPanel(this, 3);
+		
+		theQueueFrame = new QueueFrame(this);
+		
+		game = new Game(map);	
+		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
 		game.setChange();
 		
-		
+		game.getWorkQueue().addObserver(theQueueFrame);
+
 	}
 	public void CloseEverything() {
 		minimap.dispose();
 		options.dispose();
+		buildings.dispose();
 		this.dispose();
+		System.exit(0);
 	}
 	public Game getGame() {
 		return game;
@@ -101,20 +114,78 @@ public class SettlementGUI extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			if(goingNorth)
-				mapView.increaseY();
+				mapPanel.increaseY();
 			if(goingSouth)
-				mapView.decreaseY();
+				mapPanel.decreaseY();
 			if(goingWest)
-				mapView.decreaseX();
+				mapPanel.decreaseX();
 			if(goingEast)
-				mapView.increaseX();
-			mapView.paintIt();
+				mapPanel.increaseX();
+			mapPanel.paintIt();
 			minimap.getGraphPanel().paintIt();
+		}
+	}
+	
+	//  The following Variables are used for building
+	private boolean mouseIsBuilding = false;
+	private boolean canBuild = false;
+	private int toBuild = 0;
+	private Point topLeftBuildingPoint = null;
+	
+	private class MouseBuildingListener implements MouseMotionListener, MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			if(mouseIsBuilding) {
+				//  add the building to a array of buildings...
+				mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
+				
+			}
+			else {
+				topLeftBuildingPoint = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
+				mouseIsBuilding = true;
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 	private class MapMotionListener implements MouseMotionListener {
 		private boolean triggered = false;
-		private int dividor = 12;
+		private int dividor = 14;
 		
 		@Override
 		public void mouseDragged(MouseEvent arg0) {
@@ -167,6 +238,7 @@ public class SettlementGUI extends JFrame {
 	}
 	private class ClickerListener implements MouseListener{
 		private ResourceFrame frame;
+		private WorkerFrame workFrame;
 		
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -185,14 +257,25 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			//System.out.println("X,Y: " + point.x + ", " + point.y);
-			Point point = mapView.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
+			Point point = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
 			//  null needs to be our list of workers
-			if(board[point.y][point.x].getResource().getResourceT().equals(ResourceType.NONE))
+			if(board[point.y][point.x].getResource().getResourceT().equals(ResourceType.NONE)) {
+				worker(point, arg0);
 				return;
+			}
 			if (frame != null)
 				frame.dispose();
 			frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), game);
 			}
+
+		private void worker(Point point, MouseEvent arg0) {
+			Worker clicked = game.getList().getAt(point);
+			if(clicked != null) {
+				if(workFrame != null)
+					workFrame.dispose();
+				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked);
+			}
+		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
@@ -250,6 +333,6 @@ public class SettlementGUI extends JFrame {
 	}
 	public MapPanel getMapPanel() {
 		// TODO Auto-generated method stub
-		return mapView;
+		return mapPanel;
 	}
 }

@@ -19,8 +19,9 @@
 package model;
 
 import java.awt.Point;
+import java.util.Iterator;
 
-public class ListOfWorkers {
+public class ListOfWorkers{
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -83,13 +84,24 @@ public class ListOfWorkers {
 			pos--;
 		}
 	}
-	
-	// Removes all of the dead workers from the list
-	public void removeDead() {
+	//  gets the worker at the point
+	public Worker getAt(Point point) {
 		for(int i = 0; i < pos; i++) {
-			if(!theWorkmen[i].isAlive())
-				removeAt(i);
+			if(theWorkmen[i].getPoint().equals(point))
+				return theWorkmen[i];
 		}
+		return null;
+	}
+	// Removes all of the dead workers from the list
+	public boolean removeDead() {
+		boolean changed = false;
+		for(int i = 0; i < pos; i++) {
+			if(!theWorkmen[i].isAlive()) {
+				removeAt(i);
+				changed = true;
+				}
+		}
+		return changed;
 	}
 	
 	/**************************************
@@ -112,6 +124,19 @@ public class ListOfWorkers {
 		}
 		// However it could return null meaning there are no workers who meet these qualifications
 		return closest;
+	}
+	
+	/**************************************
+	 *         findANotBusyGoon           *
+	 **************************************/
+	
+	//  returns the first not busy worker
+	public Worker findAnyone() {
+		for(int i = 0; i < pos; i++) {
+			if(!theWorkmen[i].isBusy()&&(theWorkmen[i].isAlive()))
+				return theWorkmen[i];
+		}
+		return null;
 	}
 	
 	/**************************************

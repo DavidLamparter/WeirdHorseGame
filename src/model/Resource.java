@@ -19,7 +19,12 @@
 
 package model;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 public abstract class Resource {
 	
@@ -41,7 +46,8 @@ public abstract class Resource {
 	private double max;
 	
 	//The Graphic ID;
-	private int ID;
+	protected Image ImageSummer;
+	protected Image ImageWinter;
 	
 	//staggers things a little
 	public int Offset;
@@ -55,7 +61,7 @@ public abstract class Resource {
 	public Resource(double q, ResourceType x) {
 		quantity = q;
 		type = x;
-		ID = num.nextInt(4);
+		ImageSummer = null;
 		Offset = num.nextInt(16)-8;
 	}
 	
@@ -63,8 +69,8 @@ public abstract class Resource {
 	 *   Getters for Instance Variables   *
 	 **************************************/
 	//Returns ID
-	public int getID() {
-		return ID;
+	public Image getID() {
+		return ImageSummer;
 	}
 	// Returns max possible value of this resource
 	public double getMax(){
@@ -165,6 +171,16 @@ class Tree extends Resource {
 	// Tree constructed with a randomly generated quantity
 	public Tree() {
 		super(num.nextInt(50)+75, ResourceType.TREE);
+		
+		int filenum = num.nextInt(3)+1;
+		try {
+			ImageSummer = ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + filenum + ".png"));
+			ImageWinter = ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + filenum + "_Winter.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("./Graphics/Trees/Tree Redux_" + filenum + ".jpg");
+			e.printStackTrace();
+		}
 	}
 	
 	// Tree regenerates over time to allow more playtime
@@ -176,6 +192,7 @@ class Tree extends Resource {
 			this.subResource(1);
 		else
 			this.addResource(.5);
+		
 	}
 	
 	// Returns the name of this resource, in this case "Tree"

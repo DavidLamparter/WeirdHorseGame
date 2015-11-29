@@ -20,6 +20,7 @@
 
 package model;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class Game extends Observable{
 	
 	// This list holds all of the living workers
 	private ListOfWorkers list;
+	
+	//  This is the worker queue
+	private WorkQueue workQueue = new WorkQueue();
 
 	// This variable keeps track of how long the game has been played
 	private int gameLength = 0;
@@ -54,7 +58,7 @@ public class Game extends Observable{
 	private Timer gameTimer = new Timer(1000, new GameTimerListener());
 	
 	// SpeedMeter is responsible for NPC movement
-	private Timer SpeedMeter = new Timer(50, new MovementTimerListener());
+	private Timer SpeedMeter = new Timer(200, new MovementTimerListener());
 	
 	// Our current max number of workers is 50
 	public static final int MAX_NUMBER_OF_WORKERS = 50;
@@ -67,16 +71,28 @@ public class Game extends Observable{
 		this.theMap = theMap;
 		list = new ListOfWorkers(MAX_NUMBER_OF_WORKERS);
 		ArrayList<Worker> init = theMap.getInitialWorkers();
-		for(int i = 0; i < init.size(); i++) {
+		int initSize = init.size();
+		for(int i = 0; i < initSize; i++) {
 			list.add(init.get(i));
 		}
 		setChanged();
 		notifyObservers(list);
 		SpeedMeter.start();
+		gameTimer.start();
 	}
 	public void setChange() {
 		setChanged();
 		notifyObservers(list);
+	}
+	
+	public WorkQueue getWorkQueue() {
+		return workQueue;
+	}
+	/**************************************
+	 *   Adding An Job to the Queue       *
+	 **************************************/
+	public void addJob(Job theJob) {
+		workQueue.add(theJob);
 	}
 	
 	/**************************************
@@ -94,15 +110,19 @@ public class Game extends Observable{
 	// This timer keeps track of the game play time, and initiates certain events
 	// based on gameLength
 	private class GameTimerListener implements ActionListener {
-
+		
+		
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			
+		public void actionPerformed(ActionEvent arg0) {			
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 5) == 0) {
-				list.incrementHunger();
-				list.incrementFatigue();
-				list.incrementColdness();
+				//list.incrementHunger();
+				//list.incrementFatigue();
+				//list.incrementColdness();
+				if(list.removeDead()) {
+					setChanged();
+					notifyObservers(list);
+				}	
 			}
 			seasonsCounter++;
 			
@@ -114,6 +134,41 @@ public class Game extends Observable{
 					wintersSurvived ++;
 			}
 			gameLength++;
+			if(!workQueue.isEmpty()) {
+				int queueSize = workQueue.size();
+				for(int i = 0; i < queueSize; i++) {
+					Job dest = workQueue.getFirst();
+					if(dest == null)
+						break;
+					
+					Worker jobDoer = list.findClosest(dest.getLocation());
+					//  everyone is supa busy
+					if(jobDoer == null) {
+						break;
+					}
+					
+					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
+					//  wanting to get salty fish when it's impossible leading to nothing happening Q.Q
+					ShortestPathCalculator calc = new ShortestPathCalculator(getMap());
+					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
+					//  didn't find a path
+					System.out.printf("Count:%d Job: %s\n", i, dest.getName());
+					if(toThere.isEmpty()){
+						workQueue.removeJob(dest);
+						continue;
+					}
+					jobDoer.toLocation(toThere);
+					workQueue.removeJob(dest);
+					jobDoer.setBusy(true);
+				}
+			}
+			//checks for idle
+			int listSize = list.size();
+			for(int i = 0; i <listSize; i++){
+				if(!list.get(i).isBusy()){
+					list.get(i).getClosestPreference(theMap);
+				}
+			}
 		}
 	}
 	

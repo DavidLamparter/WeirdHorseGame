@@ -22,7 +22,7 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public abstract class Worker {
+public abstract class Worker{
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -60,6 +60,9 @@ public abstract class Worker {
 	// Stores the last direction used by the worker (for animation use)
 	private Direction last;
 	
+	// keeps track of the workers preferance
+	private ResourceType preference;
+	
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
@@ -85,6 +88,22 @@ public abstract class Worker {
 		// Set the current location of the worker when spawned
 		XPos = currentLocation.x;
 		YPos = currentLocation.y;
+		
+		// Sets the Preference
+		double randomize = Math.random();
+		
+		if(randomize < .33){
+			preference = ResourceType.TREE;
+		}
+		else if(randomize < .66){
+			preference = ResourceType.STONE;
+		}
+		else if(randomize < .83){
+			preference = ResourceType.BERRY_BUSH;
+		}
+		else if(randomize < 1){
+			preference = ResourceType.FISH;
+		}
 	}
 	
 	/**************************************
@@ -149,6 +168,9 @@ public abstract class Worker {
 	
 	public Direction getLast() {
 		return last;
+	}
+	public ResourceType getPreference() {
+		return preference;
 	}
 	
 	/**************************************
@@ -233,6 +255,14 @@ public abstract class Worker {
 	}
 	
 	/**************************************
+	 *          To be busy or not         *
+	 **************************************/
+	
+	public void setBusy(boolean isBusy) {
+		this.isBusy = isBusy;
+	}
+	
+	/**************************************
 	 *          Movement Methods          *
 	 **************************************/
 	
@@ -265,9 +295,102 @@ public abstract class Worker {
 				last = Direction.WEST;
 			}
 		}
+		//  Will need to be something else an intermediary but this will be cool to see goons run around
+		else {
+			isBusy = false;
+		}
 	}
-}
 
+	public void getClosestPreference(Map theMap) {
+		double distance = Double.MAX_VALUE;
+		Point closest = new Point();
+
+		//for if the preference is berry
+		if(preference == ResourceType.BERRY_BUSH){			
+			ArrayList<Point> BerryList = theMap.getBerryList();
+			int size = BerryList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int BerryX = BerryList.get(i).x;
+			int BerryY = BerryList.get(i).y;
+			
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
+			double distanceToResource = getPoint().distance(BerryList.get(i));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(BerryX,BerryY);
+			}
+			}
+		}
+		
+		//for if the preference is Fish
+		if(preference == ResourceType.FISH){			
+			ArrayList<Point> FishList = theMap.getFishList();
+			int size = FishList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int FishX = FishList.get(i).x;
+			int FishY = FishList.get(i).y;
+			
+//			double distanceToResource = Math.sqrt(Math.pow((XPos - FishX),2) + Math.pow((YPos - FishY),2));
+				double distanceToResource = getPoint().distance(FishList.get(i));
+		
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(FishX,FishY);
+			}
+			}
+		}
+
+		//for if the preference is Tree
+		if(preference == ResourceType.TREE){			
+			ArrayList<Point> TreeList = theMap.getTreeList();
+			int size = TreeList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int TreeX = TreeList.get(i).x;
+			int TreeY = TreeList.get(i).y;
+			
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - TreeX),2) + Math.pow((YPos - TreeY),2));
+			
+			double distanceToResource = getPoint().distance(TreeList.get(i));
+
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(TreeX,TreeY);
+			}
+			}
+		}
+		
+		//for if the preference is Tree
+		if(preference == ResourceType.STONE){			
+			ArrayList<Point> StoneList = theMap.getStoneList();
+			int size = StoneList.size();
+					
+			for(int i = 0; i < size; i++){
+
+			int StoneX = StoneList.get(i).x;
+			int StoneY = StoneList.get(i).y;
+			
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - StoneX),2) + Math.pow((YPos - StoneY),2));
+			
+			double distanceToResource = getPoint().distance(StoneList.get(i));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(StoneX,StoneY);
+			}
+			}
+		}
+		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+		myTask = calc.getShortestPath(getPoint(), new Point(closest.y,closest.x));
+		isBusy = true;
+	}	
+}
 
 /******************************************************
 *~~~~~~~~~~~~~~~~~~~~ BRETT CLASS ~~~~~~~~~~~~~~~~~~~~*
@@ -375,3 +498,4 @@ class KJG extends Worker{
 		addColdness(1.5);
 	}
 }
+
