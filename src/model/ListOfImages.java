@@ -39,6 +39,8 @@ public class ListOfImages {
 	public ArrayList<ImageAndName> winterResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> winterBuildings = new ArrayList<ImageAndName>();
 		
+	public ArrayList<ImageAndName> workers = new ArrayList<>();
+	
 	public ListOfImages() {
 		//  LETS LOAD SOME FUCKING IMAGES!!!
 		for(int i = 1; i <= 4; i++) {
@@ -55,10 +57,10 @@ public class ListOfImages {
 		}
 		//  FISH LETS GO!!!
 		try {
-			Image temp = ImageIO.read(new File("./Graphics/Fish/Fish.png"));
-			summerResources.add(new ImageAndName("./Graphics/Fish/Fish.png", temp));
-			temp = ImageIO.read(new File("./Graphics/Fish/Fish_Winter_Fish.png"));
-			winterResources.add(new ImageAndName("./Graphics/Fish/Winter_Fish" , temp));
+			Image temp = ImageIO.read(new File("./Graphics/Water/fish.png"));
+			summerResources.add(new ImageAndName("./Graphics/Water/fish.png", temp));
+			temp = ImageIO.read(new File("./Graphics/Water/fishWinter.png"));
+			winterResources.add(new ImageAndName("./Graphics/Water/fishWinter" , temp));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -67,8 +69,8 @@ public class ListOfImages {
 		try {
 			Image temp = ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1.png"));
 			summerResources.add(new ImageAndName("./Graphics/BerryBushes/BerryBush_1.png", temp));
-			temp = ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1_Winter.png"));
-			winterResources.add(new ImageAndName("./Graphics/BerryBushes/BerryBush_1_Winter.png" , temp));
+		//	temp = ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1_Winter.png"));
+			winterResources.add(new ImageAndName("./Graphics/BerryBushes/BerryBush_1.png" , temp));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -77,8 +79,8 @@ public class ListOfImages {
 		try {
 			Image temp = ImageIO.read(new File("./Graphics/Stone/Stone_1.png"));
 			summerResources.add(new ImageAndName("./Graphics/Stone/Stone_1.png", temp));
-			temp = ImageIO.read(new File("./Graphics/Stone/Stone_1_Winter.png"));
-			winterResources.add(new ImageAndName("./Graphics/Stone/Stone_1_Winter.png" , temp));
+			//  temp = ImageIO.read(new File("./Graphics/Stone/Stone_1_Winter.png"));
+			winterResources.add(new ImageAndName("./Graphics/Stone/Stone_1.png" , temp));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -92,10 +94,27 @@ public class ListOfImages {
 			summerBuildings.add(new ImageAndName("./Graphics/Buildings/house.png", temp));
 			temp = ImageIO.read(new File("./Graphics/Buildings/storage.png"));
 			summerBuildings.add(new ImageAndName("./Graphics/Buildings/storage.png", temp));
+			temp = ImageIO.read(new File("./Graphics/Buildings/townHall.png"));
+			summerBuildings.add(new ImageAndName("./Graphics/Buildings/townHall.png", temp));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		try {
+			Image temp = ImageIO.read(new File("./Graphics/Workers/male_1.png"));
+			workers.add(new ImageAndName("./Graphics/Workers/male_1.png", temp));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Image getWorker(String fileName, boolean isWinter) {
+		for(int i = 0; i < workers.size(); i++) {
+			if(workers.get(i).equals(fileName))
+				return workers.get(i).getImage();
+		}
+		return null;
 	}
 	public Image getResource(String fileName, boolean isWinter) {
 		for(int i = 0; i < summerResources.size(); i++) {

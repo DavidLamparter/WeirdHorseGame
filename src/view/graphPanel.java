@@ -22,11 +22,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import model.Buildable;
 import model.ListOfImages;
 import model.ListOfWorkers;
 import model.Map;
@@ -45,6 +47,7 @@ public class graphPanel extends JPanel implements Observer {
 	Map map = null;
 	MapPanel mapPanel;
 	ListOfWorkers workmen;
+	ArrayList<Buildable> buildings = new ArrayList<>();
 	
 	graphPanel(MapTile[][] graph, SettlementGUI caller) {
 		this.caller = caller;
@@ -145,6 +148,15 @@ public class graphPanel extends JPanel implements Observer {
 				g2d.fillRect(l.x*2, l.y*2, 2, 2);
 			}
 		}
+		g2d.setColor(Color.MAGENTA);
+		for(int i = 0; i < buildings.size(); i++) {
+			ArrayList<Point> l = buildings.get(i).getPoints();
+			//  System.out.printf("SIZE OF TOWN HALL : %d \n", l.size());
+			for(int j = 0; j < l.size(); j++) {
+				g2d.fillRect(l.get(j).x*2, l.get(j).y*2, 2, 2);
+				//  System.out.printf("Point %d x: %d, y: %d\n" , j, l.get(j).x,l.get(j).y);
+			}
+		}
 		//  DRAW RECTANGE AROUND LOCATION
 		g2d.setColor(new Color(255, 255, 135));
 		g2d.drawRect(mapPanel.getInitialPoint().x*2, mapPanel.getInitialPoint().y*2,
@@ -163,6 +175,7 @@ public class graphPanel extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		workmen = ((ThePackage)arg).getWorkers();
+		buildings = ((ThePackage)arg).getBuildings();
 		repaint();		
 	}
 }

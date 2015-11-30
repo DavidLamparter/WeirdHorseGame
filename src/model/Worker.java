@@ -468,6 +468,11 @@ public abstract class Worker{
 			}
 		}
 	}
+
+	public String animationFrameFileName() {
+		// TODO Auto-generated method stub
+		return "./Graphics/Workers/male_" + 1 + ".png";
+	}
 }
 
 /******************************************************

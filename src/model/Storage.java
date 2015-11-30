@@ -97,7 +97,7 @@ public abstract class Storage extends Buildable {
 class TownHall extends Storage {
 
 	public TownHall(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+2, topPoint.y+2));
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+2));
 	}
 
 	@Override

@@ -78,9 +78,11 @@ public class Game extends Observable implements Serializable {
 		for(int i = 0; i < initSize; i++) {
 			list.add(init.get(i));
 		}
-		setChanged();
-		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
-		notifyObservers(theFUCKINGPackage);
+		ArrayList<Buildable> initBuild = theMap.getStorageList();
+		for(int i = 0; i < initBuild.size(); i++) {
+			buildings.add(initBuild.get(i));
+		}
+		setChange();
 		SpeedMeter.start();
 		gameTimer.start();
 	}
@@ -88,6 +90,11 @@ public class Game extends Observable implements Serializable {
 		setChanged();
 		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
 		notifyObservers(theFUCKINGPackage);
+	}
+	
+	public void addBuilding(Buildable building) {
+		buildings.add(building);
+		setChange();
 	}
 	
 	public WorkQueue getWorkQueue() {
@@ -125,8 +132,7 @@ public class Game extends Observable implements Serializable {
 				//list.incrementFatigue();
 				list.incrementColdness();
 				if(list.removeDead()) {
-					setChanged();
-					notifyObservers(list);
+					setChange();
 				}	
 			}
 			seasonsCounter++;

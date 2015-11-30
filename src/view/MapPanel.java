@@ -89,6 +89,7 @@ public class MapPanel extends JPanel implements Observer{
 	// create the array of images for the ground in summer
 	public void backgroundTiles(String[][] sNames, Image[][] sPic){
 		int counter = 1;
+		System.out.println("STARTED READING FILES");
 		// create the array file names first so that it's easier to read in to 2Darray
 		for (int i=0; i < 50; i++){
 			for (int j=0; j < 50; j++){
@@ -106,6 +107,7 @@ public class MapPanel extends JPanel implements Observer{
 				}
 			}
 		}
+		System.out.println("FINISHED READING FILES");
 		sNames = sTileNames;
 	    sPic = summerTiles;
 		
@@ -217,8 +219,7 @@ public class MapPanel extends JPanel implements Observer{
 			int workmenSize = workmen.size();
 			for(int i = 0; i < workmenSize; i++) {
 				Point l = workmen.get(i).getPoint();
-				g.setColor(Color.WHITE);
-				g.fillRect((l.x-initialx)*50, (l.y-initialy)*50, 50, 50);
+				g.drawImage(images.getWorker(workmen.get(i).animationFrameFileName(), false), (l.x-initialx)*50, (l.y-initialy)*50, null);
 				//System.out.printf("Worker %d X Location: %d, Y Location: %d\n",i, l.x-initialx, l.y-initialx);
 			}
 		}

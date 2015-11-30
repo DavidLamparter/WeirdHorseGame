@@ -84,7 +84,7 @@ public class WorkerFrame extends JFrame {
 		exit.setLocation(nameOfResource.getWidth(), 0);
 		
 		//  Sets up the image location
-		imageGoesHere = new PicPanel("0");
+		imageGoesHere = new PicPanel(workmen.animationFrameFileName());
 		imageGoesHere.setSize(getWidth()/2, getHeight()-25);
 		imageGoesHere.setBackground(Color.WHITE);
 		imageGoesHere.setLocation(0, 25);
