@@ -261,7 +261,7 @@ public abstract class Worker{
 	public void setBusy(boolean isBusy) {
 		this.isBusy = isBusy;
 	}
-	
+		
 	/**************************************
 	 *          Movement Methods          *
 	 **************************************/
@@ -297,7 +297,7 @@ public abstract class Worker{
 		}
 		//  Will need to be something else an intermediary but this will be cool to see goons run around
 		else {
-			isBusy = false;
+		isBusy = false;
 		}
 	}
 
@@ -386,8 +386,9 @@ public abstract class Worker{
 			}
 			}
 		}
+		System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
 		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
-		myTask = calc.getShortestPath(getPoint(), new Point(closest.y,closest.x));
+		myTask = calc.getShortestPath(getPoint(), new Point(closest));
 		isBusy = true;
 	}	
 }

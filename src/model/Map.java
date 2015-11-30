@@ -481,7 +481,7 @@ public class Map {
 							if(board[j][i].getLand().equals(Terrain.PLAIN) 
 									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
 								board[j][i].setResource(new Tree());
-								TreeList.add(new Point(j,i));
+								TreeList.add(new Point(i,j));
 								noOfTrees++;
 							}
 						}
@@ -516,7 +516,7 @@ public class Map {
 				point.y = gen.nextInt(size);
 			}
 			board[point.x][point.y].setResource(new Fish());
-			FishList.add(new Point(point.x,point.y));
+			FishList.add(new Point(point.y,point.x));
 		}
 		//  Spawns Salty Fish in the Ocean
 		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
@@ -551,7 +551,7 @@ public class Map {
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(new BerryBush());
-			BerryList.add(new Point(X,Y));
+			BerryList.add(new Point(Y,X));
 			dingDangBushes --;
 			treeCounter = 0;
 			}
@@ -597,10 +597,10 @@ public class Map {
 				board[X][Y+1].setResource(stoned);
 				board[X+1][Y+1].setResource(stoned);
 				
-				StoneList.add(new Point(X,Y));
-				StoneList.add(new Point(X+1,Y));
-				StoneList.add(new Point(X,Y+1));
-				StoneList.add(new Point(X+1,Y+1));
+				StoneList.add(new Point(Y,X));
+				StoneList.add(new Point(Y+1,X));
+				StoneList.add(new Point(Y,X+1));
+				StoneList.add(new Point(Y+1,X+1));
 				
 				Outcroppings--;
 		}
