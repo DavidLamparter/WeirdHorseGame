@@ -19,9 +19,13 @@
 
 package model;
 
+import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 public class Map {
 	
@@ -632,11 +636,13 @@ public class Map {
 			counter++;
 		}
 		//  TownHall!!!!
-		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1),new Point(X + 4,Y + 5));
+		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1));
 		for(int i = X+1; i < X + 4; i++) {
 			for(int j = Y + 1; j < Y + 6; j++) {
-				board[j][i].setLand(Terrain.BEACH);
-				storageList.add(highHrothgar);
+
+				//board[j][i].setLand(Terrain.BEACH);
+				storageList.add(new Point(j,i));
+
 			}
 		}		
 		int initialNoWorker = 4;

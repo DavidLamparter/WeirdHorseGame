@@ -44,37 +44,54 @@ public abstract class Buildable {
 		return built;
 	}
 	
-	public abstract Image getImage();
+	public abstract String getImageFile();
 	
 	//  abstract whateverTheHellItReturns whateverTheHellItDoes(Object whateverTheHellItTakes);
+	
+	
 }
 
-// House class
+// HOUSE
 class House extends Buildable {
 
-	public House(Point topLeftPoint, Point bottomRightPoint) {
-		super(topLeftPoint, bottomRightPoint, false);
+	public House(Point topPoint) {
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), false);
 	}
 
 	@Override
-	public Image getImage() {
+	public String getImageFile() {
 		// TODO Auto-generated method stub
-		return null;
+		return "./Graphics/Buildings/house.png";
 	}
 }
 
-// Bridge class
-class Bridge extends Buildable {
+// VERTICAL BRIDGE
+class VerticalBridge extends Buildable {
 
-	public Bridge(Point topPoint, Point bottomPoint) {
-		super(topPoint, bottomPoint, true);
+	public VerticalBridge(Point topPoint) {
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), false);
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public Image getImage() {
+	public String getImageFile() {
 		// TODO Auto-generated method stub
-		return null;
+		return "./Graphics/Buildings/bridge.png";
+	}
+}
+
+// HORIZONTAL BRIDGE
+class HorizontalBridge extends Buildable {
+
+	public HorizontalBridge(Point topPoint) {
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), false);
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public String getImageFile() {
+		// TODO Auto-generated method stub
+		return "./Graphics/Buildings/bridge.png";
 	}
 }
 
