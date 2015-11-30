@@ -52,7 +52,7 @@ public class Map {
 	private ArrayList<Point> StoneList = new ArrayList<Point>();
 	private ArrayList<Point> BerryList = new ArrayList<Point>();
 	private ArrayList<Point> FishList = new ArrayList<Point>();
-	private ArrayList<Point> storageList = new ArrayList<Point>();
+	private ArrayList<Storage> storageList = new ArrayList<Storage>();
 	
 	/**************************************
 	 *           Map Constructors         *
@@ -636,7 +636,7 @@ public class Map {
 		for(int i = X+1; i < X + 4; i++) {
 			for(int j = Y + 1; j < Y + 6; j++) {
 				board[j][i].setLand(Terrain.BEACH);
-				storageList.add(new Point(j,i));
+				storageList.add(highHrothgar);
 			}
 		}		
 		int initialNoWorker = 4;

@@ -64,6 +64,10 @@ public abstract class Worker{
 	private ResourceType preference;
 	
 	private Job job;
+	
+	private Storage storage;
+	
+	private ResourceType[] inventory;
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
@@ -71,7 +75,10 @@ public abstract class Worker{
 	//  Worker is constructed with its starting position as a parameter
 	public Worker(Point currentLocation) {
 		
+		//used to determine what they are putting and where
+		inventory = new ResourceType[20];
 		job = null;
+		storage = null;
 		
 		// Conditions being at 0, and increment to dangerous levels
 		hunger = 0;
@@ -255,7 +262,7 @@ public abstract class Worker{
 	 *          Death Calculator          *
 	 **************************************/
 	
-	// This method is TRIGGERED when a worker hits the cap of a condition meter. 
+	// This method is ((TRIGGERED)) when a worker hits the cap of a condition meter. 
 	// It will calculate if the worker dies, or if they somehow survive another round
 	public void inDanger(int status) {
 		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.25,(status));
@@ -273,8 +280,15 @@ public abstract class Worker{
 	}
 	
 	public boolean nextToJob(){
-		return job.getLocation().distance(new Point(XPos,YPos)) < 1;
-	}
+		try{
+			System.out.println(job.getLocation().distance(new Point(XPos,YPos)) <= 1.3);
+		return job.getLocation().distance(new Point(XPos,YPos)) <= 1.3;
+		}
+		catch(NullPointerException e){	
+			System.out.println("ass");
+		}
+		return false;
+		}
 		
 	/**************************************
 	 *          Movement Methods          *
@@ -411,20 +425,21 @@ public abstract class Worker{
 		double distance = Double.MAX_VALUE;
 		Point closest = new Point();
 	
-			ArrayList<Point> storageList = theMap.getStorageList();
+			ArrayList<Storage> storageList = theMap.getStorageList();
 			int size = theMap.getStorageList().size();
 					
 			for(int i = 0; i < size; i++){
 
-			int StorageX = storageList.get(i).x;
-			int StorageY = storageList.get(i).y;
+			int StorageX = storageList.get(i).getPoints().get(0).x;
+			int StorageY = storageList.get(i).getPoints().get(0).y;
 			
 			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
-			double distanceToResource = getPoint().distance(storageList.get(i));
+			double distanceToResource = getPoint().distance(storageList.get(i).getPoints().get(0));
 			
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(StorageX,StorageY);
+				storage = storageList.get(i);
 			}
 		}
 			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
@@ -432,20 +447,29 @@ public abstract class Worker{
 			isBusy = true;
 	}
 	
-	
-	
 	/******************************************************
 	*                 Harvest and deposit                 *
 	******************************************************/
 	
 	public void doTheWork(MapTile tile){
+		isBusy = true;
+		int i = 0;
+		if(tile.getResource() == null){
+			while (i < 20){
+				storage.addResource(inventory[i]);
+			}
+		}
 		
+		else{
+			while(i < 4){
+				tile.getResource().subResource(1);
+				inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
+				subtractCarryingCapacity();
+			i++;
+			}
+		}
 	}
-	
-	
 }
-
- 
 
 /******************************************************
 *~~~~~~~~~~~~~~~~~~~~ BRETT CLASS ~~~~~~~~~~~~~~~~~~~~*
