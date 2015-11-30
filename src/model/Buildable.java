@@ -48,6 +48,8 @@ public abstract class Buildable {
 	
 	//  abstract whateverTheHellItReturns whateverTheHellItDoes(Object whateverTheHellItTakes);
 }
+
+// House class
 class House extends Buildable {
 
 	public House(Point topLeftPoint, Point bottomRightPoint) {
@@ -60,6 +62,8 @@ class House extends Buildable {
 		return null;
 	}
 }
+
+// Bridge class
 class Bridge extends Buildable {
 
 	public Bridge(Point topPoint, Point bottomPoint) {
