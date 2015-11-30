@@ -23,6 +23,7 @@ package model;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
@@ -30,7 +31,7 @@ import java.util.Random;
 import javax.swing.Timer;
 
 //Our game class extends Observable, and will notify the other classes when an event occurs
-public class Game extends Observable{
+public class Game extends Observable implements Serializable {
 	
 	/**************************************
 	 *          Instance Variables        *
