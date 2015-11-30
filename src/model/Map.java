@@ -634,11 +634,7 @@ public class Map {
 		//  TownHall!!!!
 		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1));
 		storageList.add(highHrothgar);
-		for(int i = X+1; i < X + 4; i++) {
-			for(int j = Y + 1; j < Y + 6; j++) {
-				board[j][i].setLand(Terrain.BEACH);
-			}
-		}		
+
 		int initialNoWorker = 4;
 		while(initialNoWorker!= 0) {
 			for(int i = X; i < X + 5; i++) {
