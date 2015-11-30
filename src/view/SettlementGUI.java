@@ -28,6 +28,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -52,6 +54,7 @@ public class SettlementGUI extends JFrame {
 	private Map map = null;
 	private MapTile[][] board = null;
 	private Game game;
+	
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
 		map = new Map(getMapSize());
@@ -102,7 +105,12 @@ public class SettlementGUI extends JFrame {
 		this.add(mapPanel);
 		//this.requestFocus();
 		this.addWindowListener(new WindogeListener());
+		try {
 		minimap.dispose();
+		}
+		catch(Exception e) {
+			System.out.println("Oh!");
+		}
 		minimap = new MiniMap(this);
 		
 		minimap.relocateToBottomRight();
@@ -112,8 +120,13 @@ public class SettlementGUI extends JFrame {
 		
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		
+		try {
 		game.deleteObservers();
 		game.getWorkQueue().deleteObservers();
+		}
+		catch(Exception f) {
+			System.out.println("Wow observers can't be removed");
+		}
 		
 		this.game = game;	
 		game.addObserver(mapPanel);
@@ -362,8 +375,50 @@ public class SettlementGUI extends JFrame {
 		}
 	}
 	public static void main(String[] args) {
-		SettlementGUI gui = new SettlementGUI(100);
+		FileInputStream fos = null;
+		ObjectInputStream oos;
+		try {
+			fos = new FileInputStream("GameData");
+		}
+		catch(Exception e) {
+			//  NOTHING TO LOAD DO NOT WORRY
+		}
+		//  Then we can load
+		if(fos != null) {
+			int reply = JOptionPane.showConfirmDialog(null, "Do you want to load your previous save?",
+					"Load?", JOptionPane.YES_NO_OPTION);
+			if (reply == JOptionPane.YES_OPTION) {
+				try {
+					oos = new ObjectInputStream(fos);
+					Game game = (Game)oos.readObject();
+					//  Knees weak moms spagetti arms spaggetti rito spaghetti
+					SettlementGUI guiLoad = new SettlementGUI(100);
+					guiLoad.setAllVisible(false);
+					guiLoad.loadTheSave(game);
+					guiLoad.setAllVisible(true);
+					fos.close();
+					oos.close();
+				}
+				catch(Exception f) {
+					f.printStackTrace();
+				}
+        	}
+			else {
+				SettlementGUI gui = new SettlementGUI(100);
+			}
+        }
+		else {
+			SettlementGUI gui = new SettlementGUI(100);
+		}
 	}
+	private void setAllVisible(boolean b) {
+		minimap.setVisible(b);
+		options.setVisible(b);
+		theQueueFrame.setVisible(b);
+		buildings.setVisible(b);
+		this.setVisible(b);
+	}
+
 	public Map getMap() {
 		// TODO Auto-generated method stub
 		return map;
