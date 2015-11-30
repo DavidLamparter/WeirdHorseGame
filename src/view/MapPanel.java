@@ -24,6 +24,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -34,13 +35,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Buildable;
+import model.ListOfImages;
 import model.ListOfWorkers;
 import model.MapTile;
 import model.ResourceType;
 import model.Terrain;
+import model.ThePackage;
 
 public class MapPanel extends JPanel implements Observer{
 
+	ListOfImages images = new ListOfImages();
+	ArrayList<Buildable> buildingList = new ArrayList<>();
 	MapTile[][] graph;
 	int width;
 	int length;
@@ -184,20 +189,25 @@ public class MapPanel extends JPanel implements Observer{
 			}
 		}
 		drawThemWorkers(g2d);
+		drawThemBuildings(g2d);
 		for (int ilol = 0; ilol < width2; ilol++) {
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
 				// Trees Go on top of workers so uhh yesah we need a nother loop
-				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)){
-					g2d.drawImage(graph[j][i].getSummerID(), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
+					g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),false), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
 				}
 			}
 		}
 	}
 	
-	private void drawTheGround(Graphics2D g2d) {
-		// TODO Auto-generated method stub
+	private void drawThemBuildings(Graphics2D g2d) {
+		for(int i = 0; i < buildingList.size(); i++) {
+			int x = (int) buildingList.get(i).getPoints().get(0).getX() - initialx;
+			int y = (int) buildingList.get(i).getPoints().get(0).getY() - initialy;
+			g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), false), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
+		}
 		
 	}
 
@@ -264,7 +274,10 @@ public class MapPanel extends JPanel implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		workmen = (ListOfWorkers)arg1;
+		ThePackage ITS_THE_FUCKING_PACKAGE = (ThePackage)arg1;
+		workmen = ITS_THE_FUCKING_PACKAGE.getWorkers();
+		buildingList = ITS_THE_FUCKING_PACKAGE.getBuildings();
+		//  thanks Sneaky
 		repaint();
 	}
 

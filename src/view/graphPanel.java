@@ -27,6 +27,7 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import model.ListOfImages;
 import model.ListOfWorkers;
 import model.Map;
 import model.MapTile;
@@ -35,7 +36,7 @@ import model.ResourceType;
 import model.Terrain;
 
 public class graphPanel extends JPanel implements Observer {
-
+	
 	MapTile[][] graph;
 	int width;
 	int length;

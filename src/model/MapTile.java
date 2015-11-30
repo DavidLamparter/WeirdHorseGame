@@ -113,12 +113,12 @@ public class MapTile {
 	}
 
 	//returns the ID
-	public Image getSummerID() {
+	public String getSummerID() {
 		// TODO Auto-generated method stub
-		return resource.getID();
+		return resource.getFileName();
 	}
-	public Image getWinterID() {
+	public String getWinterID() {
 		// TODO Auto-generated method stub
-		return resource.getID();
+		return resource.getWinterFileName();
 	}
 }

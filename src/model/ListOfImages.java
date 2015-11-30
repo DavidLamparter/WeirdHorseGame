@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class ListOfImages {
-	private class ImageAndName implements Comparable{
+	private class ImageAndName implements Comparable {
 		
 		private Image image;
 		private String name;
