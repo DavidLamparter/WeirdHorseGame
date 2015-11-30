@@ -23,6 +23,7 @@ package model;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
@@ -30,7 +31,7 @@ import java.util.Random;
 import javax.swing.Timer;
 
 //Our game class extends Observable, and will notify the other classes when an event occurs
-public class Game extends Observable{
+public class Game extends Observable implements Serializable {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -162,11 +163,27 @@ public class Game extends Observable{
 					jobDoer.setBusy(true);
 				}
 			}
+			
 			//checks for idle
 			int listSize = list.size();
 			for(int i = 0; i <listSize; i++){
 				if(!list.get(i).isBusy()){
 					list.get(i).getClosestPreference(theMap);
+				}
+			}
+			
+			//checks to see if next to the point it was sent to
+			for(int i = 0; i <listSize; i++){
+				Worker dummy = list.get(i);
+				if(dummy.nextToJob()){
+					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().location.x][dummy.getJob().location.y]);
+				}
+			}
+			
+			//checks to see if they have full resource
+			for(int i = 0; i <listSize; i++){
+				if(list.get(i).atMaxCap()){
+					list.get(i).goToStorage(theMap);
 				}
 			}
 		}

@@ -63,12 +63,15 @@ public abstract class Worker{
 	// keeps track of the workers preferance
 	private ResourceType preference;
 	
+	private Job job;
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
 	
 	//  Worker is constructed with its starting position as a parameter
 	public Worker(Point currentLocation) {
+		
+		job = null;
 		
 		// Conditions being at 0, and increment to dangerous levels
 		hunger = 0;
@@ -109,6 +112,10 @@ public abstract class Worker{
 	/**************************************
 	 *   Getters for Instance Variables   *
 	 **************************************/
+	
+	public boolean atMaxCap(){
+		return carryingCapacity == 0;
+	}
 	
 	public int getHunger() {
 		return hunger;
@@ -171,6 +178,9 @@ public abstract class Worker{
 	}
 	public ResourceType getPreference() {
 		return preference;
+	}
+	public Job getJob(){
+		return job;
 	}
 	
 	/**************************************
@@ -254,12 +264,16 @@ public abstract class Worker{
 			isAlive = false;
 	}
 	
-	/**************************************
-	 *          To be busy or not         *
-	 **************************************/
+	/****************************************************
+	 *          To be busy or not || next to job        *
+	 ****************************************************/
 	
 	public void setBusy(boolean isBusy) {
 		this.isBusy = isBusy;
+	}
+	
+	public boolean nextToJob(){
+		return job.getLocation().distance(new Point(XPos,YPos)) < 1;
 	}
 		
 	/**************************************
@@ -386,12 +400,52 @@ public abstract class Worker{
 			}
 			}
 		}
+		
 		System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
 		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
 		myTask = calc.getShortestPath(getPoint(), new Point(closest));
 		isBusy = true;
 	}	
+	
+	public void goToStorage(Map theMap){
+		double distance = Double.MAX_VALUE;
+		Point closest = new Point();
+	
+			ArrayList<Point> storageList = theMap.getStorageList();
+			int size = theMap.getStorageList().size();
+					
+			for(int i = 0; i < size; i++){
+
+			int StorageX = storageList.get(i).x;
+			int StorageY = storageList.get(i).y;
+			
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
+			double distanceToResource = getPoint().distance(storageList.get(i));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(StorageX,StorageY);
+			}
+		}
+			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+			myTask = calc.getShortestPath(getPoint(), new Point(closest));
+			isBusy = true;
+	}
+	
+	
+	
+	/******************************************************
+	*                 Harvest and deposit                 *
+	******************************************************/
+	
+	public void doTheWork(MapTile tile){
+		
+	}
+	
+	
 }
+
+ 
 
 /******************************************************
 *~~~~~~~~~~~~~~~~~~~~ BRETT CLASS ~~~~~~~~~~~~~~~~~~~~*
