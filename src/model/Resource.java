@@ -121,6 +121,12 @@ public abstract class Resource {
 	/*void changeResourceT(Resource newR){
 		this.type = newR;
 	} */
+	
+	public abstract String getWinterFileName();
+	// takes in the resource you want to change current one to.
+	/*void changeResourceT(Resource newR){
+		this.type = newR;
+	} */
 }
 
 
@@ -153,6 +159,12 @@ class Nothing extends Resource {
 	// Returns the file name of this resource, in this case, none
 	@Override
 	public String getFileName() {
+		return "";
+	}
+
+	@Override
+	public String getWinterFileName() {
+		// TODO Auto-generated method stub
 		return "";
 	}
 }
@@ -206,6 +218,12 @@ class Tree extends Resource {
 	public String getFileName() {
 		return "./Graphics/Trees/Tree Redux_1.png";
 	}
+
+	@Override
+	public String getWinterFileName() {
+		// TODO Auto-generated method stub
+		return "./Graphics/Trees/Tree Redux_1_Winter.png";
+	}
 	
 }
 
@@ -246,7 +264,13 @@ class Fish extends Resource {
 	// Returns the file name of this fish. Can vary between different images
 	@Override
 	public String getFileName() {
-		return "";
+		return "./Graphics/Water/fish.png";
+	}
+
+	@Override
+	public String getWinterFileName() {
+		// TODO Auto-generated method stub
+		return "./Graphics/Water/fishWinter.png";
 	}
 	
 }
@@ -288,7 +312,13 @@ class SaltyFish extends Resource {
 	// Returns the file name of this SaltyFish. Can vary between different images
 	@Override
 	public String getFileName() {
-		return "";
+		return "./Graphics/Water/fishSalty.png";
+	}
+
+	@Override
+	public String getWinterFileName() {
+		// TODO Auto-generated method stub
+		return "./Graphics/Water/fishSalty.png";
 	}
 	
 }
@@ -327,6 +357,12 @@ class Stone extends Resource {
 	public String getFileName() {
 		return "./Graphics/Stone/Stone_1.png";
 	}
+
+	@Override
+	public String getWinterFileName() {
+		// TODO Auto-generated method stub
+		return "./Graphics/Stone/Stone_1.png";
+	}
 	
 }
 
@@ -362,7 +398,13 @@ class BerryBush extends Resource {
 	// Returns the file name of this BerryBush. Can vary between different images
 	@Override
 	public String getFileName() {
-		return "";
+		return "./Graphics/BerryBushes/BerryBush_1.png";
+	}
+
+	@Override
+	public String getWinterFileName() {
+		// TODO Auto-generated method stub
+		return "./Graphics/BerryBushes/BerryBush_1.png";
 	}
 	
 }
