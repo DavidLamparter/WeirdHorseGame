@@ -110,6 +110,10 @@ public abstract class Worker{
 	 *   Getters for Instance Variables   *
 	 **************************************/
 	
+	public boolean atMaxCap(){
+		return carryingCapacity == 0;
+	}
+	
 	public int getHunger() {
 		return hunger;
 	}
@@ -386,12 +390,37 @@ public abstract class Worker{
 			}
 			}
 		}
+		
 		System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
 		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
 		myTask = calc.getShortestPath(getPoint(), new Point(closest));
 		isBusy = true;
 	}	
+	
+	public void goToStorage(Map theMap){
+		double distance = Double.MAX_VALUE;
+		Point closest = new Point();
+	
+			ArrayList<Point> storageList = theMap.getStorageList();
+			int size = theMap.getStorageList().size();
+					
+			for(int i = 0; i < size; i++){
+
+			int StorageX = storageList.get(i).x;
+			int StorageY = storageList.get(i).y;
+			
+			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
+			double distanceToResource = getPoint().distance(storageList.get(i));
+			
+			if(distanceToResource < distance){
+				distance = distanceToResource;
+				closest = new Point(StorageX,StorageY);
+			}
+		}
+	}
 }
+
+ 
 
 /******************************************************
 *~~~~~~~~~~~~~~~~~~~~ BRETT CLASS ~~~~~~~~~~~~~~~~~~~~*

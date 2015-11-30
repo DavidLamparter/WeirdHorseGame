@@ -169,6 +169,13 @@ public class Game extends Observable{
 					list.get(i).getClosestPreference(theMap);
 				}
 			}
+			
+			//checks to see if they have full resource
+			for(int i = 0; i <listSize; i++){
+				if(list.get(i).atMaxCap()){
+					list.get(i).goToStorage(theMap);
+				}
+			}
 		}
 	}
 	

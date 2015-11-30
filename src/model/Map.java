@@ -52,6 +52,7 @@ public class Map {
 	private ArrayList<Point> StoneList = new ArrayList<Point>();
 	private ArrayList<Point> BerryList = new ArrayList<Point>();
 	private ArrayList<Point> FishList = new ArrayList<Point>();
+	private ArrayList<Point> storageList = new ArrayList<Point>();
 	
 	/**************************************
 	 *           Map Constructors         *
@@ -109,28 +110,25 @@ public class Map {
 	public ArrayList<Worker> getInitialWorkers() {
 		return initialWorkers;
 	}
-	
 
 	public ArrayList getBerryList() {
-		// TODO Auto-generated method stub
 		return BerryList;
 	}
-	
 
 	public ArrayList getStoneList() {
-		// TODO Auto-generated method stub
 		return StoneList;
 	}
-	
 
 	public ArrayList getTreeList() {
-		// TODO Auto-generated method stub
 		return TreeList;
 	}
 	
 	public ArrayList getFishList() {
-		// TODO Auto-generated method stub
 		return FishList;
+	}
+	
+	public ArrayList getStorageList(){
+		return storageList;
 	}
 	
 	/**************************************
@@ -638,6 +636,7 @@ public class Map {
 		for(int i = X+1; i < X + 4; i++) {
 			for(int j = Y + 1; j < Y + 6; j++) {
 				board[j][i].setLand(Terrain.BEACH);
+				storageList.add(new Point(j,i));
 			}
 		}		
 		int initialNoWorker = 4;
