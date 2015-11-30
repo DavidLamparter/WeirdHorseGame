@@ -19,6 +19,7 @@
 
 package model;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
@@ -635,14 +636,13 @@ public class Map {
 			counter++;
 		}
 		//  TownHall!!!!
-		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1),new Point(X + 4,Y + 5));
-		Graphics summerTiles[i][j] = ImageIO.read(new File(this.getImage()));
-		/*for(int i = X+1; i < X + 4; i++) {
+		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1));
+		for(int i = X+1; i < X + 4; i++) {
 			for(int j = Y + 1; j < Y + 6; j++) {
-				board[j][i].setLand(Terrain.BEACH);
+				//board[j][i].setLand(Terrain.BEACH);
 				storageList.add(new Point(j,i));
 			}
-		}*/		
+		}		
 		int initialNoWorker = 4;
 		while(initialNoWorker!= 0) {
 			for(int i = X; i < X + 5; i++) {
