@@ -634,7 +634,7 @@ public class Map {
 		//  TownHall!!!!
 		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1));
 		storageList.add(highHrothgar);
-
+		
 		int initialNoWorker = 4;
 		while(initialNoWorker!= 0) {
 			for(int i = X; i < X + 5; i++) {
