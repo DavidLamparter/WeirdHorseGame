@@ -89,27 +89,32 @@ public abstract class Storage extends Buildable {
 	public void addResource(ResourceType toAdd) {
 		theGoods.add(toAdd);
 	}
-	public abstract Image getImage();
+	
+	public abstract String getImageFile();
 }
+
+//TOWNHALL
 class TownHall extends Storage {
 
-	public TownHall(Point topLeftPoint, Point bottomRightPoint) {
-		super(topLeftPoint, bottomRightPoint);
+	public TownHall(Point topPoint) {
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2));
 	}
 
 	@Override
-	public Image getImage() {
-		return null;
+	public String getImageFile() {
+		return "./Graphics/Buildings/townHall.png";
 	}
 }
+
+// STOREHOUSE
 class Storehouse extends Storage {
 
-	public Storehouse(Point topLeftPoint, Point bottomRightPoint) {
-		super(topLeftPoint, bottomRightPoint);
+	public Storehouse(Point topPoint) {
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2));
 	}
 
 	@Override
-	public Image getImage() {
-		return null;
+	public String getImageFile() {
+		return "./Graphics/Buildings/sHouse.png";
 	}
 }

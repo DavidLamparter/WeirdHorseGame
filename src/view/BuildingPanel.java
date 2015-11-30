@@ -22,7 +22,7 @@ public class BuildingPanel extends JFrame {
 		holder.setSize(this.getSize());
 		holder.setLocation(0, 0);
 		holder.setLayout(new FlowLayout());
-		instatiateTheButtons();
+		instantiateTheButtons();
 		renameButtons();
 		
 		this.add(holder);
@@ -37,7 +37,7 @@ public class BuildingPanel extends JFrame {
 		buildings[2].setText("Bridge");		
 	}
 
-	private void instatiateTheButtons() {
+	private void instantiateTheButtons() {
 		for(int i = 0; i < buildings.length; i++) {
 			buildings[i] = new JButton("Build"+(i+1));
 			buildings[i].setSize(65, 75);
