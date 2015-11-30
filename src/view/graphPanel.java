@@ -27,15 +27,17 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import model.ListOfImages;
 import model.ListOfWorkers;
 import model.Map;
 import model.MapTile;
 import model.Resource;
 import model.ResourceType;
 import model.Terrain;
+import model.ThePackage;
 
 public class graphPanel extends JPanel implements Observer {
-
+	
 	MapTile[][] graph;
 	int width;
 	int length;
@@ -160,7 +162,7 @@ public class graphPanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		workmen = (ListOfWorkers)arg;
+		workmen = ((ThePackage)arg).getWorkers();
 		repaint();		
 	}
 }

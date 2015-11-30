@@ -43,6 +43,8 @@ public class Game extends Observable implements Serializable {
 	// This list holds all of the living workers
 	private ListOfWorkers list;
 	
+	private ArrayList<Buildable> buildings = new ArrayList<>();
+	
 	//  This is the worker queue
 	private WorkQueue workQueue = new WorkQueue();
 
@@ -77,13 +79,15 @@ public class Game extends Observable implements Serializable {
 			list.add(init.get(i));
 		}
 		setChanged();
-		notifyObservers(list);
+		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
+		notifyObservers(theFUCKINGPackage);
 		SpeedMeter.start();
 		gameTimer.start();
 	}
 	public void setChange() {
 		setChanged();
-		notifyObservers(list);
+		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
+		notifyObservers(theFUCKINGPackage);
 	}
 	
 	public WorkQueue getWorkQueue() {
@@ -143,6 +147,7 @@ public class Game extends Observable implements Serializable {
 						break;
 					
 					Worker jobDoer = list.findClosest(dest.getLocation());
+					
 					//  everyone is supa busy
 					if(jobDoer == null) {
 						break;
@@ -153,19 +158,28 @@ public class Game extends Observable implements Serializable {
 					ShortestPathCalculator calc = new ShortestPathCalculator(getMap());
 					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
 					//  didn't find a path
-					System.out.printf("Count:%d Job: %s\n", i, dest.getName());
+					//System.out.printf("Count:%d Job: %s\n", i, dest.getName());
 					if(toThere.isEmpty()){
 						workQueue.removeJob(dest);
 						continue;
 					}
 					jobDoer.toLocation(toThere);
 					workQueue.removeJob(dest);
+					jobDoer.setJob(dest.location);
 					jobDoer.setBusy(true);
 				}
 			}
 			
-			//checks for idle
 			int listSize = list.size();
+
+			//checks to see if they have full resource
+			for(int i = 0; i <listSize; i++){
+				if(list.get(i).atMaxCap()){
+					list.get(i).goToStorage(theMap);
+				}
+			}
+			
+			//checks for idle
 			for(int i = 0; i <listSize; i++){
 				if(!list.get(i).isBusy()){
 					list.get(i).getClosestPreference(theMap);
@@ -176,14 +190,7 @@ public class Game extends Observable implements Serializable {
 			for(int i = 0; i <listSize; i++){
 				Worker dummy = list.get(i);
 				if(dummy.nextToJob()){
-					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().location.x][dummy.getJob().location.y]);
-				}
-			}
-			
-			//checks to see if they have full resource
-			for(int i = 0; i <listSize; i++){
-				if(list.get(i).atMaxCap()){
-					list.get(i).goToStorage(theMap);
+					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().y][dummy.getJob().x]);
 				}
 			}
 		}
@@ -203,7 +210,8 @@ public class Game extends Observable implements Serializable {
 			}
 			list.moveWorkers();
 			setChanged();
-			notifyObservers(list);
+			ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
+			notifyObservers(theFUCKINGPackage);
 			animalTic++;
 		}
 	}
