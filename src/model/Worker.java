@@ -63,7 +63,7 @@ public abstract class Worker{
 	// keeps track of the workers preferance
 	private ResourceType preference;
 	
-	private Job job;
+	private Point job;
 	
 	private Storage storage;
 	
@@ -108,20 +108,17 @@ public abstract class Worker{
 		else if(randomize < .66){
 			preference = ResourceType.STONE;
 		}
-		else if(randomize < .83){
+		else if(randomize < 1){
 			preference = ResourceType.BERRY_BUSH;
-		}
-		else {
-			preference = ResourceType.FISH;
 		}
 	}
 	
-	/**************************************
-	 *   Getters for Instance Variables   *
-	 **************************************/
+	/**************************************************
+	 *   Getters and Setters for Instance Variables   *
+	 **************************************************/
 	
 	public boolean atMaxCap(){
-		return carryingCapacity == 0;
+		return carryingCapacity <= 0;
 	}
 	
 	public int getHunger() {
@@ -186,8 +183,11 @@ public abstract class Worker{
 	public ResourceType getPreference() {
 		return preference;
 	}
-	public Job getJob(){
+	public Point getJob(){
 		return job;
+	}
+	public void setJob(Point point){
+		job = point;
 	}
 	
 	/**************************************
@@ -280,14 +280,7 @@ public abstract class Worker{
 	}
 	
 	public boolean nextToJob(){
-		try{
-			System.out.println(job.getLocation().distance(new Point(XPos,YPos)) <= 1.3);
-		return job.getLocation().distance(new Point(XPos,YPos)) <= 1.3;
-		}
-		catch(NullPointerException e){	
-			System.out.println("ass");
-		}
-		return false;
+		return job.getLocation().distance(new Point(XPos,YPos)) <= 1.4;
 		}
 		
 	/**************************************
@@ -415,9 +408,11 @@ public abstract class Worker{
 			}
 		}
 		
-		System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
+		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
 		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+
 		myTask = calc.getShortestPath(getPoint(), new Point(closest));
+		job = closest;
 		isBusy = true;
 	}	
 	
@@ -444,6 +439,7 @@ public abstract class Worker{
 		}
 			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
 			myTask = calc.getShortestPath(getPoint(), new Point(closest));
+			job = closest;
 			isBusy = true;
 	}
 	
@@ -454,15 +450,18 @@ public abstract class Worker{
 	public void doTheWork(MapTile tile){
 		isBusy = true;
 		int i = 0;
-		if(tile.getResource() == null){
+		if(tile.getResource().getResourceT() == ResourceType.NONE){
 			while (i < 20){
 				storage.addResource(inventory[i]);
+				i++;
 			}
+			carryingCapacity = 20;
 		}
 		
 		else{
 			while(i < 4){
 				tile.getResource().subResource(1);
+				if(carryingCapacity > 0)
 				inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
 				subtractCarryingCapacity();
 			i++;
