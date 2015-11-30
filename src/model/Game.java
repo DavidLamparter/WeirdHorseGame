@@ -79,13 +79,15 @@ public class Game extends Observable implements Serializable {
 			list.add(init.get(i));
 		}
 		setChanged();
-		notifyObservers(list);
+		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
+		notifyObservers(theFUCKINGPackage);
 		SpeedMeter.start();
 		gameTimer.start();
 	}
 	public void setChange() {
 		setChanged();
-		notifyObservers(list);
+		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
+		notifyObservers(theFUCKINGPackage);
 	}
 	
 	public WorkQueue getWorkQueue() {
