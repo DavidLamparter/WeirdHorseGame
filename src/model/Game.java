@@ -43,6 +43,8 @@ public class Game extends Observable implements Serializable {
 	// This list holds all of the living workers
 	private ListOfWorkers list;
 	
+	private ArrayList<Buildable> buildings = new ArrayList<>();
+	
 	//  This is the worker queue
 	private WorkQueue workQueue = new WorkQueue();
 
@@ -206,7 +208,8 @@ public class Game extends Observable implements Serializable {
 			}
 			list.moveWorkers();
 			setChanged();
-			notifyObservers(list);
+			ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
+			notifyObservers(theFUCKINGPackage);
 			animalTic++;
 		}
 	}
