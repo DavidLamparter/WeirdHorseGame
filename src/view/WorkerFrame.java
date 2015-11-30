@@ -189,4 +189,16 @@ public class WorkerFrame extends JFrame implements Observer {
 				+ "\nPref: " + workmen.getPreference());
 		
 	}
+	public void moveRight() {
+		this.setLocation(this.getLocation().x+MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveLeft() {
+		this.setLocation(this.getLocation().x-MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveUp() {
+		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
+	}
+	public void moveDown() {
+		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
+	}
 }

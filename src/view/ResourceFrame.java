@@ -150,4 +150,17 @@ public class ResourceFrame extends JFrame implements Observer {
 		description.setText("\nQuanity: " + (int) ((Resource) arg0).getQuantity() +
 				"\nWorkers: " );
 	}
+	
+	public void moveRight() {
+		this.setLocation(this.getLocation().x+MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveLeft() {
+		this.setLocation(this.getLocation().x-MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveUp() {
+		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
+	}
+	public void moveDown() {
+		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
+	}
 }

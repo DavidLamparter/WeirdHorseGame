@@ -161,14 +161,34 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			if(goingNorth)
+			if(goingNorth) {
 				mapPanel.increaseY();
-			if(goingSouth)
+				if(frame!=null)
+					frame.moveDown();
+				if(workFrame!=null)
+					workFrame.moveDown();
+			}
+			if(goingSouth) {
 				mapPanel.decreaseY();
-			if(goingWest)
+				if(frame!=null)
+					frame.moveUp();
+				if(workFrame!=null)
+					workFrame.moveUp();
+			}
+			if(goingWest) {
 				mapPanel.decreaseX();
-			if(goingEast)
+				if(frame!=null)
+					frame.moveRight();
+				if(workFrame!=null)
+					workFrame.moveRight();
+			}
+			if(goingEast) {
 				mapPanel.increaseX();
+				if(frame!=null)
+					frame.moveLeft();
+				if(workFrame!=null)
+					workFrame.moveLeft();
+			}
 			mapPanel.paintIt();
 			minimap.getGraphPanel().paintIt();
 		}
@@ -284,9 +304,11 @@ public class SettlementGUI extends JFrame {
 			//  System.out.println("HODOR!");
 		}
 	}
+	//  making these scroll with the map
+	private ResourceFrame frame;
+	private WorkerFrame workFrame;
+	
 	private class ClickerListener implements MouseListener{
-		private ResourceFrame frame;
-		private WorkerFrame workFrame;
 		
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
