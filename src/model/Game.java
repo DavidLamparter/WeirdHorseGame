@@ -31,6 +31,7 @@ import java.util.Random;
 import javax.swing.Timer;
 
 import view.BuildingPanel;
+import view.GGScreen;
 
 //Our game class extends Observable, and will notify the other classes when an event occurs
 public class Game extends Observable implements Serializable {
@@ -222,6 +223,11 @@ public class Game extends Observable implements Serializable {
 			}
 			
 			int listSize = list.size();
+			if(listSize == 0) {
+				GGScreen wp = new GGScreen(gameLength, wintersSurvived);
+				gameTimer.stop();
+				SpeedMeter.stop();
+			}
 
 			//checks to see if they have full resource
 			for(int i = 0; i <listSize; i++){

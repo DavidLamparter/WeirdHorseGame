@@ -158,7 +158,7 @@ public class ResourceFrame extends JFrame implements Observer {
 		this.setLocation(this.getLocation().x-MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
 	}
 	public void moveUp() {
-		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
+		this.setLocation(this.getLocation().x, this.getLocation().y+MapPanel.MAP_TILE_HEIGHT);
 	}
 	public void moveDown() {
 		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
