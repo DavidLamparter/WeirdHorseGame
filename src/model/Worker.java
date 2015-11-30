@@ -101,7 +101,7 @@ public abstract class Worker{
 		else if(randomize < .83){
 			preference = ResourceType.BERRY_BUSH;
 		}
-		else if(randomize < 1){
+		else {
 			preference = ResourceType.FISH;
 		}
 	}

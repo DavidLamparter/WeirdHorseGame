@@ -88,6 +88,7 @@ public class SettlementGUI extends JFrame {
 		game.setChange();
 		
 		game.getWorkQueue().addObserver(theQueueFrame);
+
 	}
 	public void CloseEverything() {
 		minimap.dispose();
