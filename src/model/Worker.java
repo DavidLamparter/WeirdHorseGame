@@ -63,12 +63,15 @@ public abstract class Worker{
 	// keeps track of the workers preferance
 	private ResourceType preference;
 	
+	private Job job;
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
 	
 	//  Worker is constructed with its starting position as a parameter
 	public Worker(Point currentLocation) {
+		
+		job = null;
 		
 		// Conditions being at 0, and increment to dangerous levels
 		hunger = 0;
@@ -176,6 +179,9 @@ public abstract class Worker{
 	public ResourceType getPreference() {
 		return preference;
 	}
+	public Job getJob(){
+		return job;
+	}
 	
 	/**************************************
 	 *          Setter for tool           *
@@ -258,12 +264,16 @@ public abstract class Worker{
 			isAlive = false;
 	}
 	
-	/**************************************
-	 *          To be busy or not         *
-	 **************************************/
+	/****************************************************
+	 *          To be busy or not || next to job        *
+	 ****************************************************/
 	
 	public void setBusy(boolean isBusy) {
 		this.isBusy = isBusy;
+	}
+	
+	public boolean nextToJob(){
+		return job.getLocation().distance(new Point(XPos,YPos)) < 1;
 	}
 		
 	/**************************************
@@ -417,7 +427,22 @@ public abstract class Worker{
 				closest = new Point(StorageX,StorageY);
 			}
 		}
+			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+			myTask = calc.getShortestPath(getPoint(), new Point(closest));
+			isBusy = true;
 	}
+	
+	
+	
+	/******************************************************
+	*                 Harvest and deposit                 *
+	******************************************************/
+	
+	public void doTheWork(MapTile tile){
+		
+	}
+	
+	
 }
 
  

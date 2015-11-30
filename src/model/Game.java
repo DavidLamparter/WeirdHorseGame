@@ -162,11 +162,20 @@ public class Game extends Observable{
 					jobDoer.setBusy(true);
 				}
 			}
+			
 			//checks for idle
 			int listSize = list.size();
 			for(int i = 0; i <listSize; i++){
 				if(!list.get(i).isBusy()){
 					list.get(i).getClosestPreference(theMap);
+				}
+			}
+			
+			//checks to see if next to the point it was sent to
+			for(int i = 0; i <listSize; i++){
+				Worker dummy = list.get(i);
+				if(dummy.nextToJob()){
+					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().location.x][dummy.getJob().location.y]);
 				}
 			}
 			
