@@ -36,13 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import model.Buildable;
-import model.Game;
-import model.Map;
-import model.MapTile;
-import model.ResourceType;
-import model.Storage;
-import model.Worker;
+import model.*;
 
 public class SettlementGUI extends JFrame {
 	private int size;
@@ -81,7 +75,7 @@ public class SettlementGUI extends JFrame {
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
 		
-		buildings = new BuildingPanel(this, 3);
+		buildings = new BuildingPanel(this, 4);
 		
 		theQueueFrame = new QueueFrame(this);
 		
@@ -91,7 +85,9 @@ public class SettlementGUI extends JFrame {
 		game.setChange();
 		
 		game.getWorkQueue().addObserver(theQueueFrame);
-
+		
+		mapPanel.addMouseListener(new MouseBuildingListener());
+		toBuild = -1;
 	}
 	public void loadTheSave(Game game) {
 		size = game.getMap().length;
@@ -135,6 +131,9 @@ public class SettlementGUI extends JFrame {
 		
 		game.getWorkQueue().addObserver(theQueueFrame);
 		game.startTimers();
+		mapPanel.addMouseListener(new MouseBuildingListener());
+		toBuild = -1;
+		
 	}
 	public void CloseEverything() {
 		minimap.dispose();
@@ -195,23 +194,23 @@ public class SettlementGUI extends JFrame {
 	}
 	
 	//  The following Variables are used for building
-	private boolean mouseIsBuilding = false;
 	private boolean canBuild = false;
-	private int toBuild = 0;
+	private int toBuild;
 	private Point topLeftBuildingPoint = null;
+	
+	public void setLastClickedBuilding(int i) {
+		toBuild = i;
+	}
 	
 	private class MouseBuildingListener implements MouseMotionListener, MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			if(mouseIsBuilding) {
-				//  add the building to a array of buildings...
-				mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
-				
-			}
-			else {
-				topLeftBuildingPoint = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
-				mouseIsBuilding = true;
+			
+			topLeftBuildingPoint = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
+			toBuild = game.addNewBuildingUsingID(toBuild, topLeftBuildingPoint);
+			if(toBuild == -1) {
+				buildings.resetButtons();
 			}
 		}
 

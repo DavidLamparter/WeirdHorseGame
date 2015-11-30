@@ -30,6 +30,8 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import view.BuildingPanel;
+
 //Our game class extends Observable, and will notify the other classes when an event occurs
 public class Game extends Observable implements Serializable {
 	
@@ -103,6 +105,41 @@ public class Game extends Observable implements Serializable {
 	public void addBuilding(Buildable building) {
 		buildings.add(building);
 		setChange();
+	}
+	public int addNewBuildingUsingID(int toBuild, Point topLeftBuildingPoint) {
+		Buildable build = null;
+		if(toBuild == BuildingPanel.BRIDGE_H_ID) {
+			build = new HorizontalBridge(topLeftBuildingPoint);
+		}
+		if(toBuild == BuildingPanel.BRIDGE_V_ID) {
+			build = new VerticalBridge(topLeftBuildingPoint);
+		}
+		if(toBuild == BuildingPanel.HOUSE_ID) {
+			build = new House(topLeftBuildingPoint);
+		}
+		if(toBuild == BuildingPanel.STOREHOUSE_ID) {
+			build = new Storehouse(topLeftBuildingPoint);
+		}
+		if(build != null) {
+			boolean canBuild = true;
+			ArrayList<Point> allOtherBuildings = new ArrayList<>();
+			for(int i = 0; i < buildings.size(); i++) {
+				allOtherBuildings.addAll(buildings.get(i).getPoints());
+			}
+			ArrayList<Point> buildPoints = build.getPoints();
+			for(int i = 0; i < allOtherBuildings.size(); i++) {
+				for(int j = 0; j < buildPoints.size(); j++) {
+					if(buildPoints.get(j).distance(allOtherBuildings.get(i))==0) {
+						canBuild = false;
+					}
+				}
+			}
+			if(canBuild) {
+				buildings.add(build);
+				return -1;
+			}
+		}
+		return toBuild;
 	}
 	
 	public WorkQueue getWorkQueue() {

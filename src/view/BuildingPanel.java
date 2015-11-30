@@ -9,6 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class BuildingPanel extends JFrame {
+	public static int BRIDGE_V_ID = 3;
+	public static int BRIDGE_H_ID = 2;
+	public static int STOREHOUSE_ID = 1;
+	public static int HOUSE_ID = 0;
 	private JButton[] buildings;
 	private JPanel holder;
 	private SettlementGUI caller;
@@ -32,9 +36,10 @@ public class BuildingPanel extends JFrame {
 	}
 
 	private void renameButtons() {
-		buildings[0].setText("House");
-		buildings[1].setText("Storehouse");
-		buildings[2].setText("Bridge");		
+		buildings[HOUSE_ID].setText("House");                // 0
+		buildings[STOREHOUSE_ID].setText("Storehouse");      // 1
+		buildings[BRIDGE_H_ID].setText("Horizontal Bridge"); // 2	
+		buildings[BRIDGE_V_ID].setText("Vertical Bridge");   // 3
 	}
 
 	private void instantiateTheButtons() {
@@ -42,23 +47,26 @@ public class BuildingPanel extends JFrame {
 			buildings[i] = new JButton("Build"+(i+1));
 			buildings[i].setSize(65, 75);
 			holder.add(buildings[i]);
+			buildings[i].addActionListener(new BuildItListener());
 		}
 	}
 	private class BuildItListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if(arg0.getSource().equals(buildings[0])){
-				caller.getMapPanel();
-			}
-			if(arg0.getSource().equals(buildings[1])) {
-				
-			}
-			if(arg0.getSource().equals(buildings[2])) {
-				
-			}
-				
-			
+			resetButtons();
+			for(int i = 0; i  < buildings.length; i++) {
+				if(arg0.getSource().equals(buildings[i])) {
+					caller.setLastClickedBuilding(i);
+					buildings[i].setEnabled(false);
+				}
+			}			
 		}
+	}
+	public void resetButtons() {
+		for(int i = 0; i < buildings.length; i++) {
+			buildings[i].setEnabled(true);
+		}
+		
 	}
 }
