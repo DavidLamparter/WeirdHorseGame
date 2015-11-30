@@ -18,7 +18,9 @@
 
 package model;
 
+import java.io.Serializable;
+
 // Defines tools for workers to use
-public enum Tool {
+public enum Tool implements Serializable {
 	PICKAXE, AXE, BASKET, NONE;
 }

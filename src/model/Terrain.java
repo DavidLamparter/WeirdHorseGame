@@ -18,7 +18,9 @@
 
 package model;
 
+import java.io.Serializable;
+
 // Defines tools for workers to use
-public enum Terrain {
+public enum Terrain implements Serializable {
 	PLAIN, RIVER, OCEAN, BEACH;
 }

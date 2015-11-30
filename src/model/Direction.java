@@ -18,10 +18,11 @@
 
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 // Defines directions for workers to move
-public enum Direction {
+public enum Direction implements Serializable {
 	NORTH, SOUTH, EAST, WEST;
 	
 	// This method allows for a quick 180 in movement

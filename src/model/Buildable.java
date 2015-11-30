@@ -2,9 +2,10 @@ package model;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Buildable {
+public abstract class Buildable implements Serializable {
 	private int buildCost;
 	private int buildCounter;
 	private boolean passable;

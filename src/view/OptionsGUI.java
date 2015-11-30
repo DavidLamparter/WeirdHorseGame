@@ -22,10 +22,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import model.Game;
 
 public class OptionsGUI extends JFrame {
 	JButton close = new JButton("Exit the Game");
@@ -133,6 +140,17 @@ public class OptionsGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			//  Do saving stuff!
+			try {
+			FileOutputStream fos = new FileOutputStream("GameData");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(caller.getGame());
+			fos.close();
+			oos.close();
+			}
+			catch(Exception saveProbs) {
+				saveProbs.printStackTrace();
+			}
+			
 			saver.setText("Saved!");
 			wasSaved = true;
 		}
@@ -141,8 +159,17 @@ public class OptionsGUI extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			//  Do loading stuff
+			try {
+			FileInputStream fos = new FileInputStream("GameData");
+			ObjectInputStream oos = new ObjectInputStream(fos);
+			caller.loadTheSave((Game)oos.readObject());
+			caller.revalidate();
+			fos.close();
+			oos.close();
+			}
+			catch(Exception saveProbs) {
+				saveProbs.printStackTrace();
+			}
 			loader.setText("Your save has been loaded");
 		}
 	}

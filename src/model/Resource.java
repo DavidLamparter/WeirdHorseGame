@@ -22,11 +22,13 @@ package model;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Observable;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-public abstract class Resource {
+public abstract class Resource extends Observable implements Serializable {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -45,10 +47,6 @@ public abstract class Resource {
 	// The maximum amount this resource can hold
 	private double max;
 	
-	//The Graphic ID;
-	protected Image ImageSummer;
-	protected Image ImageWinter;
-	
 	//staggers things a little
 	public int Offset;
 	
@@ -61,17 +59,12 @@ public abstract class Resource {
 	public Resource(double q, ResourceType x) {
 		quantity = q;
 		type = x;
-		ImageSummer = null;
 		Offset = num.nextInt(16)-8;
 	}
 	
 	/**************************************
 	 *   Getters for Instance Variables   *
 	 **************************************/
-	//Returns ID
-	public Image getID() {
-		return ImageSummer;
-	}
 	// Returns max possible value of this resource
 	public double getMax(){
 		return this.max;
@@ -97,11 +90,15 @@ public abstract class Resource {
 	// Adds to the quantity of this resource (regneration)
 	public void addResource(double n){
 		quantity += n;
+		setChanged();
+		notifyObservers();
 	}
 	
 	// Subtracts from the quantity of this resource (harvesting)
 	public void subResource(double n){
 		quantity -= n;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**************************************
@@ -181,18 +178,14 @@ class Tree extends Resource {
 	 *            Tree Constructor        *
 	 **************************************/
 	// Tree constructed with a randomly generated quantity
+	private String summerFileName;
+	private String winterFileName;
 	public Tree() {
 		super(num.nextInt(50)+75, ResourceType.TREE);
 		
 		int filenum = num.nextInt(3)+1;
-		try {
-			ImageSummer = ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + filenum + ".png"));
-			ImageWinter = ImageIO.read(new File("./Graphics/Trees/Tree Redux_" + filenum + "_Winter.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("./Graphics/Trees/Tree Redux_" + filenum + ".jpg");
-			e.printStackTrace();
-		}
+		summerFileName = "./Graphics/Trees/Tree Redux_" + filenum + ".png";
+		winterFileName = "./Graphics/Trees/Tree Redux_" + filenum + "_Winter.png";
 	}
 	
 	// Tree regenerates over time to allow more playtime
@@ -216,13 +209,13 @@ class Tree extends Resource {
 	// Returns the file name of this tree. Can vary between different images
 	@Override
 	public String getFileName() {
-		return "./Graphics/Trees/Tree Redux_1.png";
+		return summerFileName;
 	}
 
 	@Override
 	public String getWinterFileName() {
 		// TODO Auto-generated method stub
-		return "./Graphics/Trees/Tree Redux_1_Winter.png";
+		return winterFileName;
 	}
 	
 }

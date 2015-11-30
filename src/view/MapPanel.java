@@ -138,7 +138,7 @@ public class MapPanel extends JPanel implements Observer{
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
-				
+
 				// Fish
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);
@@ -281,7 +281,7 @@ public class MapPanel extends JPanel implements Observer{
 		//  thanks Sneaky
 		repaint();
 	}
-
+	
 	public void setInitialPoint(Point point) {
 		initialx = point.x / 2 - caller.getWidth()/MAP_TILE_WIDTH/2; //  it just takes some time
 		initialy = point.y / 2 - caller.getHeight()/MAP_TILE_HEIGHT/2; //  the middle 

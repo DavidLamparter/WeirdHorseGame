@@ -20,9 +20,11 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public abstract class Worker{
+public abstract class Worker extends Observable implements Serializable {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -205,6 +207,8 @@ public abstract class Worker{
 	// Hunger helper method for sub classes
 	protected void addHunger(double hunger) {
 		this.hunger += hunger;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void addHunger() {
@@ -218,6 +222,8 @@ public abstract class Worker{
 	// Fatigue helper method for sub classes
 	protected void addFatigue(double fatigue) {
 		this.fatigue += fatigue;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void addFatigue() {
@@ -231,6 +237,8 @@ public abstract class Worker{
 	// Coldness helper method for sub classes
 	protected void addColdness(double coldness) {
 		this.coldness += coldness;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void addColdness() {
@@ -267,8 +275,11 @@ public abstract class Worker{
 	public void inDanger(int status) {
 		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.25,(status));
 		double rand = Math.random();
-		if(rand > (0.66 - dubStatus))
-			isAlive = false;
+		if(rand > (0.66 - dubStatus)) {
+			isAlive = false; 
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
 	/****************************************************
@@ -319,6 +330,8 @@ public abstract class Worker{
 		//  Will need to be something else an intermediary but this will be cool to see goons run around
 		else {
 		isBusy = false;
+		setChanged();
+		notifyObservers();
 		}
 	}
 
@@ -414,6 +427,8 @@ public abstract class Worker{
 		myTask = calc.getShortestPath(getPoint(), new Point(closest));
 		job = closest;
 		isBusy = true;
+		setChanged();
+		notifyObservers();
 	}	
 	
 	public void goToStorage(Map theMap){
@@ -441,6 +456,8 @@ public abstract class Worker{
 			myTask = calc.getShortestPath(getPoint(), new Point(closest));
 			job = closest;
 			isBusy = true;
+			setChanged();
+			notifyObservers();
 	}
 	
 	/******************************************************

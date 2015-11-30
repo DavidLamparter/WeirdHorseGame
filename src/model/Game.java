@@ -86,6 +86,14 @@ public class Game extends Observable implements Serializable {
 		SpeedMeter.start();
 		gameTimer.start();
 	}
+
+	public void startTimers() {
+		SpeedMeter = new Timer(200, new MovementTimerListener());
+		SpeedMeter.start();
+		gameTimer = new Timer(1000, new GameTimerListener());
+		gameTimer.start();
+	}
+	
 	public void setChange() {
 		setChanged();
 		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);

@@ -90,10 +90,45 @@ public class SettlementGUI extends JFrame {
 		game.getWorkQueue().addObserver(theQueueFrame);
 
 	}
+	public void loadTheSave(Game game) {
+		size = game.getMap().length;
+		map = new Map(game.getMap());
+		this.remove(mapPanel);
+		mapPanel = new MapPanel(this);
+		mapPanel.setSize(this.getSize());
+		mapPanel.setLocation(0,0);
+		mapPanel.setMaxScroll();
+		mapPanel.addMouseListener(new ClickerListener());
+		this.add(mapPanel);
+		//this.requestFocus();
+		this.addWindowListener(new WindogeListener());
+		minimap.dispose();
+		minimap = new MiniMap(this);
+		
+		minimap.relocateToBottomRight();
+		board = map.getMapTiles();
+				
+		theQueueFrame = new QueueFrame(this);
+		
+		mapPanel.addMouseMotionListener(new MapMotionListener());
+		
+		game.deleteObservers();
+		game.getWorkQueue().deleteObservers();
+		
+		this.game = game;	
+		game.addObserver(mapPanel);
+		game.addObserver(minimap.getGraphPanel());
+		game.setChange();
+		
+		game.getWorkQueue().addObserver(theQueueFrame);
+		game.startTimers();
+	}
 	public void CloseEverything() {
 		minimap.dispose();
 		options.dispose();
 		buildings.dispose();
+		game = null;
+		
 		this.dispose();
 		System.exit(0);
 	}
@@ -266,6 +301,7 @@ public class SettlementGUI extends JFrame {
 			if (frame != null)
 				frame.dispose();
 			frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), game);
+			board[point.y][point.x].getResource().addObserver(frame);
 			}
 
 		private void worker(Point point, MouseEvent arg0) {
@@ -274,6 +310,7 @@ public class SettlementGUI extends JFrame {
 				if(workFrame != null)
 					workFrame.dispose();
 				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked);
+				clicked.addObserver(workFrame);
 			}
 		}
 
