@@ -85,6 +85,7 @@ public abstract class Resource extends Observable implements Serializable {
 	}
 	
 	public boolean getHarvestable(){
+		
 		return harvestable;
 	}
 	

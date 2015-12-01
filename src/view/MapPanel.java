@@ -138,7 +138,7 @@ public class MapPanel extends JPanel implements Observer{
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
-
+				
 				// Fish
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);

@@ -183,6 +183,9 @@ public class Game extends Observable implements Serializable {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {			
+			//Updates all of the resources
+			theMap.setHarvestable();
+			
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 10) == 0) {
 				list.incrementHunger();
