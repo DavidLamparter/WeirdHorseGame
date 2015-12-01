@@ -299,6 +299,7 @@ public class SettlementGUI extends JFrame {
 	//  making these scroll with the map
 	private ResourceFrame frame;
 	private WorkerFrame workFrame;
+	private BuildingFrame buildFrame;
 	
 	private class ClickerListener implements MouseListener{
 		
@@ -323,6 +324,7 @@ public class SettlementGUI extends JFrame {
 			//  null needs to be our list of workers
 			if(board[point.y][point.x].getResource().getResourceT().equals(ResourceType.NONE)) {
 				worker(point, arg0);
+				buildStorage(point, arg0);
 				return;
 			}
 			if (frame != null)
@@ -338,6 +340,17 @@ public class SettlementGUI extends JFrame {
 					workFrame.dispose();
 				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked);
 				clicked.addObserver(workFrame);
+			}
+		}
+		
+		private void buildStorage(Point point, MouseEvent arg0) {
+			
+			Storage clicked = game.getBuildings();
+			if(clicked != null) {
+				if(buildFrame != null)
+					buildFrame.dispose();
+				buildFrame = new BuildingFrame(arg0.getPoint(), st, clicked);
+				clicked.addObserver(buildFrame);
 			}
 		}
 
