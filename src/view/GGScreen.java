@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +25,11 @@ public class GGScreen extends JFrame {
 		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 		swing.start();
+		
+		//  SAVAGERY 
+		File file = new File("./GameData");
+		file.delete();
+
 	}
 	Timer swing = new Timer(50, new swagListener());
 	private class closeIt implements ActionListener {

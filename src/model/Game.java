@@ -23,6 +23,8 @@ package model;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -55,7 +57,7 @@ public class Game extends Observable implements Serializable {
 	private int gameLength = 0;
 	
 	// These variables are for changing seasons in-game (winter is coming)
-	private int lengthOfSeasons;
+	private int lengthOfSeasons = 60;
 	private int seasonsCounter;
 	private boolean isWinter;
 	private short wintersSurvived;
@@ -187,6 +189,17 @@ public class Game extends Observable implements Serializable {
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
 				seasonsCounter = 0;
+				//  AUTO SAVE ON WINTER COMPLETION OR START
+				try {
+					FileOutputStream fos = new FileOutputStream("GameData");
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+					oos.writeObject(this);
+					fos.close();
+					oos.close();
+					}
+					catch(Exception saveProbs) {
+						saveProbs.printStackTrace();
+					}
 				if(!isWinter)
 					wintersSurvived ++;
 			}
