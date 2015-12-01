@@ -83,13 +83,17 @@ public abstract class Storage extends Buildable {
 		}
 		return toGit;
 	}
+	public int getQuantity(){
+		return theGoods.size();
+	}
+	
 	public boolean isFull() {
 		return capacity >= theGoods.size();
 	}
 	public void addResource(ResourceType toAdd) {
 		theGoods.add(toAdd);
 	}
-	
+	public abstract String getName();
 	public abstract String getImageFile();
 }
 
@@ -106,6 +110,15 @@ class TownHall extends Storage {
 	public String getImageFile() {
 		return "./Graphics/Buildings/townHall.png";
 	}
+	
+	public int getQuantity(){
+		return theGoods.size();
+	}
+
+	@Override
+	public String getName() {
+		return "TownHall";
+	}
 }
 
 // STOREHOUSE
@@ -118,5 +131,10 @@ class Storehouse extends Storage {
 	@Override
 	public String getImageFile() {
 		return "./Graphics/Buildings/storage.png";
+	}
+
+	@Override
+	public String getName() {
+		return "StoreHouse";
 	}
 }
