@@ -30,6 +30,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -345,11 +346,22 @@ public class SettlementGUI extends JFrame {
 		
 		private void buildStorage(Point point, MouseEvent arg0) {
 			
-			Storage clicked = game.getBuildings();
+			ArrayList<Buildable> buildList = game.getBuildings();
+			Buildable clicked = null;
+			for(int i = 0; i < buildList.size(); i++) {
+				ArrayList<Point> points = buildList.get(i).getPoints();
+				for(int j = 0; j < points.size(); j++) {
+					if(points.get(j).distance(point)==0) {
+						if(buildList.get(i) instanceof Storage) {
+							clicked = buildList.get(i);
+						}
+					}
+				}
+			}
 			if(clicked != null) {
 				if(buildFrame != null)
 					buildFrame.dispose();
-				buildFrame = new BuildingFrame(arg0.getPoint(), st, clicked);
+				buildFrame = new BuildingFrame(arg0.getPoint(), point, (Storage) clicked, game);
 				clicked.addObserver(buildFrame);
 			}
 		}

@@ -25,6 +25,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,7 +46,7 @@ import model.Storage;
 import model.Worker;
 
 
-public class BuildingFrame extends JFrame {
+public class BuildingFrame extends JFrame implements Observer {
 	//  Instance variables and stuffs
 	private JPanel holder = new JPanel();
 	private JTextArea description = new JTextArea();
@@ -104,7 +106,7 @@ public class BuildingFrame extends JFrame {
 		
 		
 		//  adds some text
-		nameofBuilding.setText(curr.getName());
+		nameofBuilding.setText(theBuilding.getName());
 		description.setText("\nQuanity: " + theBuilding.getQuantity() );
 		
 		//  our action listeners
@@ -128,6 +130,13 @@ public class BuildingFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			dispose();
 		}
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

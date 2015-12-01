@@ -4,8 +4,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public abstract class Buildable implements Serializable {
+public abstract class Buildable extends Observable implements Serializable {
 	private int buildCost;
 	private int buildCounter;
 	private boolean passable;
@@ -44,7 +45,6 @@ public abstract class Buildable implements Serializable {
 	public boolean isBuilt() {
 		return built;
 	}
-	
 	
 	public abstract String getImageFile();
 	
