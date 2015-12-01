@@ -422,7 +422,7 @@ public abstract class Worker extends Observable implements Serializable {
 		}
 		
 		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
-		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
 
 		myTask = calc.getShortestPath(getPoint(), new Point(closest));
 		job = closest;
@@ -452,7 +452,8 @@ public abstract class Worker extends Observable implements Serializable {
 				storage = storageList.get(i);
 			}
 		}
-			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),
+					theMap.getBuildings());
 			myTask = calc.getShortestPath(getPoint(), new Point(closest));
 			job = closest;
 			isBusy = true;

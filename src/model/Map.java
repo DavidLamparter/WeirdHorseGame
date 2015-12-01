@@ -22,9 +22,11 @@ package model;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
-public class Map implements Serializable {
+public class Map implements Serializable, Observer {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -665,5 +667,13 @@ public class Map implements Serializable {
 			}
 		}		
 	}
-
+	private ArrayList<Buildable> buildings = new ArrayList<>();
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		ThePackage packages = (ThePackage)arg1;
+		buildings = packages.getBuildings();
+	}
+	public ArrayList<Buildable> getBuildings() {
+		return buildings;
+	}
 }

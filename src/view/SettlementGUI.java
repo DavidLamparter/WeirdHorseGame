@@ -83,6 +83,8 @@ public class SettlementGUI extends JFrame {
 		game = new Game(map);	
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
+		game.addObserver(map);
+
 		game.setChange();
 		
 		game.getWorkQueue().addObserver(theQueueFrame);
@@ -121,6 +123,7 @@ public class SettlementGUI extends JFrame {
 		this.game = game;	
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
+		game.addObserver(map);
 		game.setChange();
 		
 		game.getWorkQueue().addObserver(theQueueFrame);

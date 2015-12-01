@@ -50,7 +50,7 @@ public class ShortestPathCalculator{
 	//  A NEW CALULATOR MUST BE MADE WHEN THE MAP CHANGES!!!
 	
 	// Finds the shortest path using the actual map
-	public ShortestPathCalculator(MapTile[][] board) {
+	public ShortestPathCalculator(MapTile[][] board, ArrayList<Buildable> listOfBuildings) {
 		this.map = new boolean[board.length][board.length];
 		this.savedMap = new boolean[board.length][board.length];
 		for(int i = 0; i < map.length; i++) {
@@ -58,6 +58,17 @@ public class ShortestPathCalculator{
 				this.map[i][j] = board[i][j].unPassable();
 				this.savedMap[i][j] = board[i][j].unPassable();
 			}
+		}
+		for(int i = 0; i < listOfBuildings.size(); i++) {
+			ArrayList<Point> allPoints = (listOfBuildings.get(i).getPoints());
+				for(int j = 0; j < allPoints.size(); j++) {
+					boolean temp = listOfBuildings.get(i).isPassable();
+					temp = !temp;
+					this.map[allPoints.get(j).y][allPoints.get(j).x] = temp;
+					this.savedMap[allPoints.get(j).y][allPoints.get(j).x] = temp;
+					//  System.out.println(listOfBuildings.get(i).getImageFile() + "\n" +temp);
+				//	System.out.println("OH");
+				}
 		}
 	}
 	
@@ -719,7 +730,7 @@ public class ShortestPathCalculator{
 	}
 
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 	/*	System.out.print("{");
 		boolean[][] map = {{false, false, false, false, true, false, false, false, false, false, },
 {false, true, true, false, true, false, true, true, false, false, },
@@ -731,7 +742,7 @@ public class ShortestPathCalculator{
 {false, false, false, false, true, false, false, false, false, false, },
 {false, true, true, false, false, false, true, false, false, false, },
 {false, false, false, true, true, false, false, false, false, false}};
-		*/
+		
 		double average = 0;
 		int counter = 0;
 		int max = 0;
@@ -808,7 +819,7 @@ public class ShortestPathCalculator{
 				//b4[i][j] = mao[i][j];
 			}
 			System.out.println();
-		} */
+		} 
 		//System.out.println("---------------------------");
 		//times = new Timer(10, new TimerListener());
 		//tic = 0;
@@ -835,7 +846,7 @@ public class ShortestPathCalculator{
 		//	System.out.println("PATH 1");
 		//else
 		//	System.out.println("PATH 2!");
-		/* for(int i = 0; i < 10; i++) {
+		 for(int i = 0; i < 10; i++) {
 			for(int j = 0; j< 10 ; j++) {
 				if(!b4[i][j]&&mao[i][j]) {
 					if(i == 4 && j == 4)
@@ -857,13 +868,13 @@ public class ShortestPathCalculator{
 		} 
 		for(int i = 0 ; i < hodor.thePath.size(); i++) {
 			System.out.print(hodor.thePath.get(i) + " ");
-		}*/
+		}
 	}
 		System.out.println(min);
 		System.out.println(max);
 		System.out.println(average/counter);
 		System.out.println(counter);
 	}
-	
+	*/
 }
 

@@ -190,8 +190,8 @@ public class MapPanel extends JPanel implements Observer{
 				 */
 			}
 		}
-		drawThemWorkers(g2d);
 		drawThemBuildings(g2d);
+		drawThemWorkers(g2d);
 		for (int ilol = 0; ilol < width2; ilol++) {
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
