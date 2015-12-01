@@ -89,10 +89,13 @@ public class SettlementGUI extends JFrame {
 		mapPanel.addMouseListener(new MouseBuildingListener());
 		toBuild = -1;
 	}
-	public void loadTheSave(Game game) {
+	public SettlementGUI(Game game) {
+		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
+		//this.setSize(new Dimension(1080, 720));
+		this.setLayout(null);
+		this.setUndecorated(true);
 		size = game.getMap().length;
 		map = new Map(game.getMap());
-		this.remove(mapPanel);
 		mapPanel = new MapPanel(this);
 		mapPanel.setSize(this.getSize());
 		mapPanel.setLocation(0,0);
@@ -101,13 +104,11 @@ public class SettlementGUI extends JFrame {
 		this.add(mapPanel);
 		//this.requestFocus();
 		this.addWindowListener(new WindogeListener());
-		try {
-		minimap.dispose();
-		}
-		catch(Exception e) {
-			System.out.println("Oh!");
-		}
 		minimap = new MiniMap(this);
+		
+		buildings = new BuildingPanel(this, 4);
+
+		options = new OptionsGUI(this);
 		
 		minimap.relocateToBottomRight();
 		board = map.getMapTiles();
@@ -115,14 +116,6 @@ public class SettlementGUI extends JFrame {
 		theQueueFrame = new QueueFrame(this);
 		
 		mapPanel.addMouseMotionListener(new MapMotionListener());
-		
-		try {
-		game.deleteObservers();
-		game.getWorkQueue().deleteObservers();
-		}
-		catch(Exception f) {
-			System.out.println("Wow observers can't be removed");
-		}
 		
 		this.game = game;	
 		game.addObserver(mapPanel);
@@ -413,9 +406,7 @@ public class SettlementGUI extends JFrame {
 					oos = new ObjectInputStream(fos);
 					Game game = (Game)oos.readObject();
 					//  Knees weak moms spagetti arms spaggetti rito spaghetti
-					SettlementGUI guiLoad = new SettlementGUI(100);
-					guiLoad.setAllVisible(false);
-					guiLoad.loadTheSave(game);
+					SettlementGUI guiLoad = new SettlementGUI(game);
 					guiLoad.setAllVisible(true);
 					fos.close();
 					oos.close();

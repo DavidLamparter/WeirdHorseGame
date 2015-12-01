@@ -190,16 +190,7 @@ public class Game extends Observable implements Serializable {
 				isWinter = !isWinter;
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START
-				try {
-					FileOutputStream fos = new FileOutputStream("GameData");
-					ObjectOutputStream oos = new ObjectOutputStream(fos);
-					oos.writeObject(this);
-					fos.close();
-					oos.close();
-					}
-					catch(Exception saveProbs) {
-						saveProbs.printStackTrace();
-					}
+				saveTheGame();
 				if(!isWinter)
 					wintersSurvived ++;
 			}
@@ -289,5 +280,18 @@ public class Game extends Observable implements Serializable {
 	public MapTile[][] getMap() {
 		// TODO Auto-generated method stub
 		return theMap.getMapTiles();
+	}
+
+	public void saveTheGame() {
+		try {
+			FileOutputStream fos = new FileOutputStream("GameData");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this);
+			fos.close();
+			oos.close();
+			}
+			catch(Exception saveProbs) {
+				saveProbs.printStackTrace();
+		}
 	}
 }
