@@ -51,10 +51,10 @@ public class Map implements Serializable, Observer {
 	private boolean riverNotFinished;
 	
 	//Arrays of the resources, used to determine closest Resource of working type
-	private ArrayList<Point> TreeList = new ArrayList<Point>();
-	private ArrayList<Point> StoneList = new ArrayList<Point>();
-	private ArrayList<Point> BerryList = new ArrayList<Point>();
-	private ArrayList<Point> FishList = new ArrayList<Point>();
+	private ArrayList<Resource> TreeList = new ArrayList<Resource>();
+	private ArrayList<Resource> StoneList = new ArrayList<Resource>();
+	private ArrayList<Resource> BerryList = new ArrayList<Resource>();
+	private ArrayList<Resource> FishList = new ArrayList<Resource>();
 	private ArrayList<Storage> storageList = new ArrayList<Storage>();
 	
 	/**************************************
@@ -482,7 +482,7 @@ public class Map implements Serializable, Observer {
 							if(board[j][i].getLand().equals(Terrain.PLAIN) 
 									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
 								board[j][i].setResource(new Tree());
-								TreeList.add(new Point(i,j));
+								TreeList.add(board[j][i].getResource());
 								noOfTrees++;
 							}
 						}
@@ -493,6 +493,25 @@ public class Map implements Serializable, Observer {
 			}
 		}
 	}
+	/********************************************
+	 *            Harvestable Methods           *
+	 ********************************************/
+	private void setHarvestable(){
+		//for Stone
+		int stoneSize = StoneList.size();
+		for(int i = 0; i < stoneSize; i++){
+		if(StoneList.get(i).getQuantity() < 4.0){
+			
+			}	
+		}
+			
+			
+		//for fish
+			
+			
+		//for Wood
+	}
+	
 	
 	/**************************************
 	 *            Spawn Methods           *
@@ -517,7 +536,7 @@ public class Map implements Serializable, Observer {
 				point.y = gen.nextInt(size);
 			}
 			board[point.x][point.y].setResource(new Fish());
-			FishList.add(new Point(point.y,point.x));
+			FishList.add(board[point.x][point.y].getResource());
 		}
 		//  Spawns Salty Fish in the Ocean
 		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
@@ -552,7 +571,7 @@ public class Map implements Serializable, Observer {
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(new BerryBush());
-			BerryList.add(new Point(Y,X));
+			BerryList.add(board[X][Y].getResource());
 			dingDangBushes --;
 			treeCounter = 0;
 			}
@@ -598,10 +617,10 @@ public class Map implements Serializable, Observer {
 				board[X][Y+1].setResource(stoned);
 				board[X+1][Y+1].setResource(stoned);
 				
-				StoneList.add(new Point(Y,X));
-				StoneList.add(new Point(Y+1,X));
-				StoneList.add(new Point(Y,X+1));
-				StoneList.add(new Point(Y+1,X+1));
+				StoneList.add(board[Y][X].getResource());
+				StoneList.add(board[Y][X+1].getResource());
+				StoneList.add(board[Y+1][X].getResource());
+				StoneList.add(board[Y+1][X+1].getResource());
 				
 				Outcroppings--;
 		}

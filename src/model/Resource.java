@@ -50,6 +50,9 @@ public abstract class Resource extends Observable implements Serializable {
 	//staggers things a little
 	public int Offset;
 	
+	//keeps them form going negative
+	private boolean harvestable;
+	
 	/**************************************
 	 *        Resource Constructor        *
 	 **************************************/
@@ -60,6 +63,7 @@ public abstract class Resource extends Observable implements Serializable {
 		quantity = q;
 		type = x;
 		Offset = num.nextInt(16)-8;
+		harvestable = true;
 	}
 	
 	/**************************************
@@ -80,6 +84,13 @@ public abstract class Resource extends Observable implements Serializable {
 		return type;
 	}
 	
+	public boolean getHarvestable(){
+		return harvestable;
+	}
+	
+	public void setHarvestable(boolean b){
+		harvestable = b;
+	}
 	/**************************************
 	 *   Setters / Adders / Subtractors   *
 	 **************************************/
