@@ -19,9 +19,10 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class ListOfWorkers{
+public class ListOfWorkers implements Serializable {
 	
 	/**************************************
 	 *          Instance Variables        *

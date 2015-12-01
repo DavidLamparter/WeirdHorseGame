@@ -102,6 +102,8 @@ class TownHall extends Storage {
 
 	public TownHall(Point topPoint) {
 		super(topPoint, new Point(topPoint.x+1, topPoint.y+2));
+		while(!isBuilt())
+			build();
 	}
 
 	@Override
@@ -128,7 +130,7 @@ class Storehouse extends Storage {
 
 	@Override
 	public String getImageFile() {
-		return "./Graphics/Buildings/sHouse.png";
+		return "./Graphics/Buildings/storage.png";
 	}
 
 	@Override

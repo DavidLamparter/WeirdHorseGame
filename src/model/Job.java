@@ -19,8 +19,9 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Job {
+public class Job implements Serializable {
 	Resource resource;
 	Point location = null;
 	

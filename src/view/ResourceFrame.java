@@ -25,6 +25,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -42,7 +44,7 @@ import model.ShortestPathCalculator;
 import model.Worker;
 
 
-public class ResourceFrame extends JFrame {
+public class ResourceFrame extends JFrame implements Observer {
 	//  Instance variables and stuffs
 	private JPanel holder = new JPanel();
 	private JTextArea description = new JTextArea();
@@ -142,5 +144,23 @@ public class ResourceFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			dispose();
 		}
+	}
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		description.setText("\nQuanity: " + (int) ((Resource) arg0).getQuantity() +
+				"\nWorkers: " );
+	}
+	
+	public void moveRight() {
+		this.setLocation(this.getLocation().x+MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveLeft() {
+		this.setLocation(this.getLocation().x-MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveUp() {
+		this.setLocation(this.getLocation().x, this.getLocation().y+MapPanel.MAP_TILE_HEIGHT);
+	}
+	public void moveDown() {
+		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
 	}
 }

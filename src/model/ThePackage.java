@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ThePackage {
+public class ThePackage implements Serializable {
 	ListOfWorkers workmen = null;
 	ArrayList<Buildable> buildings = new ArrayList<>();
 	

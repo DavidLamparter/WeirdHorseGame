@@ -28,19 +28,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import model.Buildable;
-import model.Game;
-import model.Map;
-import model.MapTile;
-import model.ResourceType;
-import model.Storage;
-import model.Worker;
+import model.*;
 
 public class SettlementGUI extends JFrame {
 	private int size;
@@ -52,6 +48,7 @@ public class SettlementGUI extends JFrame {
 	private Map map = null;
 	private MapTile[][] board = null;
 	private Game game;
+	
 	public SettlementGUI(int sizeOfMap) {
 		size = sizeOfMap;
 		map = new Map(getMapSize());
@@ -78,7 +75,7 @@ public class SettlementGUI extends JFrame {
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
 		
-		buildings = new BuildingPanel(this, 3);
+		buildings = new BuildingPanel(this, 4);
 		
 		theQueueFrame = new QueueFrame(this);
 		
@@ -88,12 +85,55 @@ public class SettlementGUI extends JFrame {
 		game.setChange();
 		
 		game.getWorkQueue().addObserver(theQueueFrame);
+		
+		mapPanel.addMouseListener(new MouseBuildingListener());
+		toBuild = -1;
+	}
+	public SettlementGUI(Game game) {
+		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
+		//this.setSize(new Dimension(1080, 720));
+		this.setLayout(null);
+		this.setUndecorated(true);
+		size = game.getMap().length;
+		map = new Map(game.getMap());
+		mapPanel = new MapPanel(this);
+		mapPanel.setSize(this.getSize());
+		mapPanel.setLocation(0,0);
+		mapPanel.setMaxScroll();
+		mapPanel.addMouseListener(new ClickerListener());
+		this.add(mapPanel);
+		//this.requestFocus();
+		this.addWindowListener(new WindogeListener());
+		minimap = new MiniMap(this);
+		
+		buildings = new BuildingPanel(this, 4);
 
+		options = new OptionsGUI(this);
+		
+		minimap.relocateToBottomRight();
+		board = map.getMapTiles();
+				
+		theQueueFrame = new QueueFrame(this);
+		
+		mapPanel.addMouseMotionListener(new MapMotionListener());
+		
+		this.game = game;	
+		game.addObserver(mapPanel);
+		game.addObserver(minimap.getGraphPanel());
+		game.setChange();
+		
+		game.getWorkQueue().addObserver(theQueueFrame);
+		game.startTimers();
+		mapPanel.addMouseListener(new MouseBuildingListener());
+		toBuild = -1;
+		
 	}
 	public void CloseEverything() {
 		minimap.dispose();
 		options.dispose();
 		buildings.dispose();
+		game = null;
+		
 		this.dispose();
 		System.exit(0);
 	}
@@ -113,37 +153,57 @@ public class SettlementGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			if(goingNorth)
+			if(goingNorth) {
 				mapPanel.increaseY();
-			if(goingSouth)
+				if(frame!=null)
+					frame.moveDown();
+				if(workFrame!=null)
+					workFrame.moveDown();
+			}
+			if(goingSouth) {
 				mapPanel.decreaseY();
-			if(goingWest)
+				if(frame!=null)
+					frame.moveUp();
+				if(workFrame!=null)
+					workFrame.moveUp();
+			}
+			if(goingWest) {
 				mapPanel.decreaseX();
-			if(goingEast)
+				if(frame!=null)
+					frame.moveRight();
+				if(workFrame!=null)
+					workFrame.moveRight();
+			}
+			if(goingEast) {
 				mapPanel.increaseX();
+				if(frame!=null)
+					frame.moveLeft();
+				if(workFrame!=null)
+					workFrame.moveLeft();
+			}
 			mapPanel.paintIt();
 			minimap.getGraphPanel().paintIt();
 		}
 	}
 	
 	//  The following Variables are used for building
-	private boolean mouseIsBuilding = false;
 	private boolean canBuild = false;
-	private int toBuild = 0;
+	private int toBuild;
 	private Point topLeftBuildingPoint = null;
+	
+	public void setLastClickedBuilding(int i) {
+		toBuild = i;
+	}
 	
 	private class MouseBuildingListener implements MouseMotionListener, MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			if(mouseIsBuilding) {
-				//  add the building to a array of buildings...
-				mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
-				
-			}
-			else {
-				topLeftBuildingPoint = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
-				mouseIsBuilding = true;
+			
+			topLeftBuildingPoint = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
+			toBuild = game.addNewBuildingUsingID(toBuild, topLeftBuildingPoint);
+			if(toBuild == -1) {
+				buildings.resetButtons();
 			}
 		}
 
@@ -236,9 +296,11 @@ public class SettlementGUI extends JFrame {
 			//  System.out.println("HODOR!");
 		}
 	}
+	//  making these scroll with the map
+	private ResourceFrame frame;
+	private WorkerFrame workFrame;
+	
 	private class ClickerListener implements MouseListener{
-		private ResourceFrame frame;
-		private WorkerFrame workFrame;
 		
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
@@ -266,6 +328,7 @@ public class SettlementGUI extends JFrame {
 			if (frame != null)
 				frame.dispose();
 			frame = new ResourceFrame(arg0.getPoint(), point, board[point.y][point.x].getResource(), game);
+			board[point.y][point.x].getResource().addObserver(frame);
 			}
 
 		private void worker(Point point, MouseEvent arg0) {
@@ -274,6 +337,7 @@ public class SettlementGUI extends JFrame {
 				if(workFrame != null)
 					workFrame.dispose();
 				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked);
+				clicked.addObserver(workFrame);
 			}
 		}
 
@@ -325,8 +389,48 @@ public class SettlementGUI extends JFrame {
 		}
 	}
 	public static void main(String[] args) {
-		SettlementGUI gui = new SettlementGUI(100);
+		FileInputStream fos = null;
+		ObjectInputStream oos;
+		try {
+			fos = new FileInputStream("GameData");
+		}
+		catch(Exception e) {
+			//  NOTHING TO LOAD DO NOT WORRY
+		}
+		//  Then we can load
+		if(fos != null) {
+			int reply = JOptionPane.showConfirmDialog(null, "Do you want to load your previous save?",
+					"Load?", JOptionPane.YES_NO_OPTION);
+			if (reply == JOptionPane.YES_OPTION) {
+				try {
+					oos = new ObjectInputStream(fos);
+					Game game = (Game)oos.readObject();
+					//  Knees weak moms spagetti arms spaggetti rito spaghetti
+					SettlementGUI guiLoad = new SettlementGUI(game);
+					guiLoad.setAllVisible(true);
+					fos.close();
+					oos.close();
+				}
+				catch(Exception f) {
+					f.printStackTrace();
+				}
+        	}
+			else {
+				SettlementGUI gui = new SettlementGUI(100);
+			}
+        }
+		else {
+			SettlementGUI gui = new SettlementGUI(100);
+		}
 	}
+	private void setAllVisible(boolean b) {
+		minimap.setVisible(b);
+		options.setVisible(b);
+		theQueueFrame.setVisible(b);
+		buildings.setVisible(b);
+		this.setVisible(b);
+	}
+
 	public Map getMap() {
 		// TODO Auto-generated method stub
 		return map;

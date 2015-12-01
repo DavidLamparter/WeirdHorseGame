@@ -18,10 +18,11 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-public class WorkQueue extends Observable {
+public class WorkQueue extends Observable implements Serializable {
 	private ArrayList<Job> queue = new ArrayList<>();
 	
 	public WorkQueue() {

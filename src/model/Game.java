@@ -23,12 +23,17 @@ package model;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
 import javax.swing.Timer;
+
+import view.BuildingPanel;
+import view.GGScreen;
 
 //Our game class extends Observable, and will notify the other classes when an event occurs
 public class Game extends Observable implements Serializable {
@@ -52,7 +57,7 @@ public class Game extends Observable implements Serializable {
 	private int gameLength = 0;
 	
 	// These variables are for changing seasons in-game (winter is coming)
-	private int lengthOfSeasons;
+	private int lengthOfSeasons = 60;
 	private int seasonsCounter;
 	private boolean isWinter;
 	private short wintersSurvived;
@@ -86,6 +91,14 @@ public class Game extends Observable implements Serializable {
 		SpeedMeter.start();
 		gameTimer.start();
 	}
+
+	public void startTimers() {
+		SpeedMeter = new Timer(200, new MovementTimerListener());
+		SpeedMeter.start();
+		gameTimer = new Timer(1000, new GameTimerListener());
+		gameTimer.start();
+	}
+	
 	public void setChange() {
 		setChanged();
 		ThePackage theFUCKINGPackage = new ThePackage(buildings, list);
@@ -95,6 +108,41 @@ public class Game extends Observable implements Serializable {
 	public void addBuilding(Buildable building) {
 		buildings.add(building);
 		setChange();
+	}
+	public int addNewBuildingUsingID(int toBuild, Point topLeftBuildingPoint) {
+		Buildable build = null;
+		if(toBuild == BuildingPanel.BRIDGE_H_ID) {
+			build = new HorizontalBridge(topLeftBuildingPoint);
+		}
+		if(toBuild == BuildingPanel.BRIDGE_V_ID) {
+			build = new VerticalBridge(topLeftBuildingPoint);
+		}
+		if(toBuild == BuildingPanel.HOUSE_ID) {
+			build = new House(topLeftBuildingPoint);
+		}
+		if(toBuild == BuildingPanel.STOREHOUSE_ID) {
+			build = new Storehouse(topLeftBuildingPoint);
+		}
+		if(build != null) {
+			boolean canBuild = true;
+			ArrayList<Point> allOtherBuildings = new ArrayList<>();
+			for(int i = 0; i < buildings.size(); i++) {
+				allOtherBuildings.addAll(buildings.get(i).getPoints());
+			}
+			ArrayList<Point> buildPoints = build.getPoints();
+			for(int i = 0; i < allOtherBuildings.size(); i++) {
+				for(int j = 0; j < buildPoints.size(); j++) {
+					if(buildPoints.get(j).distance(allOtherBuildings.get(i))==0) {
+						canBuild = false;
+					}
+				}
+			}
+			if(canBuild) {
+				buildings.add(build);
+				return -1;
+			}
+		}
+		return toBuild;
 	}
 	
 	public WorkQueue getWorkQueue() {
@@ -141,6 +189,8 @@ public class Game extends Observable implements Serializable {
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
 				seasonsCounter = 0;
+				//  AUTO SAVE ON WINTER COMPLETION OR START
+				saveTheGame();
 				if(!isWinter)
 					wintersSurvived ++;
 			}
@@ -177,6 +227,11 @@ public class Game extends Observable implements Serializable {
 			}
 			
 			int listSize = list.size();
+			if(listSize == 0) {
+				GGScreen wp = new GGScreen(gameLength, wintersSurvived);
+				gameTimer.stop();
+				SpeedMeter.stop();
+			}
 
 			//checks to see if they have full resource
 			for(int i = 0; i <listSize; i++){
@@ -225,5 +280,18 @@ public class Game extends Observable implements Serializable {
 	public MapTile[][] getMap() {
 		// TODO Auto-generated method stub
 		return theMap.getMapTiles();
+	}
+
+	public void saveTheGame() {
+		try {
+			FileOutputStream fos = new FileOutputStream("GameData");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this);
+			fos.close();
+			oos.close();
+			}
+			catch(Exception saveProbs) {
+				saveProbs.printStackTrace();
+		}
 	}
 }

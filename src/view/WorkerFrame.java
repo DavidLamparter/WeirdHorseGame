@@ -25,6 +25,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -42,7 +44,7 @@ import model.ShortestPathCalculator;
 import model.Worker;
 
 
-public class WorkerFrame extends JFrame {
+public class WorkerFrame extends JFrame implements Observer {
 	//  Instance variables and stuffs
 	private JPanel holder = new JPanel();
 	private JTextArea description = new JTextArea();
@@ -164,5 +166,39 @@ public class WorkerFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			dispose();
 		}
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		double tempDistribution = .01;
+		//  0 to 4 times
+		//  running times
+		int timesToRun = (int)(Math.random()*3);
+		for(int i = 0; i < timesToRun; i++) {
+			tempDistribution-=.001;
+		}
+		if(workmen.isBusy()) {
+			description.setText("They are busy");
+		}
+		else {
+			description.setText("They are idle");
+		}
+		description.setText(description.getText() + "\nHunger: "
+				+ workmen.getHunger() + "\nFatigue: "
+				+ workmen.getFatigue() + "\nTemp: "
+				+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) 
+				+ "\nPref: " + workmen.getPreference());
+		
+	}
+	public void moveRight() {
+		this.setLocation(this.getLocation().x+MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveLeft() {
+		this.setLocation(this.getLocation().x-MapPanel.MAP_TILE_WIDTH, this.getLocation().y);
+	}
+	public void moveUp() {
+		this.setLocation(this.getLocation().x, this.getLocation().y+MapPanel.MAP_TILE_HEIGHT);
+	}
+	public void moveDown() {
+		this.setLocation(this.getLocation().x, this.getLocation().y-MapPanel.MAP_TILE_HEIGHT);
 	}
 }

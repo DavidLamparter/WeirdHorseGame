@@ -18,7 +18,9 @@
 
 package model;
 
+import java.io.Serializable;
+
 //Defines tools for workers to use
-public enum ResourceType {
+public enum ResourceType implements Serializable {
 	FISH, SALTY_FISH, TREE, BERRY_BUSH, NONE, STONE, POISION_BUSH;
 }

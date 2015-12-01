@@ -22,16 +22,23 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import model.Game;
+
 public class OptionsGUI extends JFrame {
 	JButton close = new JButton("Exit the Game");
 	JButton closeThis = new JButton("Close this window");
 	JButton saver = new JButton("Save?");
-	JButton loader = new JButton("Load?");
+	//  JButton loader = new JButton("Load?");
 	private boolean wasSaved = false;
 	SettlementGUI caller;
 	private JButton options = new JButton("Options");
@@ -48,19 +55,20 @@ public class OptionsGUI extends JFrame {
 		saver.setLocation(10, 20);
 		saver.setVisible(false);
 		
-		loader.addActionListener(new LoaderListener());
+		//  SAVAGRY WILL BE ADDED
+		/* loader.addActionListener(new LoaderListener());
 		loader.setSize(this.getWidth()-20, caller.getHeight()/12);
 		loader.setLocation(10, 40 + saver.getHeight());
-		loader.setVisible(false);
+		loader.setVisible(false); */
 		
 		closeThis.addActionListener(maxWindow);
 		closeThis.setSize(this.getWidth()-20, caller.getHeight()/12);
-		closeThis.setLocation(10, 60 + saver.getHeight() + loader.getHeight());
+		closeThis.setLocation(10, 60 + saver.getHeight()); //+ loader.getHeight());
 		closeThis.setVisible(false);
 		
 		close.addActionListener(new CloseListener());
 		close.setSize(this.getWidth()-20, caller.getHeight()/12);
-		close.setLocation(10, saver.getHeight() + 80 + loader.getHeight() + closeThis.getHeight());
+		close.setLocation(10, saver.getHeight() + 80 + closeThis.getHeight()); // + loader.getHeight();
 		close.setVisible(false);
 		
 		this.setSize(150, 50);
@@ -77,7 +85,7 @@ public class OptionsGUI extends JFrame {
 		this.add(closeThis);
 		this.add(options);
 		this.add(close);
-		this.add(loader);
+		//  this.add(loader);
 		this.setVisible(true);
 		this.setAlwaysOnTop(true);
 	}
@@ -121,9 +129,9 @@ public class OptionsGUI extends JFrame {
 			close.setVisible(max);
 			closeThis.setVisible(max);
 			saver.setVisible(max);
-			loader.setVisible(max);
+			//  loader.setVisible(max);
 			saver.setText("Save?");
-			loader.setText("Load?");
+			//  loader.setText("Load?");
 			wasSaved = false;
 		}
 	}
@@ -133,6 +141,17 @@ public class OptionsGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			//  Do saving stuff!
+			try {
+			FileOutputStream fos = new FileOutputStream("GameData");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(caller.getGame());
+			fos.close();
+			oos.close();
+			}
+			catch(Exception saveProbs) {
+				saveProbs.printStackTrace();
+			}
+			
 			saver.setText("Saved!");
 			wasSaved = true;
 		}
@@ -141,9 +160,18 @@ public class OptionsGUI extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			//  Do loading stuff
-			loader.setText("Your save has been loaded");
+			try {
+			FileInputStream fos = new FileInputStream("GameData");
+			ObjectInputStream oos = new ObjectInputStream(fos);
+			//caller.loadTheSave((Game)oos.readObject());
+			caller.revalidate();
+			fos.close();
+			oos.close();
+			}
+			catch(Exception saveProbs) {
+				saveProbs.printStackTrace();
+			}
+			//  loader.setText("Your save has been loaded");
 		}
 	}
 }
