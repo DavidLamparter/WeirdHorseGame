@@ -70,6 +70,8 @@ public class Game extends Observable implements Serializable {
 	
 	// Our current max number of workers is 50
 	public static final int MAX_NUMBER_OF_WORKERS = 50;
+
+	public static final int NORMAL_SPEED = 1;
 	
 	/**************************************
 	 *          Worker Constructor        *
@@ -144,6 +146,13 @@ public class Game extends Observable implements Serializable {
 		}
 		return toBuild;
 	}
+	public ArrayList<Buildable> getBuildings() {
+		return buildings;
+	}
+	
+	public ThePackage getThePackage() {
+		return new ThePackage(buildings, list);
+	}
 	
 	public WorkQueue getWorkQueue() {
 		return workQueue;
@@ -175,10 +184,11 @@ public class Game extends Observable implements Serializable {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {			
 			// Increment workers conditions every 5 seconds
-			if((gameLength % 5) == 0) {
-				//list.incrementHunger();
-				//list.incrementFatigue();
-				list.incrementColdness();
+			if((gameLength % 10) == 0) {
+				list.incrementHunger();
+				list.incrementFatigue();
+				if(isWinter)
+					list.incrementColdness();
 				if(list.removeDead()) {
 					setChange();
 				}	
@@ -293,5 +303,14 @@ public class Game extends Observable implements Serializable {
 			catch(Exception saveProbs) {
 				saveProbs.printStackTrace();
 		}
+	}
+
+	public void changeTimers(int speed) {
+		SpeedMeter.stop();
+		gameTimer.stop();
+		gameTimer = new Timer((NORMAL_SPEED*1000)/speed, new GameTimerListener());
+		SpeedMeter = new Timer((NORMAL_SPEED*250)/speed,  new MovementTimerListener());
+		gameTimer.start();
+		SpeedMeter.start();
 	}
 }
