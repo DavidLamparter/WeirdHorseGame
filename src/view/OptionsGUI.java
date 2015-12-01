@@ -20,6 +20,8 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -31,6 +33,7 @@ import java.io.ObjectOutputStream;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import model.Game;
 
@@ -38,11 +41,16 @@ public class OptionsGUI extends JFrame {
 	JButton close = new JButton("Exit the Game");
 	JButton closeThis = new JButton("Close this window");
 	JButton saver = new JButton("Save?");
+	JButton oneX = new JButton("1X");
+	JButton twoX = new JButton("2X");
+	JButton fiveX = new JButton("5X");
 	//  JButton loader = new JButton("Load?");
 	private boolean wasSaved = false;
 	SettlementGUI caller;
 	private JButton options = new JButton("Options");
 	MaxSize maxWindow = new MaxSize();
+	
+	
 	public OptionsGUI(SettlementGUI caller) {
 		this.caller = caller;
 		this.setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
@@ -63,13 +71,29 @@ public class OptionsGUI extends JFrame {
 		
 		closeThis.addActionListener(maxWindow);
 		closeThis.setSize(this.getWidth()-20, caller.getHeight()/12);
-		closeThis.setLocation(10, 60 + saver.getHeight()); //+ loader.getHeight());
+		closeThis.setLocation(10, 40 + saver.getHeight()); //+ loader.getHeight());
 		closeThis.setVisible(false);
 		
 		close.addActionListener(new CloseListener());
 		close.setSize(this.getWidth()-20, caller.getHeight()/12);
-		close.setLocation(10, saver.getHeight() + 80 + closeThis.getHeight()); // + loader.getHeight();
+		close.setLocation(10, saver.getHeight() + 60 + closeThis.getHeight()); // + loader.getHeight();
 		close.setVisible(false);
+		
+		//  SPEED BUTTONS
+		JPanel speedHolder = new JPanel();
+		speedHolder.setLayout(new FlowLayout());
+		oneX.addActionListener(new SupaFastListener());
+		twoX.addActionListener(new SupaFastListener());
+		fiveX.addActionListener(new SupaFastListener());
+		speedHolder.setSize(this.getWidth()-20, caller.getHeight()/12);
+		speedHolder.setLocation(10, saver.getHeight() + 80 + closeThis.getHeight() + close.getHeight());
+		
+		speedHolder.add(oneX);
+		oneX.setPreferredSize(new Dimension(speedHolder.getWidth()/3, speedHolder.getHeight()));
+		speedHolder.add(twoX);
+		twoX.setPreferredSize(new Dimension(speedHolder.getWidth()/4, speedHolder.getHeight()));
+		speedHolder.add(fiveX);
+		fiveX.setPreferredSize(new Dimension(speedHolder.getWidth()/3, speedHolder.getHeight()));
 		
 		this.setSize(150, 50);
 		//setLocation(caller.getWidth()-getWidth(), 0);
@@ -85,9 +109,26 @@ public class OptionsGUI extends JFrame {
 		this.add(closeThis);
 		this.add(options);
 		this.add(close);
+		this.add(speedHolder);
 		//  this.add(loader);
 		this.setVisible(true);
 		this.setAlwaysOnTop(true);
+	}
+	private class SupaFastListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			if(arg0.getSource().equals(oneX)) {
+				caller.getGame().changeTimers(Game.NORMAL_SPEED);
+			}
+			if(arg0.getSource().equals(twoX)) {
+				caller.getGame().changeTimers(Game.NORMAL_SPEED*2);
+			}
+			if(arg0.getSource().equals(fiveX)) {
+				caller.getGame().changeTimers(Game.NORMAL_SPEED*5);
+			}
+		}
 	}
 	private class CloseListener implements ActionListener {
 
