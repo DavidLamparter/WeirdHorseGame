@@ -183,6 +183,9 @@ public class Game extends Observable implements Serializable {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {			
+			//Updates all of the resources
+			theMap.setHarvestable();
+			
 			// Increment workers conditions every 5 seconds
 			if((gameLength % 10) == 0) {
 				list.incrementHunger();
@@ -221,7 +224,7 @@ public class Game extends Observable implements Serializable {
 					
 					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
 					//  wanting to get salty fish when it's impossible leading to nothing happening Q.Q
-					ShortestPathCalculator calc = new ShortestPathCalculator(getMap());
+					ShortestPathCalculator calc = new ShortestPathCalculator(getMap(), buildings);
 					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
 					//  didn't find a path
 					//System.out.printf("Count:%d Job: %s\n", i, dest.getName());

@@ -22,9 +22,11 @@ package model;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
-public class Map implements Serializable {
+public class Map implements Serializable, Observer {
 	
 	/**************************************
 	 *          Instance Variables        *
@@ -49,10 +51,10 @@ public class Map implements Serializable {
 	private boolean riverNotFinished;
 	
 	//Arrays of the resources, used to determine closest Resource of working type
-	private ArrayList<Point> TreeList = new ArrayList<Point>();
-	private ArrayList<Point> StoneList = new ArrayList<Point>();
-	private ArrayList<Point> BerryList = new ArrayList<Point>();
-	private ArrayList<Point> FishList = new ArrayList<Point>();
+	private ArrayList<Job> TreeList = new ArrayList<Job>();
+	private ArrayList<Job> StoneList = new ArrayList<Job>();
+	private ArrayList<Job> BerryList = new ArrayList<Job>();
+	private ArrayList<Job> FishList = new ArrayList<Job>();
 	private ArrayList<Storage> storageList = new ArrayList<Storage>();
 	
 	/**************************************
@@ -480,7 +482,7 @@ public class Map implements Serializable {
 							if(board[j][i].getLand().equals(Terrain.PLAIN) 
 									&& board[j][i].getResource().getResourceT().equals(ResourceType.NONE)) {
 								board[j][i].setResource(new Tree());
-								TreeList.add(new Point(i,j));
+								TreeList.add(new Job(new Point(i,j),board[j][i].getResource()));
 								noOfTrees++;
 							}
 						}
@@ -491,6 +493,63 @@ public class Map implements Serializable {
 			}
 		}
 	}
+	/********************************************
+	 *            Harvestable Methods           *
+	 ********************************************/
+	public void setHarvestable(){
+		//for Stone
+				int berrySize = BerryList.size();
+				for(int i = 0; i < berrySize; i++){
+
+				if(BerryList.get(i).resource.getQuantity() < 4.0){
+					BerryList.get(i).resource.setHarvestable(false);
+					}	
+				else{
+					if(BerryList.get(i).resource.getQuantity()>=20)
+						BerryList.get(i).resource.setHarvestable(true);
+				}
+				}
+				
+		
+		//for Stone
+		int stoneSize = StoneList.size();
+		for(int i = 0; i < stoneSize; i++){
+
+		if(StoneList.get(i).resource.getQuantity() < 4.0){
+			StoneList.get(i).resource.setHarvestable(false);
+			}	
+		else{
+			if(StoneList.get(i).resource.getQuantity()>=20)
+				StoneList.get(i).resource.setHarvestable(true);
+		}
+		}
+			
+			
+		//for fish
+		int fishSize = FishList.size();
+		for(int i = 0; i < fishSize; i++){
+		if(FishList.get(i).resource.getQuantity() < 4.0){
+			FishList.get(i).resource.setHarvestable(false);
+			}	
+		else{
+			if(FishList.get(i).resource.getQuantity()>=20)
+				FishList.get(i).resource.setHarvestable(true);
+		}	
+		}
+			
+		//for Wood
+		int treeSize = TreeList.size();
+		for(int i = 0; i < treeSize; i++){
+		if(TreeList.get(i).resource.getQuantity() < 4.0){
+			TreeList.get(i).resource.setHarvestable(false);
+			}	
+		else{
+			if(TreeList.get(i).resource.getQuantity()>=20)
+				TreeList.get(i).resource.setHarvestable(true);
+		}
+		}
+	}
+	
 	
 	/**************************************
 	 *            Spawn Methods           *
@@ -515,7 +574,7 @@ public class Map implements Serializable {
 				point.y = gen.nextInt(size);
 			}
 			board[point.x][point.y].setResource(new Fish());
-			FishList.add(new Point(point.y,point.x));
+			FishList.add(new Job(new Point(point.x,point.y), board[point.x][point.y].getResource()));
 		}
 		//  Spawns Salty Fish in the Ocean
 		for(int i = 0; i < gen.nextInt(30) + 20; i++) {
@@ -550,7 +609,7 @@ public class Map implements Serializable {
 			
 			if(treeCounter > 0 && treeCounter < 6){
 			board[X][Y].setResource(new BerryBush());
-			BerryList.add(new Point(Y,X));
+			BerryList.add(new Job(new Point(Y,X),board[X][Y].getResource()));
 			dingDangBushes --;
 			treeCounter = 0;
 			}
@@ -596,10 +655,10 @@ public class Map implements Serializable {
 				board[X][Y+1].setResource(stoned);
 				board[X+1][Y+1].setResource(stoned);
 				
-				StoneList.add(new Point(Y,X));
-				StoneList.add(new Point(Y+1,X));
-				StoneList.add(new Point(Y,X+1));
-				StoneList.add(new Point(Y+1,X+1));
+				StoneList.add(new Job(new Point (Y,X), board[X][Y].getResource()));
+				StoneList.add(new Job(new Point (Y,X+1), board[X][Y+1].getResource()));
+				StoneList.add(new Job(new Point (Y+1,X), board[X+1][Y].getResource()));
+				StoneList.add(new Job(new Point (Y+1,X+1), board[X+1][Y+1].getResource()));
 				
 				Outcroppings--;
 		}
@@ -655,7 +714,6 @@ public class Map implements Serializable {
 					}
 					if(gen.nextDouble()<.25) {
 						if(initialNoWorker != 0) {
-							System.out.println(i + "," +j);
 							Worker brett = new Brett(new Point(i,j));
 							initialWorkers.add(brett);
 							initialNoWorker --;
@@ -665,5 +723,13 @@ public class Map implements Serializable {
 			}
 		}		
 	}
-
+	private ArrayList<Buildable> buildings = new ArrayList<>();
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		ThePackage packages = (ThePackage)arg1;
+		buildings = packages.getBuildings();
+	}
+	public ArrayList<Buildable> getBuildings() {
+		return buildings;
+	}
 }

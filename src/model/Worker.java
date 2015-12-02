@@ -329,7 +329,6 @@ public abstract class Worker extends Observable implements Serializable {
 		}
 		//  Will need to be something else an intermediary but this will be cool to see goons run around
 		else {
-		isBusy = false;
 		setChanged();
 		notifyObservers();
 		}
@@ -341,88 +340,99 @@ public abstract class Worker extends Observable implements Serializable {
 
 		//for if the preference is berry
 		if(preference == ResourceType.BERRY_BUSH){			
-			ArrayList<Point> BerryList = theMap.getBerryList();
+			ArrayList<Job> BerryList = theMap.getBerryList();
 			int size = BerryList.size();
 					
 			for(int i = 0; i < size; i++){
-
-			int BerryX = BerryList.get(i).x;
-			int BerryY = BerryList.get(i).y;
+				Resource temp = BerryList.get(i).resource;
+				if(temp.getHarvestable()){
+					System.out.println(temp.getHarvestable());
+			int BerryX = BerryList.get(i).location.x;
+			int BerryY = BerryList.get(i).location.y;
 			
 			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
-			double distanceToResource = getPoint().distance(BerryList.get(i));
+			double distanceToResource = getPoint().distance(BerryList.get(i).location);
 			
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(BerryX,BerryY);
 			}
+				}
 			}
 		}
 		
 		//for if the preference is Fish
 		if(preference == ResourceType.FISH){			
-			ArrayList<Point> FishList = theMap.getFishList();
+			ArrayList<Job> FishList = theMap.getFishList();
 			int size = FishList.size();
 					
 			for(int i = 0; i < size; i++){
-
-			int FishX = FishList.get(i).x;
-			int FishY = FishList.get(i).y;
+				Resource temp = FishList.get(i).resource;
+				if(temp.getHarvestable()){
+			int FishX = FishList.get(i).location.x;
+			int FishY = FishList.get(i).location.y;
 			
 //			double distanceToResource = Math.sqrt(Math.pow((XPos - FishX),2) + Math.pow((YPos - FishY),2));
-				double distanceToResource = getPoint().distance(FishList.get(i));
+				double distanceToResource = getPoint().distance(FishList.get(i).location);
 		
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(FishX,FishY);
 			}
+				}
 			}
 		}
 
 		//for if the preference is Tree
 		if(preference == ResourceType.TREE){			
-			ArrayList<Point> TreeList = theMap.getTreeList();
+			ArrayList<Job> TreeList = theMap.getTreeList();
 			int size = TreeList.size();
 					
 			for(int i = 0; i < size; i++){
+				
+				Resource temp = TreeList.get(i).resource;
 
-			int TreeX = TreeList.get(i).x;
-			int TreeY = TreeList.get(i).y;
+				if(temp.getHarvestable()){
+			int TreeX = TreeList.get(i).location.x;
+			int TreeY = TreeList.get(i).location.y;
 			
 			//double distanceToResource = Math.sqrt(Math.pow((XPos - TreeX),2) + Math.pow((YPos - TreeY),2));
 			
-			double distanceToResource = getPoint().distance(TreeList.get(i));
+			double distanceToResource = getPoint().distance(TreeList.get(i).location);
 
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(TreeX,TreeY);
 			}
+				}
 			}
 		}
 		
 		//for if the preference is Tree
 		if(preference == ResourceType.STONE){			
-			ArrayList<Point> StoneList = theMap.getStoneList();
+			ArrayList<Job> StoneList = theMap.getStoneList();
 			int size = StoneList.size();
-					
+			
 			for(int i = 0; i < size; i++){
-
-			int StoneX = StoneList.get(i).x;
-			int StoneY = StoneList.get(i).y;
+				Resource temp = StoneList.get(i).resource;
+				if(temp.getHarvestable()){
+			int StoneX = StoneList.get(i).location.x;
+			int StoneY = StoneList.get(i).location.y;
 			
 			//double distanceToResource = Math.sqrt(Math.pow((XPos - StoneX),2) + Math.pow((YPos - StoneY),2));
 			
-			double distanceToResource = getPoint().distance(StoneList.get(i));
+			double distanceToResource = getPoint().distance(StoneList.get(i).location);
 			
 			if(distanceToResource < distance){
 				distance = distanceToResource;
 				closest = new Point(StoneX,StoneY);
 			}
+				}
 			}
 		}
 		
 		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
-		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
 
 		myTask = calc.getShortestPath(getPoint(), new Point(closest));
 		job = closest;
@@ -452,7 +462,8 @@ public abstract class Worker extends Observable implements Serializable {
 				storage = storageList.get(i);
 			}
 		}
-			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles());
+			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),
+					theMap.getBuildings());
 			myTask = calc.getShortestPath(getPoint(), new Point(closest));
 			job = closest;
 			isBusy = true;
@@ -467,14 +478,19 @@ public abstract class Worker extends Observable implements Serializable {
 	public void doTheWork(MapTile tile){
 		isBusy = true;
 		int i = 0;
+		
+		//if next to a storage
 		if(tile.getResource().getResourceT() == ResourceType.NONE){
 			while (i < 20){
 				storage.addResource(inventory[i]);
 				i++;
 			}
 			carryingCapacity = 20;
+			inventory = new ResourceType[20];
+			isBusy = false;
 		}
 		
+		//if next to job resource
 		else{
 			while(i < 4){
 				tile.getResource().subResource(1);

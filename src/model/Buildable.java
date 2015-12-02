@@ -71,7 +71,7 @@ class House extends Buildable {
 class VerticalBridge extends Buildable {
 
 	public VerticalBridge(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), false);
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), true);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -86,7 +86,7 @@ class VerticalBridge extends Buildable {
 class HorizontalBridge extends Buildable {
 
 	public HorizontalBridge(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), false);
+		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), true);
 		// TODO Auto-generated constructor stub
 	}
 	
