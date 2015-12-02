@@ -107,7 +107,9 @@ public class BuildingFrame extends JFrame implements Observer {
 		
 		//  adds some text
 		nameofBuilding.setText(theBuilding.getName());
-		description.setText("\nQuanity: " + theBuilding.getQuantity() );
+		description.setText("\nWOOD: " + theBuilding.getWoodCount() +
+							"\nSTONE: " + theBuilding.getStoneCount() +
+							"\nFOOD: " + theBuilding.getFoodCount() );
 		
 		//  our action listeners
 		exit.addActionListener(new ExitListener());

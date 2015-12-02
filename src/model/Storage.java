@@ -93,6 +93,40 @@ public abstract class Storage extends Buildable {
 	public void addResource(ResourceType toAdd) {
 		theGoods.add(toAdd);
 	}
+	
+	public int getFoodCount(){
+		int fCount=0;
+		for(int i=0; i < theGoods.size(); i++){
+			if( (theGoods.get(i).equals(ResourceType.BERRY_BUSH)) ||
+			  (theGoods.get(i).equals(ResourceType.SALTY_FISH)) ||
+			  (theGoods.get(i).equals(ResourceType.FISH)) )
+				fCount++;
+			if(theGoods.get(i).equals(ResourceType.POISION_BUSH))
+				fCount-=5;
+		}
+		return fCount;
+	}
+	
+	public int getStoneCount(){
+		int sCount=0;
+		for(int i=0; i < theGoods.size(); i++){
+			if(theGoods.get(i).equals(ResourceType.STONE))
+				sCount++;
+		}
+		return sCount;
+	}
+	
+	public int getWoodCount(){
+		int wCount=0;
+		for(int i=0; i < theGoods.size(); i++){
+			if(theGoods.get(i).equals(ResourceType.TREE))
+				wCount++;
+		}
+		return wCount;
+	}
+	
+	
+	
 	public abstract String getName();
 	public abstract String getImageFile();
 }
