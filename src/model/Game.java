@@ -200,11 +200,13 @@ public class Game extends Observable implements Serializable {
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
-			if(seasonsCounter >= lengthOfSeasons) {
-				isWinter = !isWinter;
-				if(isWinter) {
+			if(seasonsCounter == lengthOfSeasons-2) {
+				if(!isWinter) {
 					WinterScreen screen = new WinterScreen(isWinter);
 				}
+			}
+			if(seasonsCounter >= lengthOfSeasons) {
+				isWinter = !isWinter;
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START
 				saveTheGame();

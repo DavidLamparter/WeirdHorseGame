@@ -44,26 +44,44 @@ public class WinterScreen extends JFrame {
 	private float opacity = 0;
 	private class swagListener implements ActionListener {
 		private boolean first = true;
+		//  counter will give time to load
+		int counter = 0;
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			if(opacity>1)
+				opacity = 1;
+			if(opacity<0)
+				opacity = 0;
 			setOpacity(opacity);
 			if(goingUp)
 				opacity+=.05;
 			else
 				opacity-=.05;
-			if((opacity>1)||(opacity<0)) {
-				if(!first) {
-					swing.stop();
-					dispose();
+			if(counter == 0) {
+				if((opacity>1)||(opacity<0)) {
+					if(!first) {
+						swing.stop();
+						dispose();
+					}
+					counter ++;
 				}
-			goingUp = !goingUp;
-			first = false;
-			if(opacity>1)
-				opacity = 1;
-			if(opacity<0)
-				opacity = 0;
-			}			
+			}
+			else {
+				counter++;
+				if(counter>=11) {
+					goingUp = !goingUp;
+					first = false;
+				if(opacity>1)
+					opacity = 1;
+				if(opacity<0)
+					opacity = 0;
+				counter = 0;
+				}		
+			}
 		}
 	}
+	/*  public static void main(String[] args) {
+		WinterScreen screen = new WinterScreen(true);
+	} */
 }
