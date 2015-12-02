@@ -127,11 +127,18 @@ public class MapPanel extends JPanel implements Observer{
 		int length2 = getMapHeight();
 		
 		//draw the ground first
-		for (int ilol = 0; ilol < width2/2; ilol++) {
-			for (int jlol = 0; jlol < length2/2; jlol++) {
+		for (int ilol = 0; ilol < (Math.ceil(width2/2)) + (initialx%2); ilol++) {
+			for (int jlol = 0; jlol < (Math.ceil(length2/2)) + (initialy%2); jlol++) {
 				int i = ilol + initialx/2;
 				int j = jlol + initialy/2;
-				g2d.drawImage(summerTiles[j][i], ilol*(MAP_TILE_WIDTH*2), jlol*MAP_TILE_HEIGHT*2, null);
+				int xPosForMapTiles = ilol*MAP_TILE_WIDTH*2;
+				int yPosForMapTiles = jlol*MAP_TILE_HEIGHT*2;
+				if((initialx%2) == 1)
+					xPosForMapTiles -= MAP_TILE_WIDTH;
+				if((initialy%2) == 1)
+					yPosForMapTiles -= MAP_TILE_HEIGHT;
+							//  IMAGE             X POSITION         Y POSITION
+				g2d.drawImage(summerTiles[j][i], xPosForMapTiles, yPosForMapTiles, null);
 			}
 		}
 		
@@ -173,7 +180,7 @@ public class MapPanel extends JPanel implements Observer{
 					if(!isWinter)
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					else
-						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 				// Berry Bush
 				/*else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
@@ -210,9 +217,9 @@ public class MapPanel extends JPanel implements Observer{
 				// Trees Go on top of workers so uhh yesah we need a nother loop
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
 					if(!isWinter)
-						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
-					else
-						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT, null);
+					else																																									//  was -50 for whatever reason
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT, null);
 				}
 			}
 		}
