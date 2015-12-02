@@ -31,14 +31,17 @@ public class ListOfImages {
 		}
 	}
 	
+	
 	//  SUMMER
 	public ArrayList<ImageAndName> summerResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> summerBuildings = new ArrayList<ImageAndName>();
+	private ImageAndName summerWater;
 	
 	//  WINTER
 	public ArrayList<ImageAndName> winterResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> winterBuildings = new ArrayList<ImageAndName>();
-		
+	private ImageAndName winterWater;
+	
 	public ArrayList<ImageAndName> workers = new ArrayList<>();
 	
 	public ListOfImages() {
@@ -60,7 +63,10 @@ public class ListOfImages {
 			Image temp = ImageIO.read(new File("./Graphics/Water/fish.png"));
 			summerResources.add(new ImageAndName("./Graphics/Water/fish.png", temp));
 			temp = ImageIO.read(new File("./Graphics/Water/fishWinter.png"));
-			winterResources.add(new ImageAndName("./Graphics/Water/fishWinter" , temp));
+			winterResources.add(new ImageAndName("./Graphics/Water/fishWinter.png" , temp));
+			temp = ImageIO.read(new File("./Graphics/Water/fishSalty.png"));
+			winterResources.add(new ImageAndName("./Graphics/Water/fishSalty.png" , temp));
+			summerResources.add(new ImageAndName("./Graphics/Water/fishSalty.png" , temp));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -85,7 +91,15 @@ public class ListOfImages {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
+		try {
+			Image temp = ImageIO.read(new File("./Graphics/Water/water.jpg"));
+			summerWater = new ImageAndName("./Graphics/Water/water.jpg", temp);
+			winterWater = new ImageAndName("./Graphics/Water/water.jpg", temp);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		//  LETS GET SUM BUILDINGS
 		try {
 			Image temp = ImageIO.read(new File("./Graphics/Buildings/bridge.png"));
@@ -117,9 +131,11 @@ public class ListOfImages {
 		return null;
 	}
 	public Image getResource(String fileName, boolean isWinter) {
-		for(int i = 0; i < summerResources.size(); i++) {
-			if(summerResources.get(i).equals(fileName))
-				return summerResources.get(i).getImage();
+		if(!isWinter) {
+			for(int i = 0; i < summerResources.size(); i++) {
+				if(summerResources.get(i).equals(fileName))
+					return summerResources.get(i).getImage();
+			}
 		}
 		for(int i = 0; i < winterResources.size(); i++) {
 			if(winterResources.get(i).equals(fileName))
@@ -135,9 +151,11 @@ public class ListOfImages {
 		return null;
 	}
 	public Image getBuilding(String fileName, boolean isWinter) {
-		for(int i = 0; i < summerBuildings.size(); i++) {
-			if(summerBuildings.get(i).equals(fileName))
-				return summerBuildings.get(i).getImage();
+		if(!isWinter) {
+			for(int i = 0; i < summerBuildings.size(); i++) {
+				if(summerBuildings.get(i).equals(fileName))
+					return summerBuildings.get(i).getImage();
+			}
 		}
 		for(int i = 0; i < winterBuildings.size(); i++) {
 			if(winterBuildings.get(i).equals(fileName))
@@ -151,5 +169,11 @@ public class ListOfImages {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public Image getWater(boolean isWinter) {
+		if(isWinter)
+			return summerWater.getImage();
+		return winterWater.getImage();
+		
 	}
 }

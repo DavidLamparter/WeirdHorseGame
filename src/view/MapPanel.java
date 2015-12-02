@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Buildable;
+import model.Game;
 import model.ListOfImages;
 import model.ListOfWorkers;
 import model.MapTile;
@@ -57,6 +58,7 @@ public class MapPanel extends JPanel implements Observer{
 	private int maxY = 0;
 	private SettlementGUI caller;
 	private ListOfWorkers workmen;
+	private boolean isWinter;
 	
 	// Variables for the array of tiles for the background
 	private Image[][] summerTiles = new Image[50][50];
@@ -71,6 +73,7 @@ public class MapPanel extends JPanel implements Observer{
 		this.graph = caller.getMap().getMapTiles();
 		this.width = graph.length;
 		this.length = graph[0].length;
+		isWinter = false;
 		//this.setBackground(LightGreen);
 		backgroundTiles(sTileNames, summerTiles);
 		
@@ -140,32 +143,40 @@ public class MapPanel extends JPanel implements Observer{
 				int j = jlol + initialy;
 				
 				// Fish
-				if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
+				/*if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
+				} */
 				// River
-				else if (graph[j][i].getLand().equals(Terrain.RIVER)) {
+				if (graph[j][i].getLand().equals(Terrain.RIVER)) {
 					g2d.setColor(Color.BLUE);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+					g2d.drawImage(images.getWater(isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					//g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
 				// SaltyFish
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.SALTY_FISH)) {
+				/* else if (graph[j][i].getResource().getResourceT().equals(ResourceType.SALTY_FISH)) {
 					g2d.setColor(Color.magenta);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
+				} */
 				// Ocean
 				else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
 					g2d.setColor(new Color(20, 20, 200));
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+					g2d.drawImage(images.getWater(isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 				// Sand
 				else if (graph[j][i].getLand().equals(Terrain.BEACH)) {
 					g2d.setColor(Color.ORANGE);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
+				//  i think this will draw all the resources
+				if (graph[j][i].getResource().getResourceT()!=ResourceType.NONE) {
+					if(!isWinter)
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					else
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+				}
 				// Berry Bush
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
+				/*else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
 					try {
 						g2d.drawImage(ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					} catch (IOException e) {
@@ -182,7 +193,7 @@ public class MapPanel extends JPanel implements Observer{
 						e.printStackTrace();
 					}
 
-				}
+				} */
 				
 				/*
 				 * if (i % 2 == 0 || j % 2 == 0) {
@@ -198,7 +209,10 @@ public class MapPanel extends JPanel implements Observer{
 				int j = jlol + initialy;
 				// Trees Go on top of workers so uhh yesah we need a nother loop
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
-					g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),false), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+					if(!isWinter)
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+					else
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
 				}
 			}
 		}
@@ -208,9 +222,11 @@ public class MapPanel extends JPanel implements Observer{
 		for(int i = 0; i < buildingList.size(); i++) {
 			int x = (int) buildingList.get(i).getPoints().get(0).getX() - initialx;
 			int y = (int) buildingList.get(i).getPoints().get(0).getY() - initialy;
-			g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), false), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
+			if(!isWinter)
+				g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), isWinter), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
+			else
+				g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), !isWinter), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
 		}
-		
 	}
 
 	private void drawThemWorkers(Graphics2D g) {
@@ -219,7 +235,7 @@ public class MapPanel extends JPanel implements Observer{
 			int workmenSize = workmen.size();
 			for(int i = 0; i < workmenSize; i++) {
 				Point l = workmen.get(i).getPoint();
-				g.drawImage(images.getWorker(workmen.get(i).animationFrameFileName(), false), (l.x-initialx)*50, (l.y-initialy)*50, null);
+				g.drawImage(images.getWorker(workmen.get(i).animationFrameFileName(), isWinter), (l.x-initialx)*50, (l.y-initialy)*50, null);
 				//System.out.printf("Worker %d X Location: %d, Y Location: %d\n",i, l.x-initialx, l.y-initialx);
 			}
 		}
@@ -278,7 +294,11 @@ public class MapPanel extends JPanel implements Observer{
 		ThePackage ITS_THE_FUCKING_PACKAGE = (ThePackage)arg1;
 		workmen = ITS_THE_FUCKING_PACKAGE.getWorkers();
 		buildingList = ITS_THE_FUCKING_PACKAGE.getBuildings();
-		//  thanks Sneaky
+		//  thanks c9 Sneaky
+		Game noPackageNeeded = (Game)arg0;
+		this.isWinter = noPackageNeeded.isWinter();
+		//  forgot about that... 
+		//  Well at least I had fun making the package
 		repaint();
 	}
 	
