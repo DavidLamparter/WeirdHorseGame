@@ -79,10 +79,7 @@ public class MapPanel extends JPanel implements Observer{
 		isWinter = false;
 		//this.setBackground(LightGreen);
 		
-		Boolean s = false;
-		Boolean w = true;
-		backgroundTiles(sTileNames, summerTiles, s);
-		backgroundTiles(wTileNames, winterTiles, w);
+		backgroundTiles();
 		
 		//this.graph = new MapTile[(width) + 1][(length) + 1];
 
@@ -97,7 +94,7 @@ public class MapPanel extends JPanel implements Observer{
 	}
 	
 	// create the array of images for the ground in summer and winter
-	public void backgroundTiles(String[][] Names, Image[][] Pic, Boolean season){
+	public void backgroundTiles(){
 		int counter = 1;
 		System.out.println("STARTED READING FILES");
 		// create the array file names first so that it's easier to read in to 2Darray
@@ -134,18 +131,36 @@ public class MapPanel extends JPanel implements Observer{
 		int length2 = getMapHeight();
 		
 		//draw the ground first
-		for (int ilol = 0; ilol < (Math.ceil(width2/2)) + (initialx%2); ilol++) {
-			for (int jlol = 0; jlol < (Math.ceil(length2/2)) + (initialy%2); jlol++) {
-				int i = ilol + initialx/2;
-				int j = jlol + initialy/2;
-				int xPosForMapTiles = ilol*MAP_TILE_WIDTH*2;
-				int yPosForMapTiles = jlol*MAP_TILE_HEIGHT*2;
-				if((initialx%2) == 1)
-					xPosForMapTiles -= MAP_TILE_WIDTH;
-				if((initialy%2) == 1)
-					yPosForMapTiles -= MAP_TILE_HEIGHT;
-							//  IMAGE             X POSITION         Y POSITION
-				g2d.drawImage(summerTiles[j][i], xPosForMapTiles, yPosForMapTiles, null);
+		if(!isWinter) {
+			for (int ilol = 0; ilol < (Math.ceil(width2/2)) + (initialx%2); ilol++) {
+				for (int jlol = 0; jlol < (Math.ceil(length2/2)) + (initialy%2); jlol++) {
+					int i = ilol + initialx/2;
+					int j = jlol + initialy/2;
+					int xPosForMapTiles = ilol*MAP_TILE_WIDTH*2;
+					int yPosForMapTiles = jlol*MAP_TILE_HEIGHT*2;
+					if((initialx%2) == 1)
+						xPosForMapTiles -= MAP_TILE_WIDTH;
+					if((initialy%2) == 1)
+						yPosForMapTiles -= MAP_TILE_HEIGHT;
+								//  IMAGE             X POSITION         Y POSITION
+					g2d.drawImage(summerTiles[j][i], xPosForMapTiles, yPosForMapTiles, null);
+				}
+			}
+		}
+		else {
+			for (int ilol = 0; ilol < (Math.ceil(width2/2)) + (initialx%2); ilol++) {
+				for (int jlol = 0; jlol < (Math.ceil(length2/2)) + (initialy%2); jlol++) {
+					int i = ilol + initialx/2;
+					int j = jlol + initialy/2;
+					int xPosForMapTiles = ilol*MAP_TILE_WIDTH*2;
+					int yPosForMapTiles = jlol*MAP_TILE_HEIGHT*2;
+					if((initialx%2) == 1)
+						xPosForMapTiles -= MAP_TILE_WIDTH;
+					if((initialy%2) == 1)
+						yPosForMapTiles -= MAP_TILE_HEIGHT;
+								//  IMAGE             X POSITION         Y POSITION
+					g2d.drawImage(winterTiles[j][i], xPosForMapTiles, yPosForMapTiles, null);
+				}
 			}
 		}
 		
