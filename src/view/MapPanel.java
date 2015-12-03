@@ -176,7 +176,7 @@ public class MapPanel extends JPanel implements Observer{
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
 				//  i think this will draw all the resources
-				if (graph[j][i].getResource().getResourceT()!=ResourceType.NONE) {
+				if ((graph[j][i].getResource().getResourceT()!=ResourceType.NONE)&&(graph[j][i].getResource().getResourceT()!=ResourceType.TREE)) {
 					if(!isWinter)
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					else
@@ -217,9 +217,9 @@ public class MapPanel extends JPanel implements Observer{
 				// Trees Go on top of workers so uhh yesah we need a nother loop
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
 					if(!isWinter)
-						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT, null);
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), (jlol-1)*MAP_TILE_HEIGHT, null);
 					else																																									//  was -50 for whatever reason
-						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT, null);
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), (jlol-1)*MAP_TILE_HEIGHT, null);
 				}
 			}
 		}
