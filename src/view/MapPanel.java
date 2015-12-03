@@ -61,6 +61,9 @@ public class MapPanel extends JPanel implements Observer{
 	// Variables for the array of tiles for the background
 	private Image[][] summerTiles = new Image[50][50];
 	private String[][] sTileNames = new String[50][50];
+	
+	private Image[][] winterTiles = new Image[50][50];
+	private String[][] wTileNames = new String[50][50];
 
 	//Colors
 	Color DarkGreen = new Color(20, 120, 20);
@@ -72,7 +75,11 @@ public class MapPanel extends JPanel implements Observer{
 		this.width = graph.length;
 		this.length = graph[0].length;
 		//this.setBackground(LightGreen);
-		backgroundTiles(sTileNames, summerTiles);
+		
+		Boolean s = false;
+		Boolean w = true;
+		backgroundTiles(sTileNames, summerTiles, s);
+		backgroundTiles(wTileNames, winterTiles, w);
 		
 		//this.graph = new MapTile[(width) + 1][(length) + 1];
 
@@ -86,14 +93,15 @@ public class MapPanel extends JPanel implements Observer{
 		
 	}
 	
-	// create the array of images for the ground in summer
-	public void backgroundTiles(String[][] sNames, Image[][] sPic){
+	// create the array of images for the ground in summer and winter
+	public void backgroundTiles(String[][] Names, Image[][] Pic, Boolean season){
 		int counter = 1;
 		System.out.println("STARTED READING FILES");
 		// create the array file names first so that it's easier to read in to 2Darray
 		for (int i=0; i < 50; i++){
 			for (int j=0; j < 50; j++){
 				sTileNames[i][j] = "./Graphics/Ground/summerTiles/sTile_" + counter + ".png";
+				wTileNames[i][j] = "./Graphics/Ground/winterTiles/wTile_" + counter + ".png";
 				counter++;
 			}
 		}
@@ -102,14 +110,13 @@ public class MapPanel extends JPanel implements Observer{
 			for (int j=0; j < 50; j++){
 				try {
 					summerTiles[i][j] = ImageIO.read(new File(sTileNames[i][j]));
+					winterTiles[i][j] = ImageIO.read(new File(wTileNames[i][j]));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 		System.out.println("FINISHED READING FILES");
-		sNames = sTileNames;
-	    sPic = summerTiles;
 		
 	}
 
