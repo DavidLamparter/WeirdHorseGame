@@ -34,6 +34,7 @@ import javax.swing.Timer;
 
 import view.BuildingPanel;
 import view.GGScreen;
+import view.WinterScreen;
 
 //Our game class extends Observable, and will notify the other classes when an event occurs
 public class Game extends Observable implements Serializable {
@@ -187,7 +188,7 @@ public class Game extends Observable implements Serializable {
 			theMap.setHarvestable();
 			
 			// Increment workers conditions every 5 seconds
-			if((gameLength % 10) == 0) {
+			if((gameLength % 5) == 0) {
 				list.incrementHunger();
 				list.incrementFatigue();
 				if(isWinter)
@@ -199,11 +200,16 @@ public class Game extends Observable implements Serializable {
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
+			if(seasonsCounter == lengthOfSeasons-3) {
+				if(!isWinter) {
+					WinterScreen screen = new WinterScreen(isWinter);
+				}
+			}
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START
-				saveTheGame();
+				//  saveTheGame();
 				if(!isWinter)
 					wintersSurvived ++;
 			}
@@ -293,6 +299,9 @@ public class Game extends Observable implements Serializable {
 	public MapTile[][] getMap() {
 		// TODO Auto-generated method stub
 		return theMap.getMapTiles();
+	}
+	public boolean isWinter() {
+		return isWinter;
 	}
 
 	public void saveTheGame() {

@@ -57,7 +57,7 @@ public abstract class Buildable extends Observable implements Serializable {
 class House extends Buildable {
 
 	public House(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), false);
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+1), false);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ class House extends Buildable {
 class VerticalBridge extends Buildable {
 
 	public VerticalBridge(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), true);
+		super(topPoint, new Point(topPoint.x, topPoint.y), true);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -81,12 +81,12 @@ class VerticalBridge extends Buildable {
 		return "./Graphics/Buildings/bridge.png";
 	}
 }
-
+//  Could make bridges 1 by 1 and get rid of one of these classes
 // HORIZONTAL BRIDGE
 class HorizontalBridge extends Buildable {
 
 	public HorizontalBridge(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+2, topPoint.y+2), true);
+		super(topPoint, new Point(topPoint.x, topPoint.y), true);
 		// TODO Auto-generated constructor stub
 	}
 	
