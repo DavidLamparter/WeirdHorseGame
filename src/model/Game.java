@@ -57,6 +57,9 @@ public class Game extends Observable implements Serializable {
 	// This variable keeps track of how long the game has been played
 	private int gameLength = 0;
 	
+	// This variable keeps track of how much food the village has
+	private int totalFood = 0;
+	
 	// These variables are for changing seasons in-game (winter is coming)
 	private int lengthOfSeasons = 60;
 	private int seasonsCounter;
@@ -224,12 +227,20 @@ public class Game extends Observable implements Serializable {
 					}
 				}
 			}
-			
+			int tempFood = 0;
+			for(int i = 0; i < buildings.size(); i++) {
+				if((buildings.get(i) instanceof Storage) || (buildings.get(i) instanceof TownHall)) {
+					Storage storage = (Storage) buildings.get(i);
+					tempFood += storage.getFoodCount(); 
+				}
+			}
+			totalFood = tempFood;
+			System.out.println("totalFood = " + totalFood);
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
 			if(seasonsCounter == lengthOfSeasons-3) {
-				//WinterScreen screen = new WinterScreen(isWinter);
+				WinterScreen screen = new WinterScreen(isWinter);
 			}
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;

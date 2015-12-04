@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class BuildingPanel extends JFrame {
 	public static int BRIDGE_V_ID = 3;
@@ -16,6 +17,7 @@ public class BuildingPanel extends JFrame {
 	private JButton[] buildings;
 	private JPanel holder;
 	private SettlementGUI caller;
+	private JTextField food;	
 	
 	public BuildingPanel(SettlementGUI caller, int numberOfBuildings) {
 		
@@ -28,7 +30,8 @@ public class BuildingPanel extends JFrame {
 		holder.setLayout(new FlowLayout());
 		instantiateTheButtons();
 		renameButtons();
-		
+		food = new JTextField("Food: ");
+		holder.add(food);
 		this.add(holder);
 		this.setAlwaysOnTop(true);
 		this.setUndecorated(true);
