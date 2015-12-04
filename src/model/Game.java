@@ -254,7 +254,7 @@ public class Game extends Observable implements Serializable {
 						break;
 					}
 					
-					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
+					//  Need to make sure there is a path to be able to get there... that has to be done otherwise it will cycle through
 					//  wanting to get salty fish when it's impossible leading to nothing happening Q.Q
 					ShortestPathCalculator calc = new ShortestPathCalculator(getMap(), buildings);
 					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());

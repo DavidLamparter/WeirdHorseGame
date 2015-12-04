@@ -501,11 +501,11 @@ public class Map implements Serializable, Observer {
 				int berrySize = BerryList.size();
 				for(int i = 0; i < berrySize; i++){
 
-				if(BerryList.get(i).resource.getQuantity() < 4.0){
+				if(BerryList.get(i).resource.getQuantity() <= 0){
 					BerryList.get(i).resource.setHarvestable(false);
 					}	
 				else{
-					if(BerryList.get(i).resource.getQuantity()>=20)
+					if(BerryList.get(i).resource.getQuantity() > 20)
 						BerryList.get(i).resource.setHarvestable(true);
 				}
 				}
@@ -515,11 +515,11 @@ public class Map implements Serializable, Observer {
 		int stoneSize = StoneList.size();
 		for(int i = 0; i < stoneSize; i++){
 
-		if(StoneList.get(i).resource.getQuantity() < 4.0){
+		if(StoneList.get(i).resource.getQuantity() <= 0){
 			StoneList.get(i).resource.setHarvestable(false);
 			}	
 		else{
-			if(StoneList.get(i).resource.getQuantity()>=20)
+			if(StoneList.get(i).resource.getQuantity() > 20)
 				StoneList.get(i).resource.setHarvestable(true);
 		}
 		}
@@ -528,11 +528,11 @@ public class Map implements Serializable, Observer {
 		//for fish
 		int fishSize = FishList.size();
 		for(int i = 0; i < fishSize; i++){
-		if(FishList.get(i).resource.getQuantity() < 4.0){
+		if(FishList.get(i).resource.getQuantity() <= 0){
 			FishList.get(i).resource.setHarvestable(false);
 			}	
 		else{
-			if(FishList.get(i).resource.getQuantity()>=20)
+			if(FishList.get(i).resource.getQuantity() > 20)
 				FishList.get(i).resource.setHarvestable(true);
 		}	
 		}
@@ -540,11 +540,11 @@ public class Map implements Serializable, Observer {
 		//for Wood
 		int treeSize = TreeList.size();
 		for(int i = 0; i < treeSize; i++){
-		if(TreeList.get(i).resource.getQuantity() < 4.0){
+		if(TreeList.get(i).resource.getQuantity() <= 0){
 			TreeList.get(i).resource.setHarvestable(false);
 			}	
 		else{
-			if(TreeList.get(i).resource.getQuantity()>=20)
+			if(TreeList.get(i).resource.getQuantity() > 20)
 				TreeList.get(i).resource.setHarvestable(true);
 		}
 		}
