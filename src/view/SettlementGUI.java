@@ -54,8 +54,7 @@ public class SettlementGUI extends JFrame {
 		size = sizeOfMap;
 		map = new Map(getMapSize());
 		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
-		this.setSize(this.getWidth(), this.getHeight()-200);
-		//this.setSize(new Dimension(1080, 720));
+		this.setSize(this.getWidth(), this.getHeight());
 		this.setLayout(null);
 		mapPanel = new MapPanel(this);
 		mapPanel.setSize(this.getSize());
