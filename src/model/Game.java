@@ -188,7 +188,7 @@ public class Game extends Observable implements Serializable {
 			theMap.setHarvestable();
 			
 			// Increment workers conditions every 5 seconds
-			if((gameLength % 5) == 0) {
+			if((gameLength % 10) == 0) {
 				list.incrementHunger();
 				list.incrementFatigue();
 				if(isWinter)
