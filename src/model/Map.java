@@ -696,7 +696,7 @@ public class Map implements Serializable, Observer {
 		storageList.add(highHrothgar);
 	
 
-		int initialNoWorker = 1;
+		int initialNoWorker = 4;
 		while(initialNoWorker!= 0) {
 			for(int i = X; i < X + 5; i++) {
 				for(int j = Y; j < Y + 7; j++) {
@@ -712,10 +712,31 @@ public class Map implements Serializable, Observer {
 						System.out.println("Oh");
 						continue;
 					}
-					if(gen.nextDouble()<.25) {
+					if(gen.nextDouble() < 0.25) {
 						if(initialNoWorker != 0) {
 							Worker brett = new Brett(new Point(i,j));
 							initialWorkers.add(brett);
+							initialNoWorker --;
+						}
+					}
+					else if(gen.nextDouble() < 0.50) {
+						if(initialNoWorker != 0) {
+							Worker david = new David(new Point(i,j));
+							initialWorkers.add(david);
+							initialNoWorker --;
+						}
+					}
+					else if(gen.nextDouble() < 0.75) {
+						if(initialNoWorker != 0) {
+							Worker james = new KJD(new Point(i,j));
+							initialWorkers.add(james);
+							initialNoWorker --;
+						}
+					}
+					else if(gen.nextDouble() < 1) {
+						if(initialNoWorker != 0) {
+							Worker james = new KJG(new Point(i,j));
+							initialWorkers.add(james);
 							initialNoWorker --;
 						}
 					}
