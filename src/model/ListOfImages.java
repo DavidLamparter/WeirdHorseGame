@@ -35,14 +35,18 @@ public class ListOfImages {
 	//  SUMMER
 	public ArrayList<ImageAndName> summerResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> summerBuildings = new ArrayList<ImageAndName>();
-	private ImageAndName summerWater;
+	//private ImageAndName summerWater;
 	
 	//  WINTER
 	public ArrayList<ImageAndName> winterResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> winterBuildings = new ArrayList<ImageAndName>();
-	private ImageAndName winterWater;
+	//private ImageAndName winterWater;
 	
 	public ArrayList<ImageAndName> workers = new ArrayList<>();
+	
+	// WATER FOO KYLE HAS WEIRD COMMENTS SO I AM TOOOOO - LOVE SANTA CLAUSE
+	public ArrayList<ImageAndName> winterWater = new ArrayList<ImageAndName>();
+	public ArrayList<ImageAndName> summerWater = new ArrayList<ImageAndName>();
 	
 	public ListOfImages() {
 		//  LETS LOAD SOME FUCKING IMAGES!!!
@@ -91,11 +95,23 @@ public class ListOfImages {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		// WATER LET IT FLO
 		try {
 			Image temp = ImageIO.read(new File("./Graphics/Water/water.jpg"));
-			summerWater = new ImageAndName("./Graphics/Water/water.jpg", temp);
-			winterWater = new ImageAndName("./Graphics/Water/water.jpg", temp);
+			summerWater.add(new ImageAndName("./Graphics/Water/water.jpg", temp));
+			winterWater.add(new ImageAndName("./Graphics/Water/water.jpg", temp));
+			
+			for(int i=1; i<10; i++){
+				temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".jpg"));
+				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".jpg", temp));
+			}
+			/* WINTER
+			for(int i=1; i<10; i++){
+				temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".jpg"));
+				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".jpg", temp));
+			}*/
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -170,10 +186,31 @@ public class ListOfImages {
 		}
 		return null;
 	}
-	public Image getWater(boolean isWinter) {
-		if(isWinter)
-			return summerWater.getImage();
-		return winterWater.getImage();
+	
+	public Image getWater(String fileName, boolean isWinter) {
+		// is winter
+		if(isWinter){
+			for(int i = 0; i < summerWater.size(); i++) {
+				if(summerWater.get(i).equals(fileName))
+					return summerWater.get(i).getImage();
+			}
+		}
+		// summer
+		else{
+			for(int i = 0; i < summerWater.size(); i++) {
+				if(summerWater.get(i).equals(fileName))
+					return summerWater.get(i).getImage();
+			}
+		}
 		
+		try {
+			throw new FileNotFoundException();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
+	
+	
 }
