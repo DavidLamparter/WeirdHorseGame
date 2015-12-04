@@ -383,8 +383,8 @@ public abstract class Worker extends Observable implements Serializable {
 	// This method is used to pass a path to the worker to walk along
 	public void toLocation(ArrayList<Direction> directions) {
 		myTask = directions;
+		System.out.printf("A TASK OF SIZE %d HAS BEEN FOUND\n", myTask.size());
 	}
-	
 	// This method performs the actual movement for the worker
 	public void move() {
 		if(!myTask.isEmpty()) {
@@ -511,18 +511,22 @@ public abstract class Worker extends Observable implements Serializable {
 				}
 			}
 		}
-		
+		//  WHAT IF THE CLOSEST IS UNREACHABLE!!!
 		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
 		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
 
-		myTask = calc.getShortestPath(getPoint(), new Point(closest));
+		toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
+		System.out.println("FINDING PREFERENCE ^\n");
 		job = closest;
 		isBusy = true;
 		setChanged();
 		notifyObservers();
 	}	
 	
+	private boolean onlyOneStorageCall = false;
 	public void goToStorage(Map theMap){
+		if(onlyOneStorageCall)
+			return;
 		double distance = Double.MAX_VALUE;
 		Point closest = new Point();
 	
@@ -545,9 +549,11 @@ public abstract class Worker extends Observable implements Serializable {
 		}
 			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),
 					theMap.getBuildings());
-			myTask = calc.getShortestPath(getPoint(), new Point(closest));
+			toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
+			System.out.println("STORAGE ^\n");
 			job = closest;
 			isBusy = true;
+			onlyOneStorageCall = true;
 			setChanged();
 			notifyObservers();
 	}
@@ -571,6 +577,7 @@ public abstract class Worker extends Observable implements Serializable {
 			carryingCapacity = 20;
 			inventory = new ResourceType[20];
 			isBusy = false;
+			onlyOneStorageCall = false;
 		}
 		
 		//if next to job resource

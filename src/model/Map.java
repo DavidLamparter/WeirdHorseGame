@@ -696,7 +696,7 @@ public class Map implements Serializable, Observer {
 		storageList.add(highHrothgar);
 	
 
-		int initialNoWorker = 4;
+		int initialNoWorker = 1;
 		while(initialNoWorker!= 0) {
 			for(int i = X; i < X + 5; i++) {
 				for(int j = Y; j < Y + 7; j++) {
