@@ -28,6 +28,19 @@ public abstract class Buildable extends Observable implements Serializable {
 	public ArrayList<Point> getPoints() {
 		return points;
 	}
+	//  gets the closest point relative to another point
+	public Point getClosestPoint(Point p) {
+		Point closest = null;
+		double distance = Double.MAX_VALUE;
+		for(int i = 0; i < points.size(); i++) {
+			double potentialMin = p.distance(points.get(i));
+			if(potentialMin< distance) {
+				distance = potentialMin;
+				closest = points.get(i);
+			}
+		}
+		return closest;
+	}
 	public boolean isPassable() {
 		return passable;
 	}
