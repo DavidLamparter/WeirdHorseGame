@@ -11,19 +11,25 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
 public class WinterScreen extends JFrame {
 	boolean isWinter = false;
 	public WinterScreen(boolean isWinter) {
-		this.isWinter = isWinter;
+		this.isWinter = !isWinter;
 		goingUp = true;
 		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
 		this.setLocation(0, 0);
 		this.setUndecorated(true);
 		this.setOpacity(0);
-		JTextField winterText = new JTextField("Winter is upon us");
+		JTextArea winterText = null;
+		if(isWinter)
+			winterText = new JTextArea("Winter is upon us");
+		else
+			winterText = new JTextArea("\n\n\nThe ice starts to thaw...\nThe snow begins to melt...\nYou've survived the Winter");
+		
 		winterText.setFont(new Font("Old English Text MT",Font.CENTER_BASELINE,72));
 		winterText.setOpaque(true);
 		winterText.setEditable(false);
@@ -129,6 +135,6 @@ public class WinterScreen extends JFrame {
 		
 	}
 	  public static void main(String[] args) {
-		WinterScreen screen = new WinterScreen(true);
+		WinterScreen screen = new WinterScreen(false);
 	} 
 }
