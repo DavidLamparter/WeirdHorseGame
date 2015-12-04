@@ -186,7 +186,9 @@ public class WorkerFrame extends JFrame implements Observer {
 				+ workmen.getHunger() + "\nFatigue: "
 				+ workmen.getFatigue() + "\nTemp: "
 				+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) 
-				+ "\nPref: " + workmen.getPreference());
+				+ "\nPref: " + workmen.getPreference()
+				+ "\nTask: " + workmen.getJob().x + ","
+				+ workmen.getJob().y);
 		
 	}
 	public void moveRight() {

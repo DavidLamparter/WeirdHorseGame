@@ -195,13 +195,41 @@ public class Game extends Observable implements Serializable {
 					list.incrementColdness();
 				if(list.removeDead()) {
 					setChange();
-				}	
+				}
 			}
+			for(int i = 0; i < list.size(); i++) {
+				if(list.get(i).getGoHome()) {
+					Buildable closestHouse = null;
+					for(int j = 0; j < buildings.size(); j++) {
+						if((buildings.get(j) instanceof House) || (buildings.get(j) instanceof TownHall)) {
+							if(closestHouse == null) {
+								closestHouse = buildings.get(j);
+							}
+							else {
+								if(list.get(i).getPoint().distance(buildings.get(j).getClosestPoint(list.get(i).getPoint())) <
+								   list.get(i).getPoint().distance(closestHouse.getClosestPoint(list.get(i).getPoint()))) {
+									closestHouse = buildings.get(j);
+								}		
+							}
+						}
+						// A variable that will set is healing to true when myTask.isEmpty
+						list.get(i).setBusy(true);
+						if(!list.get(i).foundHome()) {
+							list.get(i).setFoundHome(true);
+							ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),buildings);
+							list.get(i).toLocation(calc.getShortestPath(list.get(i).getPoint(), closestHouse.getClosestPoint(list.get(i).getPoint())));
+							list.get(i).setJob(closestHouse.getClosestPoint(list.get(i).getPoint()));
+							setChange();
+						}
+					}
+				}
+			}
+			
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
 			if(seasonsCounter == lengthOfSeasons-3) {
-				WinterScreen screen = new WinterScreen(isWinter);
+				//WinterScreen screen = new WinterScreen(isWinter);
 			}
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
@@ -242,7 +270,6 @@ public class Game extends Observable implements Serializable {
 					jobDoer.setBusy(true);
 				}
 			}
-			
 			int listSize = list.size();
 			if(listSize == 0) {
 				GGScreen wp = new GGScreen(gameLength, wintersSurvived);
@@ -250,6 +277,30 @@ public class Game extends Observable implements Serializable {
 				SpeedMeter.stop();
 			}
 
+			//checks to see if they go back home to heal
+			for(int i = 0; i < listSize; i++){
+				if(list.get(i).getGoHome() && list.get(i).nextToJob()) {
+					list.get(i).setIsHealing(true);
+					list.get(i).setGoHome(false);
+					list.get(i).setFoundHome(false);
+				}
+			}
+			
+			// Checks to see if they're done healing
+			for(int i = 0; i < listSize; i++) {
+				if(list.get(i).isHealing()) {
+					if(list.get(i).doneHealing()) {
+						list.get(i).setIsHealing(false);
+						list.get(i).setBusy(false);
+						System.out.println("DONE HEALING");
+					}
+					else {
+						list.get(i).decrementHunger();
+						list.get(i).decrementFatigue();
+						list.get(i).decrementColdness();
+					}
+				}
+			}
 			//checks to see if they have full resource
 			for(int i = 0; i <listSize; i++){
 				if(list.get(i).atMaxCap()){
