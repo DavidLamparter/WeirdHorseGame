@@ -56,6 +56,9 @@ public abstract class Worker extends Observable implements Serializable {
 	// isBusy represents if the worker is currently performing a task
 	private boolean isBusy;
 	
+	// inDanger represents if the worker should go home to eat/sleep
+	private boolean goHome;
+	
 	// Stores the list of directions for a specific task
 	private ArrayList<Direction> myTask = new ArrayList<>();
 	
@@ -182,6 +185,11 @@ public abstract class Worker extends Observable implements Serializable {
 	public Direction getLast() {
 		return last;
 	}
+	
+	public boolean getGoHome() {
+		return goHome;
+	}
+	
 	public ResourceType getPreference() {
 		return preference;
 	}
@@ -216,6 +224,10 @@ public abstract class Worker extends Observable implements Serializable {
 		if(hunger >= 10) {
 			inDanger(hunger);
 		}
+		// If hunger is above 5, workers should run home
+		else if(hunger >= 5) {
+			goHome = true;
+		}
 		addHunger(1.0);
 	}
 	
@@ -231,6 +243,10 @@ public abstract class Worker extends Observable implements Serializable {
 		if(fatigue >= 10) {
 			inDanger(fatigue);
 		}
+		// If fatigue is above 5, workers should run home
+		else if(fatigue >= 5) {
+			goHome = true;
+		}
 		addFatigue(1.0);
 	}
 	
@@ -245,6 +261,10 @@ public abstract class Worker extends Observable implements Serializable {
 		// If coldness rises above 10, this worker may die from frostbite
 		if(coldness >= 10) {
 			inDanger(coldness);
+		}
+		// If coldness is above 5, workers should run home
+		else if(coldness >= 5) {
+			goHome = true;
 		}
 		addColdness(1.0);
 	}
