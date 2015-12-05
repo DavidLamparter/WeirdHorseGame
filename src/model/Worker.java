@@ -600,12 +600,15 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		//if next to job resource
 		else{
-			if(tile.getResource().getHarvestable()) {
-				tile.getResource().subResource(1);
-				if(carryingCapacity > 0)
-				inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
-				subtractCarryingCapacity();
-			}
+//			while(i < 4){
+				if(tile.getResource().getHarvestable()) {
+					tile.getResource().subResource(1);
+					if(carryingCapacity > 0)
+					inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
+					subtractCarryingCapacity();
+				}
+//			i++;
+//			}
 		}
 	}
 
