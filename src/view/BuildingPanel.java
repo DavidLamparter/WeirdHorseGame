@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ public class BuildingPanel extends JFrame {
 		holder.setLayout(new FlowLayout());
 		instantiateTheButtons();
 		renameButtons();
+		holder.setBackground(new Color(127, 106, 69));
 		this.add(holder);
 		this.setAlwaysOnTop(true);
 		this.setUndecorated(true);
@@ -48,6 +50,7 @@ public class BuildingPanel extends JFrame {
 			buildings[i].setSize(65, 75);
 			holder.add(buildings[i]);
 			buildings[i].addActionListener(new BuildItListener());
+			buildings[i].setBackground(new Color(210,180,140));
 		}
 	}
 	private class BuildItListener implements ActionListener {

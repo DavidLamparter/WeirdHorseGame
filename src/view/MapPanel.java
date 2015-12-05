@@ -77,20 +77,8 @@ public class MapPanel extends JPanel implements Observer{
 		this.width = graph.length;
 		this.length = graph[0].length;
 		isWinter = false;
-		//this.setBackground(LightGreen);
-		
 		backgroundTiles();
-		
-		//this.graph = new MapTile[(width) + 1][(length) + 1];
-
-	/*	for (int i = 0; i < width; i++) {
-			for (int j = 0; j < length; j++) {
-				this.graph[i][j] = graph[i][j];
-			}
-		} */
-		repaint();
-
-		
+		repaint();		
 	}
 	
 	// create the array of images for the ground in summer and winter

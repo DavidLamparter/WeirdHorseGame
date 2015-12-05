@@ -114,7 +114,7 @@ public class SettlementGUI extends JFrame {
 		minimap = new MiniMap(this);
 		
 		buildings = new BuildingPanel(this, 4);
-
+		
 		options = new OptionsGUI(this);
 		
 		minimap.relocateToBottomRight();

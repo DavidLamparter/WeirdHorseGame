@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -7,7 +9,10 @@ import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import model.*;
+import model.Buildable;
+import model.Game;
+import model.ListOfWorkers;
+import model.ThePackage;
 
 public class GameStatsView extends JFrame implements Observer{
 	private int amountOfFood;
@@ -26,9 +31,12 @@ public class GameStatsView extends JFrame implements Observer{
 		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 		info.setSize(this.getSize());
+		info.setBackground(new Color(127, 106, 69));
+		info.setFont(info.getFont().deriveFont(Font.BOLD, 14f));
+		info.setForeground(Color.LIGHT_GRAY);
 		this.add(info);
 	}
-
+	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		game = (Game) arg0;

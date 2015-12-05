@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -47,7 +48,7 @@ public class OptionsGUI extends JFrame {
 	//  JButton loader = new JButton("Load?");
 	private boolean wasSaved = false;
 	SettlementGUI caller;
-	private JButton options = new JButton("Options");
+	private JButton options = new JButton("<HTML><b>Options</b></HTML>");
 	MaxSize maxWindow = new MaxSize();
 	
 	
@@ -102,8 +103,8 @@ public class OptionsGUI extends JFrame {
 		options.setLocation(0, 0);
 		options.setSize(this.getSize());
 		options.addActionListener(maxWindow);
-		options.setBackground(new Color(25,255,140));
-		//options.setForeground(new Color(25,255,140));
+		options.setBackground(new Color(127, 106, 69));
+		options.setForeground(Color.LIGHT_GRAY);
 		
 		this.add(saver);
 		this.add(closeThis);
