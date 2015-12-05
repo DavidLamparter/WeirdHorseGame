@@ -419,7 +419,10 @@ public abstract class Worker extends Observable implements Serializable {
 	public void getClosestPreference(Map theMap) {
 		double distance = Double.MAX_VALUE;
 		Point closest = new Point();
-
+		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
+		ArrayList<Direction> goingToGo;
+		int breakCounter = 0;
+		
 		//for if the preference is berry
 		if(preference == ResourceType.BERRY_BUSH){			
 			ArrayList<Job> BerryList = theMap.getBerryList();
@@ -435,8 +438,11 @@ public abstract class Worker extends Observable implements Serializable {
 			double distanceToResource = getPoint().distance(BerryList.get(i).location);
 			
 			if(distanceToResource < distance){
-				distance = distanceToResource;
-				closest = new Point(BerryX,BerryY);
+				goingToGo = calc.getShortestPath(getPoint(), new Point(BerryX,BerryY));
+				if(goingToGo.size()!=0) {
+					distance = distanceToResource;
+					closest = new Point(BerryX,BerryY);
+				}
 			}
 				}
 			}
@@ -457,8 +463,11 @@ public abstract class Worker extends Observable implements Serializable {
 				double distanceToResource = getPoint().distance(FishList.get(i).location);
 		
 			if(distanceToResource < distance){
-				distance = distanceToResource;
-				closest = new Point(FishX,FishY);
+				goingToGo = calc.getShortestPath(getPoint(), new Point(FishX,FishY));
+				if(goingToGo.size()!=0) {
+					distance = distanceToResource;
+					closest = new Point(FishX,FishY);
+				}
 			}
 				}
 			}
@@ -482,8 +491,11 @@ public abstract class Worker extends Observable implements Serializable {
 			double distanceToResource = getPoint().distance(TreeList.get(i).location);
 
 			if(distanceToResource < distance){
+				goingToGo = calc.getShortestPath(getPoint(), new Point(TreeX,TreeY));
+				if(goingToGo.size()!=0) {
 				distance = distanceToResource;
 				closest = new Point(TreeX,TreeY);
+				}
 			}
 				}
 			}
@@ -505,22 +517,24 @@ public abstract class Worker extends Observable implements Serializable {
 			double distanceToResource = getPoint().distance(StoneList.get(i).location);
 			
 			if(distanceToResource < distance){
+				goingToGo = calc.getShortestPath(getPoint(), new Point(StoneX,StoneY));
+				if(goingToGo.size()!=0) {
 				distance = distanceToResource;
 				closest = new Point(StoneX,StoneY);
+				}
 			}
 				}
 			}
 		}
-		//  WHAT IF THE CLOSEST IS UNREACHABLE!!!
 		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
-		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
-
-		toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
-		System.out.println("FINDING PREFERENCE ^\n");
-		job = closest;
-		isBusy = true;
-		setChanged();
-		notifyObservers();
+		if(closest!=null) {
+			toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
+			System.out.println("FINDING PREFERENCE ^\n");
+			job = closest;
+			isBusy = true;
+			setChanged();
+			notifyObservers();
+		}
 	}	
 	
 	private boolean onlyOneStorageCall = false;
