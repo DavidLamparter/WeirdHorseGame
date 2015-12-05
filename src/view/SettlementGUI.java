@@ -77,13 +77,14 @@ public class SettlementGUI extends JFrame {
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
 		
-		buildings = new BuildingPanel(this, 4);
+		buildings = new BuildingPanel(this, 3);
 		
 		theQueueFrame = new QueueFrame(this);
 		
 		gameStats = new GameStatsView(this);
 		
 		game = new Game(map);	
+		game.addObserver(buildings);
 		game.addObserver(gameStats);
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
@@ -113,7 +114,7 @@ public class SettlementGUI extends JFrame {
 		this.addWindowListener(new WindogeListener());
 		minimap = new MiniMap(this);
 		
-		buildings = new BuildingPanel(this, 4);
+		buildings = new BuildingPanel(this, 3);
 		
 		options = new OptionsGUI(this);
 		
@@ -127,6 +128,7 @@ public class SettlementGUI extends JFrame {
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		
 		this.game = game;	
+		game.addObserver(buildings);
 		game.addObserver(gameStats);
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());

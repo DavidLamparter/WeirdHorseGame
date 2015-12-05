@@ -749,6 +749,12 @@ public class Map implements Serializable, Observer {
 	public void update(Observable arg0, Object arg1) {
 		ThePackage packages = (ThePackage)arg1;
 		buildings = packages.getBuildings();
+		ArrayList<Storage> store = new ArrayList<>();
+		for(int i = 0; i < buildings.size(); i++) {
+			if(buildings.get(i)instanceof Storage)
+				store.add((Storage)buildings.get(i));
+		}
+		storageList = store;
 	}
 	public ArrayList<Buildable> getBuildings() {
 		return buildings;

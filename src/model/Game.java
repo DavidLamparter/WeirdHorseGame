@@ -126,14 +126,12 @@ public class Game extends Observable implements Serializable {
 	}
 	public int addNewBuildingUsingID(int toBuild, Point topLeftBuildingPoint) {
 		Buildable build = null;
-		if(toBuild == BuildingPanel.BRIDGE_H_ID) {
+		if(toBuild == BuildingPanel.BRIDGE_ID) {
 			build = new HorizontalBridge(topLeftBuildingPoint);
-		}
-		if(toBuild == BuildingPanel.BRIDGE_V_ID) {
-			build = new VerticalBridge(topLeftBuildingPoint);
 		}
 		if(toBuild == BuildingPanel.HOUSE_ID) {
 			build = new House(topLeftBuildingPoint);
+			System.out.println("ADDED NEW HOUSE");
 		}
 		if(toBuild == BuildingPanel.STOREHOUSE_ID) {
 			build = new Storehouse(topLeftBuildingPoint);
@@ -154,6 +152,7 @@ public class Game extends Observable implements Serializable {
 			}
 			if(canBuild) {
 				buildings.add(build);
+				
 				return -1;
 			}
 		}
@@ -200,11 +199,14 @@ public class Game extends Observable implements Serializable {
 			theMap.setHarvestable();
 			
 			// Increment workers conditions every 5 seconds
+			if((isWinter)&&(gameLength %5 == 0)) {
+				list.incrementColdness();
+				if(list.removeDead())
+					setChange();
+			}
 			if((gameLength % 10) == 0) {
 				list.incrementHunger();
 				list.incrementFatigue();
-				if(isWinter)
-					list.incrementColdness();
 				if(list.removeDead()) {
 					setChange();
 				}
@@ -246,7 +248,7 @@ public class Game extends Observable implements Serializable {
 					tempWood += storage.getWoodCount();
 					tempStone += storage.getStoneCount();
 					tempFood += storage.getFoodCount(); 
-					tempMax += 200;
+					tempMax += storage.getCapacity();
 				}
 			}
 			totalWood = tempWood;
@@ -382,7 +384,7 @@ public class Game extends Observable implements Serializable {
 			for(int i = 0; i <listSize; i++){
 				Worker dummy = list.get(i);
 				if(dummy.nextToJob()){
-					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().y][dummy.getJob().x]);
+					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().y][dummy.getJob().x],theMap);
 				}
 			}
 		}

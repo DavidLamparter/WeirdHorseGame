@@ -552,9 +552,9 @@ public abstract class Worker extends Observable implements Serializable {
 			int size = theMap.getStorageList().size();
 					
 			for(int i = 0; i < size; i++){
-
-			int StorageX = storageList.get(i).getPoints().get(0).x;
-			int StorageY = storageList.get(i).getPoints().get(0).y;
+			Point closestStorage =  storageList.get(i).getClosestPoint(getPoint());
+			int StorageX = closestStorage.x;
+			int StorageY = closestStorage.y;
 			
 			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
 			double distanceToResource = getPoint().distance(storageList.get(i).getPoints().get(0));
@@ -580,7 +580,7 @@ public abstract class Worker extends Observable implements Serializable {
 	*                 Harvest and deposit                 *
 	******************************************************/
 	
-	public void doTheWork(MapTile tile){
+	public void doTheWork(MapTile tile, Map theMap){
 		if(isHealing)
 			return;
 		isBusy = true;
@@ -606,7 +606,14 @@ public abstract class Worker extends Observable implements Serializable {
 				inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
 				subtractCarryingCapacity();
 			}
+			else {
+				//  it is not harvestable so GO HOME
+				goToStorage(theMap);
+			}
 		}
+	}
+	public int getInventorySize() {
+		return 20-carryingCapacity;
 	}
 
 	public String animationFrameFileName() {

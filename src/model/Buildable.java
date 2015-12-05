@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 public abstract class Buildable extends Observable implements Serializable {
-	private int buildCost;
-	private int buildCounter;
+//	private int buildCost;
+//	private int buildCounter;
 	private boolean passable;
-	private boolean built = false;
+	private boolean built = true;
 	private ArrayList<Point> points = new ArrayList<>();
 	
 	//  the building takes 2 points and then makes a square
@@ -18,7 +18,7 @@ public abstract class Buildable extends Observable implements Serializable {
 		for(int i = topLeftPoint.x; i <= bottomRightPoint.x; i++)
 			for(int j = topLeftPoint.y; j <= bottomRightPoint.y; j++) {
 				points.add(new Point(i,j));
-				buildCost+=20;  //  4, 20
+			//	buildCost+=20;  //  4, 20
 				//  every square cost 20 build
 			}
 		this.passable = passable;
@@ -46,13 +46,13 @@ public abstract class Buildable extends Observable implements Serializable {
 	}
 	
 	//  increments the counter by 1 and sees if it needs to be built
-	public void build(){
+	/*public void build(){
 		if(built)
 			return;
 		buildCounter++;
 		if(buildCounter >= buildCost)
 			built = true;
-	}
+	}*/
 	
 	//  returns if the building has been built or not
 	public boolean isBuilt() {

@@ -4,26 +4,33 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class BuildingPanel extends JFrame {
-	public static int BRIDGE_V_ID = 3;
-	public static int BRIDGE_H_ID = 2;
+import model.Game;
+
+public class BuildingPanel extends JFrame implements Observer {
+	public static int BRIDGE_ID = 2;
 	public static int STOREHOUSE_ID = 1;
 	public static int HOUSE_ID = 0;
 	private JButton[] buildings;
+	private boolean[] buttonsState;
 	private JPanel holder;
 	private SettlementGUI caller;
+	private int lastClicked;
 	
 	public BuildingPanel(SettlementGUI caller, int numberOfBuildings) {
 		
+		lastClicked = -1;
 		this.caller = caller;
 		this.setSize(numberOfBuildings*75+20,75);
 		buildings = new JButton[numberOfBuildings];
+		buttonsState = new boolean[numberOfBuildings];
 		holder = new JPanel();
 		holder.setSize(this.getSize());
 		holder.setLocation(0, 0);
@@ -40,8 +47,7 @@ public class BuildingPanel extends JFrame {
 	private void renameButtons() {
 		buildings[HOUSE_ID].setText("House");                // 0
 		buildings[STOREHOUSE_ID].setText("Storehouse");      // 1
-		buildings[BRIDGE_H_ID].setText("Horizontal Bridge"); // 2	
-		buildings[BRIDGE_V_ID].setText("Vertical Bridge");   // 3
+		buildings[BRIDGE_ID].setText("Bridge");				 // 2	
 	}
 
 	private void instantiateTheButtons() {
@@ -61,15 +67,40 @@ public class BuildingPanel extends JFrame {
 			for(int i = 0; i  < buildings.length; i++) {
 				if(arg0.getSource().equals(buildings[i])) {
 					caller.setLastClickedBuilding(i);
+					buttonsState[i] = false;
 					buildings[i].setEnabled(false);
+					lastClicked = i;
 				}
 			}			
 		}
 	}
 	public void resetButtons() {
 		for(int i = 0; i < buildings.length; i++) {
-			buildings[i].setEnabled(true);
+			buildings[i].setEnabled(buttonsState[i]);
 		}
+		lastClicked = -1;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		Game game = (Game)arg0;
+		if(game.getTotalStone()>=100)
+			buttonsState[BRIDGE_ID] = true;
+		else
+			buttonsState[BRIDGE_ID] = false;
+		if(game.getTotalWood()>=100)
+			buttonsState[STOREHOUSE_ID] = true;
+		else 
+			buttonsState[STOREHOUSE_ID] = false;
+		if((game.getTotalStone()>=40)&&(game.getTotalWood()>=160))
+			buttonsState[HOUSE_ID] = true;
+		else
+			buttonsState[HOUSE_ID] = false;
+		if(lastClicked>=0)
+			buttonsState[lastClicked] = false;
 		
+		for(int i = 0; i < buildings.length; i++) {
+			buildings[i].setEnabled(buttonsState[i]);
+		}
 	}
 }

@@ -8,9 +8,9 @@ public abstract class Storage extends Buildable {
 	private int capacity;
 	ArrayList<ResourceType> theGoods = new ArrayList<>();
 	
-	public Storage(Point topLeftPoint, Point bottomRightPoint) {
+	public Storage(Point topLeftPoint, Point bottomRightPoint, int multiplier) {
 		super(topLeftPoint, bottomRightPoint, false);
-		capacity = this.getPoints().size()*42;
+		capacity = this.getPoints().size()*25*multiplier;
 	}
 	//  this will return only food objects as the other will return anything you tell it
 	public ArrayList<ResourceType> getFood(int quanity) {
@@ -42,6 +42,9 @@ public abstract class Storage extends Buildable {
 			}
 		}
 		return toGit;
+	}
+	public int getCapacity() {
+		return capacity;
 	}
 	public ArrayList<ResourceType> getResource(ResourceType type, int quanity) {
 		//  I made a funny joke
@@ -97,12 +100,15 @@ public abstract class Storage extends Buildable {
 	public int getFoodCount(){
 		int fCount=0;
 		for(int i=0; i < theGoods.size(); i++){
-			if( (theGoods.get(i).equals(ResourceType.BERRY_BUSH)) ||
-			  (theGoods.get(i).equals(ResourceType.SALTY_FISH)) ||
-			  (theGoods.get(i).equals(ResourceType.FISH)) )
-				fCount++;
-			if(theGoods.get(i).equals(ResourceType.POISION_BUSH))
-				fCount-=5;
+			//  a wild null pointer has appeared
+			if(theGoods.get(i)!=null) {
+				if( (theGoods.get(i).equals(ResourceType.BERRY_BUSH)) ||
+					(theGoods.get(i).equals(ResourceType.SALTY_FISH)) ||
+					(theGoods.get(i).equals(ResourceType.FISH)) )
+						fCount++;
+				if(theGoods.get(i).equals(ResourceType.POISION_BUSH))
+					fCount-=5;
+			}
 		}
 		return fCount;
 	}
@@ -110,8 +116,10 @@ public abstract class Storage extends Buildable {
 	public int getStoneCount(){
 		int sCount=0;
 		for(int i=0; i < theGoods.size(); i++){
-			if(theGoods.get(i).equals(ResourceType.STONE))
-				sCount++;
+			//  a wild null pointer has appeared
+			if(theGoods.get(i)!=null)
+				if(theGoods.get(i).equals(ResourceType.STONE))
+					sCount++;
 		}
 		return sCount;
 	}
@@ -119,8 +127,10 @@ public abstract class Storage extends Buildable {
 	public int getWoodCount(){
 		int wCount=0;
 		for(int i=0; i < theGoods.size(); i++){
-			if(theGoods.get(i).equals(ResourceType.TREE))
-				wCount++;
+			//  a wild null pointer has appeared
+			if(theGoods.get(i)!=null)
+				if(theGoods.get(i).equals(ResourceType.TREE))
+					wCount++;
 		}
 		return wCount;
 	}
@@ -133,11 +143,8 @@ public abstract class Storage extends Buildable {
 
 //TOWNHALL
 class TownHall extends Storage {
-
 	public TownHall(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+1, topPoint.y+2));
-		while(!isBuilt())
-			build();
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+2), 2);
 	}
 
 	@Override
@@ -157,9 +164,9 @@ class TownHall extends Storage {
 
 // STOREHOUSE
 class Storehouse extends Storage {
-
+	
 	public Storehouse(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+1, topPoint.y+2));
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+2), 1);
 	}
 
 	@Override
