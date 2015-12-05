@@ -15,6 +15,7 @@ public class GameStatsView extends JFrame implements Observer{
 	private int allowedAmountOfWorkers;
 	private int amountOfWood;
 	private int amountOfStone;
+	private Game game;
 	
 	private JTextField info = new JTextField();
 	
@@ -24,32 +25,22 @@ public class GameStatsView extends JFrame implements Observer{
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
 		this.setVisible(true);
-		
 		info.setSize(this.getSize());
 		this.add(info);
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		game = (Game) arg0;
 		ThePackage myPackage = (ThePackage)arg1;
 		ArrayList<Buildable> builds = myPackage.getBuildings();
 		ListOfWorkers workmen = myPackage.getWorkers();
-		int food = 0;
-		int stone = 0;
-		int wood = 0;
-		for(int i = 0; i < builds.size(); i++) {
-			if(builds.get(i)instanceof Storage) {
-				stone += ((Storage)builds.get(i)).getStoneCount();
-				wood += ((Storage)builds.get(i)).getWoodCount();
-				food += ((Storage)builds.get(i)).getFoodCount();
-			}
-		}
-		amountOfWood = wood;
-		amountOfStone = stone;
-		amountOfFood = food;
-		String mT = "     ";
+		amountOfWood = game.getTotalWood();
+		amountOfStone = game.getTotalStone();
+		amountOfFood = game.getTotalFood();
+		String mT = "/" + game.getTotalMax() + "     ";
 		amountOfWorkers = workmen.size();
-		info.setText(mT + "Food: " + food + mT + "Stone: " + stone + mT + "Wood: " + wood
+		info.setText("      " + "Food: " + amountOfFood + mT + "Stone: " + amountOfStone + mT + "Wood: " + amountOfWood
 				+ mT + "Workers: " + workmen.size());
 	}
 }

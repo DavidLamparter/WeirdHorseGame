@@ -58,7 +58,16 @@ public class Game extends Observable implements Serializable {
 	private int gameLength = 0;
 	
 	// This variable keeps track of how much food the village has
+	private int totalWood = 0;
+	
+	// This variable keeps track of how much food the village has
+	private int totalStone = 0;
+		
+	// This variable keeps track of how much food the village has
 	private int totalFood = 0;
+	
+	// This variable represents the maximum amount of a resource is possible
+	private int totalMax = 0;
 	
 	// These variables are for changing seasons in-game (winter is coming)
 	private int lengthOfSeasons = 60;
@@ -227,15 +236,34 @@ public class Game extends Observable implements Serializable {
 					}
 				}
 			}
+			int tempWood = 0;
+			int tempStone = 0;
 			int tempFood = 0;
+			int tempMax = 0;
 			for(int i = 0; i < buildings.size(); i++) {
 				if((buildings.get(i) instanceof Storage) || (buildings.get(i) instanceof TownHall)) {
 					Storage storage = (Storage) buildings.get(i);
+					tempWood += storage.getWoodCount();
+					tempStone += storage.getStoneCount();
 					tempFood += storage.getFoodCount(); 
+					tempMax += 200;
 				}
 			}
+			totalWood = tempWood;
+			totalStone = tempStone;
 			totalFood = tempFood;
-			System.out.println("totalFood = " + totalFood);
+			totalMax = tempMax;
+			
+			if(totalWood > totalMax) {
+				totalWood = totalMax;
+			}
+			if(totalStone > totalMax) {
+				totalStone = totalMax;
+			}
+			if(totalFood > totalMax) {
+				totalFood = totalMax;
+			}
+			
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
@@ -294,9 +322,13 @@ public class Game extends Observable implements Serializable {
 					list.get(i).setIsHealing(true);
 					list.get(i).setGoHome(false);
 					list.get(i).setFoundHome(false);
+					list.get(i).setDoneHealing(false);
 				}
 			}
 			
+			boolean doneWithHunger = false;
+			boolean doneWithColdness = false;
+			boolean doneWithFatigue = false;
 			// Checks to see if they're done healing
 			for(int i = 0; i < listSize; i++) {
 				if(list.get(i).isHealing()) {
@@ -306,9 +338,29 @@ public class Game extends Observable implements Serializable {
 						System.out.println("DONE HEALING");
 					}
 					else {
-						list.get(i).decrementHunger();
-						list.get(i).decrementFatigue();
-						list.get(i).decrementColdness();
+						if(list.get(i).getFatigue() >= 1) {
+							list.get(i).decrementFatigue();
+						}
+						else {
+							doneWithFatigue = true;
+						}
+						if((totalFood > 0) && (list.get(i).getHunger() >= 1)) {
+							list.get(i).decrementHunger();
+							totalFood -= 2;
+						}
+						else {
+							doneWithHunger = true;
+						}
+						if((totalWood > 0) && (list.get(i).getColdness() >= 1)) {
+							list.get(i).decrementColdness();
+							totalWood -= 5;
+						}
+						else {
+							doneWithColdness = true;
+						}
+						if(doneWithFatigue && doneWithHunger && doneWithColdness) {
+							list.get(i).setDoneHealing(true);
+						}
 					}
 				}
 			}
@@ -384,5 +436,21 @@ public class Game extends Observable implements Serializable {
 		SpeedMeter = new Timer((NORMAL_SPEED*250)/speed,  new MovementTimerListener());
 		gameTimer.start();
 		SpeedMeter.start();
+	}
+	
+	public int getTotalWood() {
+		return totalWood;
+	}
+	
+	public int getTotalStone() {
+		return totalStone;
+	}
+	
+	public int getTotalFood() {
+		return totalFood;
+	}
+	
+	public int getTotalMax() {
+		return totalMax;
 	}
 }

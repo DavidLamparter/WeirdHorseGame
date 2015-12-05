@@ -61,6 +61,7 @@ public class BuildingFrame extends JFrame implements Observer {
 	private String buildingName;
 	private Point arrayPos;
 	private Game game;
+	private GameStatsView resources;
 	
 	//Image resourcePic;  cuz that would be dope
 	
@@ -68,6 +69,7 @@ public class BuildingFrame extends JFrame implements Observer {
 		//  sets the size of the frame and location 10 pixels away from your mouse
 		this.game = game;
 		theBuilding = building;
+		this.resources = resources;
 		resourceQuantity = theBuilding.getQuantity();
 		buildingName = theBuilding.getName();
 		this.setSize(200, 125);
@@ -107,9 +109,9 @@ public class BuildingFrame extends JFrame implements Observer {
 		
 		//  adds some text
 		nameofBuilding.setText(theBuilding.getName());
-		description.setText("\nWOOD: " + theBuilding.getWoodCount() +
-							"\nSTONE: " + theBuilding.getStoneCount() +
-							"\nFOOD: " + theBuilding.getFoodCount() );
+		description.setText("\nWOOD: " + game.getTotalWood() +
+							"\nSTONE: " + game.getTotalStone() +
+							"\nFOOD: " + game.getTotalFood() );
 		
 		//  our action listeners
 		exit.addActionListener(new ExitListener());

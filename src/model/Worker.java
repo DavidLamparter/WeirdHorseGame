@@ -65,6 +65,9 @@ public abstract class Worker extends Observable implements Serializable {
 	// foudHome is true if a worker has begun their journey home
 	private boolean foundHome;
 	
+	// Determines if a worker is done healing
+	private boolean doneHealing;
+	
 	// Stores the list of directions for a specific task
 	private ArrayList<Direction> myTask = new ArrayList<>();
 	
@@ -237,6 +240,10 @@ public abstract class Worker extends Observable implements Serializable {
 		foundHome = home;
 	}
 	
+	public void setDoneHealing(boolean heal) {
+		doneHealing = heal;
+	}
+	
 	/**************************************
 	 *        Adders for Conditions       *
 	 **************************************/
@@ -325,10 +332,7 @@ public abstract class Worker extends Observable implements Serializable {
 	}
 	
 	public boolean doneHealing() {
-		if((hunger < 1) && (fatigue < 1) && (coldness < 1)) {
-			return true;
-		}
-		return false;
+		return doneHealing;
 	}
 	
 	/**************************************
@@ -596,15 +600,15 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		//if next to job resource
 		else{
-			while(i < 4){
+//			while(i < 4){
 				if(tile.getResource().getHarvestable()) {
 					tile.getResource().subResource(1);
 					if(carryingCapacity > 0)
 					inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
 					subtractCarryingCapacity();
 				}
-			i++;
-			}
+//			i++;
+//			}
 		}
 	}
 
