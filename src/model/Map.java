@@ -158,6 +158,7 @@ public class Map implements Serializable, Observer {
 	public void generate() {
 		createOcean();
 		createRiver();
+		cleanUpRiver();
 		createTrees();
 		spawnFood();
 		spawnStone();
@@ -167,7 +168,7 @@ public class Map implements Serializable, Observer {
 	/**************************************
 	 *    Create Methods (and helpers)    *
 	 **************************************/
-	
+
 	/**~~~~~~~~~~~~~~ OCEAN ~~~~~~~~~~~~~**/
 	
 	// Generates the ocean on one side of the map
@@ -452,7 +453,34 @@ public class Map implements Serializable, Observer {
 			}
 		}
 	}
+	
+	
+	
+	/**~~~~~~~~~~~~~~ River Cleanup ~~~~~~~~~~~~~**/
+	private void cleanUpRiver() {
+		int watCount = 0;
+		for(int x = 1; x < 99; x++){
+			for(int y = 1; y < 99; y++){
+				if(board[x][y].getLand().equals(Terrain.RIVER)){
+					
+					if(board[x][y+1].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					if(board[x+1][y].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					if(board[x][y-1].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					if(board[x-1][y].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					
+					if(watCount == 1)
+						board[x][y].setLand(Terrain.PLAIN);
+					watCount = 0;
+				}
+			}
+		}
+	}
 
+	
 	/**~~~~~~~~~~~~~~ TREES ~~~~~~~~~~~~**/
 	
 	// Generates the trees in spread "clusters" across the map
@@ -501,11 +529,11 @@ public class Map implements Serializable, Observer {
 				int berrySize = BerryList.size();
 				for(int i = 0; i < berrySize; i++){
 
-				if(BerryList.get(i).resource.getQuantity() <= 0){
+				if(BerryList.get(i).resource.getQuantity() < 4.0){
 					BerryList.get(i).resource.setHarvestable(false);
 					}	
 				else{
-					if(BerryList.get(i).resource.getQuantity() > 20)
+					if(BerryList.get(i).resource.getQuantity()>=20)
 						BerryList.get(i).resource.setHarvestable(true);
 				}
 				}
@@ -515,11 +543,11 @@ public class Map implements Serializable, Observer {
 		int stoneSize = StoneList.size();
 		for(int i = 0; i < stoneSize; i++){
 
-		if(StoneList.get(i).resource.getQuantity() <= 0){
+		if(StoneList.get(i).resource.getQuantity() < 4.0){
 			StoneList.get(i).resource.setHarvestable(false);
 			}	
 		else{
-			if(StoneList.get(i).resource.getQuantity() > 20)
+			if(StoneList.get(i).resource.getQuantity()>=20)
 				StoneList.get(i).resource.setHarvestable(true);
 		}
 		}
@@ -528,11 +556,11 @@ public class Map implements Serializable, Observer {
 		//for fish
 		int fishSize = FishList.size();
 		for(int i = 0; i < fishSize; i++){
-		if(FishList.get(i).resource.getQuantity() <= 0){
+		if(FishList.get(i).resource.getQuantity() < 4.0){
 			FishList.get(i).resource.setHarvestable(false);
 			}	
 		else{
-			if(FishList.get(i).resource.getQuantity() > 20)
+			if(FishList.get(i).resource.getQuantity()>=20)
 				FishList.get(i).resource.setHarvestable(true);
 		}	
 		}
@@ -540,11 +568,11 @@ public class Map implements Serializable, Observer {
 		//for Wood
 		int treeSize = TreeList.size();
 		for(int i = 0; i < treeSize; i++){
-		if(TreeList.get(i).resource.getQuantity() <= 0){
+		if(TreeList.get(i).resource.getQuantity() < 4.0){
 			TreeList.get(i).resource.setHarvestable(false);
 			}	
 		else{
-			if(TreeList.get(i).resource.getQuantity() > 20)
+			if(TreeList.get(i).resource.getQuantity()>=20)
 				TreeList.get(i).resource.setHarvestable(true);
 		}
 		}
@@ -712,31 +740,10 @@ public class Map implements Serializable, Observer {
 						System.out.println("Oh");
 						continue;
 					}
-					if(gen.nextDouble() < 0.25) {
+					if(gen.nextDouble()<.25) {
 						if(initialNoWorker != 0) {
 							Worker brett = new Brett(new Point(i,j));
 							initialWorkers.add(brett);
-							initialNoWorker --;
-						}
-					}
-					else if(gen.nextDouble() < 0.50) {
-						if(initialNoWorker != 0) {
-							Worker david = new David(new Point(i,j));
-							initialWorkers.add(david);
-							initialNoWorker --;
-						}
-					}
-					else if(gen.nextDouble() < 0.75) {
-						if(initialNoWorker != 0) {
-							Worker james = new KJD(new Point(i,j));
-							initialWorkers.add(james);
-							initialNoWorker --;
-						}
-					}
-					else if(gen.nextDouble() < 1) {
-						if(initialNoWorker != 0) {
-							Worker james = new KJG(new Point(i,j));
-							initialWorkers.add(james);
 							initialNoWorker --;
 						}
 					}
