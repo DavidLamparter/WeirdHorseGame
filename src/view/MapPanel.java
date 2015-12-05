@@ -181,6 +181,7 @@ public class MapPanel extends JPanel implements Observer{
 					
 					int watercount = 0;
 					//if there are 3 adjacent water tiles
+					try {
 					if(graph[i+1][j].getLand().equals(Terrain.RIVER)){
 						watercount++;
 
@@ -194,8 +195,11 @@ public class MapPanel extends JPanel implements Observer{
 					if(graph[i][j-1].getLand().equals(Terrain.RIVER)){
 						watercount++;
 					}
-					
-					
+					}
+					catch(ArrayIndexOutOfBoundsException brettWai) {
+						watercount = 2;
+					}
+					try {
 					if(watercount == 1){
 						//we do nothing, no rendering of tiles
 
@@ -208,7 +212,6 @@ public class MapPanel extends JPanel implements Observer{
 						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/river_01.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}*/
-					
 					// RIGHT AND BOTTOM
 					else if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
@@ -276,7 +279,10 @@ public class MapPanel extends JPanel implements Observer{
 					// PURE WATER
 					else
 						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-	
+					}
+					catch(ArrayIndexOutOfBoundsException oman) {
+						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
 				}
 				
 				// SaltyFish
