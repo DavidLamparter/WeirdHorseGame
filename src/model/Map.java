@@ -162,7 +162,6 @@ public class Map implements Serializable, Observer {
 		spawnFood();
 		spawnStone();
 		spawnWorkers();
-		cleanUpRiver();
 	}
 	
 	/**************************************
@@ -453,34 +452,6 @@ public class Map implements Serializable, Observer {
 			}
 		}
 	}
-
-	
-	
-	/**~~~~~~~~~~~~~~ River Cleanup ~~~~~~~~~~~~~**/
-	private void cleanUpRiver() {
-		int watCount = 0;
-		for(int x = 1; x < 99; x++){
-			for(int y = 1; y < 99; y++){
-				watCount = 0;
-				if(board[x][y].getLand().equals(Terrain.RIVER)){
-					
-					if(board[x][y+1].getLand().equals(Terrain.RIVER))
-						watCount++;
-					if(board[x+1][y].getLand().equals(Terrain.RIVER))
-						watCount++;
-					if(board[x][y-1].getLand().equals(Terrain.RIVER))
-						watCount++;
-					if(board[x-1
-					         ][y].getLand().equals(Terrain.RIVER))
-						watCount++;
-					
-					if(watCount == 1)
-						board[x][y].setLand(Terrain.PLAIN);
-				}
-			}
-		}
-	}
-
 	
 	/**~~~~~~~~~~~~~~ TREES ~~~~~~~~~~~~**/
 	

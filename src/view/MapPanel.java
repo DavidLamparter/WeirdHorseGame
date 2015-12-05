@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Buildable;
+import model.Game;
 import model.ListOfImages;
 import model.ListOfWorkers;
 import model.MapTile;
@@ -57,10 +58,14 @@ public class MapPanel extends JPanel implements Observer{
 	private int maxY = 0;
 	private SettlementGUI caller;
 	private ListOfWorkers workmen;
+	private boolean isWinter;
 	
 	// Variables for the array of tiles for the background
 	private Image[][] summerTiles = new Image[50][50];
 	private String[][] sTileNames = new String[50][50];
+	
+	private Image[][] winterTiles = new Image[50][50];
+	private String[][] wTileNames = new String[50][50];
 
 	//Colors
 	Color DarkGreen = new Color(20, 120, 20);
@@ -71,8 +76,10 @@ public class MapPanel extends JPanel implements Observer{
 		this.graph = caller.getMap().getMapTiles();
 		this.width = graph.length;
 		this.length = graph[0].length;
+		isWinter = false;
 		//this.setBackground(LightGreen);
-		backgroundTiles(sTileNames, summerTiles);
+		
+		backgroundTiles();
 		
 		//this.graph = new MapTile[(width) + 1][(length) + 1];
 
@@ -86,14 +93,15 @@ public class MapPanel extends JPanel implements Observer{
 		
 	}
 	
-	// create the array of images for the ground in summer
-	public void backgroundTiles(String[][] sNames, Image[][] sPic){
+	// create the array of images for the ground in summer and winter
+	public void backgroundTiles(){
 		int counter = 1;
 		System.out.println("STARTED READING FILES");
 		// create the array file names first so that it's easier to read in to 2Darray
 		for (int i=0; i < 50; i++){
 			for (int j=0; j < 50; j++){
 				sTileNames[i][j] = "./Graphics/Ground/summerTiles/sTile_" + counter + ".png";
+				wTileNames[i][j] = "./Graphics/Ground/winterTiles/wTile_" + counter + ".png";
 				counter++;
 			}
 		}
@@ -102,14 +110,13 @@ public class MapPanel extends JPanel implements Observer{
 			for (int j=0; j < 50; j++){
 				try {
 					summerTiles[i][j] = ImageIO.read(new File(sTileNames[i][j]));
+					winterTiles[i][j] = ImageIO.read(new File(wTileNames[i][j]));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 		System.out.println("FINISHED READING FILES");
-		sNames = sTileNames;
-	    sPic = summerTiles;
 		
 	}
 
@@ -124,11 +131,36 @@ public class MapPanel extends JPanel implements Observer{
 		int length2 = getMapHeight();
 		
 		//draw the ground first
-		for (int ilol = 0; ilol < width2/2; ilol++) {
-			for (int jlol = 0; jlol < length2/2; jlol++) {
-				int i = ilol + initialx/2;
-				int j = jlol + initialy/2;
-				g2d.drawImage(summerTiles[j][i], ilol*(MAP_TILE_WIDTH*2), jlol*MAP_TILE_HEIGHT*2, null);
+		if(!isWinter) {
+			for (int ilol = 0; ilol < (Math.ceil(width2/2)) + (initialx%2); ilol++) {
+				for (int jlol = 0; jlol < (Math.ceil(length2/2)) + (initialy%2); jlol++) {
+					int i = ilol + initialx/2;
+					int j = jlol + initialy/2;
+					int xPosForMapTiles = ilol*MAP_TILE_WIDTH*2;
+					int yPosForMapTiles = jlol*MAP_TILE_HEIGHT*2;
+					if((initialx%2) == 1)
+						xPosForMapTiles -= MAP_TILE_WIDTH;
+					if((initialy%2) == 1)
+						yPosForMapTiles -= MAP_TILE_HEIGHT;
+								//  IMAGE             X POSITION         Y POSITION
+					g2d.drawImage(summerTiles[j][i], xPosForMapTiles, yPosForMapTiles, null);
+				}
+			}
+		}
+		else {
+			for (int ilol = 0; ilol < (Math.ceil(width2/2)) + (initialx%2); ilol++) {
+				for (int jlol = 0; jlol < (Math.ceil(length2/2)) + (initialy%2); jlol++) {
+					int i = ilol + initialx/2;
+					int j = jlol + initialy/2;
+					int xPosForMapTiles = ilol*MAP_TILE_WIDTH*2;
+					int yPosForMapTiles = jlol*MAP_TILE_HEIGHT*2;
+					if((initialx%2) == 1)
+						xPosForMapTiles -= MAP_TILE_WIDTH;
+					if((initialy%2) == 1)
+						yPosForMapTiles -= MAP_TILE_HEIGHT;
+								//  IMAGE             X POSITION         Y POSITION
+					g2d.drawImage(winterTiles[j][i], xPosForMapTiles, yPosForMapTiles, null);
+				}
 			}
 		}
 		
@@ -140,32 +172,143 @@ public class MapPanel extends JPanel implements Observer{
 				int j = jlol + initialy;
 				
 				// Fish
-				if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
+				/*if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
 					g2d.setColor(Color.CYAN);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
+				} */
 				// River
-				else if (graph[j][i].getLand().equals(Terrain.RIVER)) {
-					g2d.setColor(Color.BLUE);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+				if (graph[j][i].getLand().equals(Terrain.RIVER)) {
+					
+					int watercount = 0;
+					//if there are 3 adjacent water tiles
+					try {
+					if(graph[i+1][j].getLand().equals(Terrain.RIVER)){
+						watercount++;
+
+					}
+					if(graph[i][j+1].getLand().equals(Terrain.RIVER)){
+						watercount++;
+					}
+					if(graph[i-1][j].getLand().equals(Terrain.RIVER)){
+						watercount++;
+					}
+					if(graph[i][j-1].getLand().equals(Terrain.RIVER)){
+						watercount++;
+					}
+					}
+					catch(ArrayIndexOutOfBoundsException brettWai) {
+						watercount = 2;
+					}
+					try {
+					if(watercount == 1){
+						//we do nothing, no rendering of tiles
+
+						watercount = 0;
+					}
+					// IF There's a lonely water tile
+					/*else if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
+						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
+								g2d.drawImage(images.getWater("./Graphics/Water/river_01.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+						}*/
+					// RIGHT AND BOTTOM
+					else if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
+						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_01.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// LEFT AND RIGHT AND BOTTOM
+					else if (graph[j+1][i].getLand().equals(Terrain.RIVER) &&
+						graph[j][i-1].getLand().equals(Terrain.RIVER) &&	
+						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_02.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// LEFT AND BOTTOM W
+					else if (graph[j][i-1].getLand().equals(Terrain.RIVER) && 
+						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_03.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// TOP AND RIGHT AND BOTTOM W
+					else if (graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i-1].getLand().equals(Terrain.RIVER)){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_04.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// TOP AND LEFT AND BOTTOM W
+					else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i+1].getLand().equals(Terrain.RIVER)){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_06.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// TOP AND RIGHT W
+					else if (graph[j-1][i].getLand().equals(Terrain.RIVER) && 
+						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_07.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// TOP AND LEFT AND RIGHT W
+					else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_08.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// TOP AND LEFT
+					else if (graph[j-1][i].getLand().equals(Terrain.RIVER) && 
+						graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+						!graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
+							g2d.drawImage(images.getWater("./Graphics/Water/river_09.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					
+					// PURE WATER
+					else
+						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
+					catch(ArrayIndexOutOfBoundsException oman) {
+						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					}
 				}
+				
 				// SaltyFish
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.SALTY_FISH)) {
+				/* else if (graph[j][i].getResource().getResourceT().equals(ResourceType.SALTY_FISH)) {
 					g2d.setColor(Color.magenta);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				}
+				} */
 				// Ocean
 				else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
 					g2d.setColor(new Color(20, 20, 200));
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
+					g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 				// Sand
 				else if (graph[j][i].getLand().equals(Terrain.BEACH)) {
 					g2d.setColor(Color.ORANGE);
 					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
 				}
+				//  i think this will draw all the resources
+				if ((graph[j][i].getResource().getResourceT()!=ResourceType.NONE)&&(graph[j][i].getResource().getResourceT()!=ResourceType.TREE)) {
+					if(!isWinter)
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					else
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+				}
 				// Berry Bush
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
+				/*else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
 					try {
 						g2d.drawImage(ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					} catch (IOException e) {
@@ -182,7 +325,7 @@ public class MapPanel extends JPanel implements Observer{
 						e.printStackTrace();
 					}
 
-				}
+				} */
 				
 				/*
 				 * if (i % 2 == 0 || j % 2 == 0) {
@@ -198,7 +341,10 @@ public class MapPanel extends JPanel implements Observer{
 				int j = jlol + initialy;
 				// Trees Go on top of workers so uhh yesah we need a nother loop
 				if (graph[j][i].getResource().getResourceT().equals(ResourceType.TREE)) {
-					g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),false), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), jlol*MAP_TILE_HEIGHT-50, null);
+					if(!isWinter)
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), (jlol-1)*MAP_TILE_HEIGHT, null);
+					else																																									//  was -50 for whatever reason
+						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+ (graph[j][i].getResource().Offset), (jlol-1)*MAP_TILE_HEIGHT, null);
 				}
 			}
 		}
@@ -208,9 +354,11 @@ public class MapPanel extends JPanel implements Observer{
 		for(int i = 0; i < buildingList.size(); i++) {
 			int x = (int) buildingList.get(i).getPoints().get(0).getX() - initialx;
 			int y = (int) buildingList.get(i).getPoints().get(0).getY() - initialy;
-			g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), false), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
+			if(!isWinter)
+				g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), isWinter), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
+			else
+				g2d.drawImage(images.getBuilding(buildingList.get(i).getImageFile(), !isWinter), x * MAP_TILE_WIDTH, y * MAP_TILE_HEIGHT, null); 
 		}
-		
 	}
 
 	private void drawThemWorkers(Graphics2D g) {
@@ -219,7 +367,7 @@ public class MapPanel extends JPanel implements Observer{
 			int workmenSize = workmen.size();
 			for(int i = 0; i < workmenSize; i++) {
 				Point l = workmen.get(i).getPoint();
-				g.drawImage(images.getWorker(workmen.get(i).animationFrameFileName(), false), (l.x-initialx)*50, (l.y-initialy)*50, null);
+				g.drawImage(images.getWorker(workmen.get(i).animationFrameFileName(), isWinter), (l.x-initialx)*50, (l.y-initialy)*50, null);
 				//System.out.printf("Worker %d X Location: %d, Y Location: %d\n",i, l.x-initialx, l.y-initialx);
 			}
 		}
@@ -278,7 +426,11 @@ public class MapPanel extends JPanel implements Observer{
 		ThePackage ITS_THE_FUCKING_PACKAGE = (ThePackage)arg1;
 		workmen = ITS_THE_FUCKING_PACKAGE.getWorkers();
 		buildingList = ITS_THE_FUCKING_PACKAGE.getBuildings();
-		//  thanks Sneaky
+		//  thanks c9 Sneaky
+		Game noPackageNeeded = (Game)arg0;
+		this.isWinter = noPackageNeeded.isWinter();
+		//  forgot about that... 
+		//  Well at least I had fun making the package
 		repaint();
 	}
 	

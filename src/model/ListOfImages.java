@@ -31,15 +31,22 @@ public class ListOfImages {
 		}
 	}
 	
+	
 	//  SUMMER
 	public ArrayList<ImageAndName> summerResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> summerBuildings = new ArrayList<ImageAndName>();
+	//private ImageAndName summerWater;
 	
 	//  WINTER
 	public ArrayList<ImageAndName> winterResources = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> winterBuildings = new ArrayList<ImageAndName>();
-		
+	//private ImageAndName winterWater;
+	
 	public ArrayList<ImageAndName> workers = new ArrayList<>();
+	
+	// WATER FOO KYLE HAS WEIRD COMMENTS SO I AM TOOOOO - LOVE SANTA CLAUSE
+	public ArrayList<ImageAndName> winterWater = new ArrayList<ImageAndName>();
+	public ArrayList<ImageAndName> summerWater = new ArrayList<ImageAndName>();
 	
 	public ListOfImages() {
 		//  LETS LOAD SOME FUCKING IMAGES!!!
@@ -60,7 +67,10 @@ public class ListOfImages {
 			Image temp = ImageIO.read(new File("./Graphics/Water/fish.png"));
 			summerResources.add(new ImageAndName("./Graphics/Water/fish.png", temp));
 			temp = ImageIO.read(new File("./Graphics/Water/fishWinter.png"));
-			winterResources.add(new ImageAndName("./Graphics/Water/fishWinter" , temp));
+			winterResources.add(new ImageAndName("./Graphics/Water/fishWinter.png" , temp));
+			temp = ImageIO.read(new File("./Graphics/Water/fishSalty.png"));
+			winterResources.add(new ImageAndName("./Graphics/Water/fishSalty.png" , temp));
+			summerResources.add(new ImageAndName("./Graphics/Water/fishSalty.png" , temp));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -86,6 +96,26 @@ public class ListOfImages {
 			e.printStackTrace();
 		}
 		
+		// WATER LET IT FLO
+		try {
+			Image temp = ImageIO.read(new File("./Graphics/Water/water.jpg"));
+			summerWater.add(new ImageAndName("./Graphics/Water/water.jpg", temp));
+			winterWater.add(new ImageAndName("./Graphics/Water/water.jpg", temp));
+			
+			for(int i=1; i<10; i++){
+				temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".jpg"));
+				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".jpg", temp));
+			}
+			/* WINTER
+			for(int i=1; i<10; i++){
+				temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".jpg"));
+				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".jpg", temp));
+			}*/
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		//  LETS GET SUM BUILDINGS
 		try {
 			Image temp = ImageIO.read(new File("./Graphics/Buildings/bridge.png"));
@@ -117,9 +147,11 @@ public class ListOfImages {
 		return null;
 	}
 	public Image getResource(String fileName, boolean isWinter) {
-		for(int i = 0; i < summerResources.size(); i++) {
-			if(summerResources.get(i).equals(fileName))
-				return summerResources.get(i).getImage();
+		if(!isWinter) {
+			for(int i = 0; i < summerResources.size(); i++) {
+				if(summerResources.get(i).equals(fileName))
+					return summerResources.get(i).getImage();
+			}
 		}
 		for(int i = 0; i < winterResources.size(); i++) {
 			if(winterResources.get(i).equals(fileName))
@@ -135,9 +167,11 @@ public class ListOfImages {
 		return null;
 	}
 	public Image getBuilding(String fileName, boolean isWinter) {
-		for(int i = 0; i < summerBuildings.size(); i++) {
-			if(summerBuildings.get(i).equals(fileName))
-				return summerBuildings.get(i).getImage();
+		if(!isWinter) {
+			for(int i = 0; i < summerBuildings.size(); i++) {
+				if(summerBuildings.get(i).equals(fileName))
+					return summerBuildings.get(i).getImage();
+			}
 		}
 		for(int i = 0; i < winterBuildings.size(); i++) {
 			if(winterBuildings.get(i).equals(fileName))
@@ -152,4 +186,31 @@ public class ListOfImages {
 		}
 		return null;
 	}
+	
+	public Image getWater(String fileName, boolean isWinter) {
+		// is winter
+		if(isWinter){
+			for(int i = 0; i < summerWater.size(); i++) {
+				if(summerWater.get(i).equals(fileName))
+					return summerWater.get(i).getImage();
+			}
+		}
+		// summer
+		else{
+			for(int i = 0; i < summerWater.size(); i++) {
+				if(summerWater.get(i).equals(fileName))
+					return summerWater.get(i).getImage();
+			}
+		}
+		
+		try {
+			throw new FileNotFoundException();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 }

@@ -34,6 +34,7 @@ import javax.swing.Timer;
 
 import view.BuildingPanel;
 import view.GGScreen;
+import view.WinterScreen;
 
 //Our game class extends Observable, and will notify the other classes when an event occurs
 public class Game extends Observable implements Serializable {
@@ -55,6 +56,18 @@ public class Game extends Observable implements Serializable {
 
 	// This variable keeps track of how long the game has been played
 	private int gameLength = 0;
+	
+	// This variable keeps track of how much food the village has
+	private int totalWood = 0;
+	
+	// This variable keeps track of how much food the village has
+	private int totalStone = 0;
+		
+	// This variable keeps track of how much food the village has
+	private int totalFood = 0;
+	
+	// This variable represents the maximum amount of a resource is possible
+	private int totalMax = 0;
 	
 	// These variables are for changing seasons in-game (winter is coming)
 	private int lengthOfSeasons = 60;
@@ -194,16 +207,74 @@ public class Game extends Observable implements Serializable {
 					list.incrementColdness();
 				if(list.removeDead()) {
 					setChange();
-				}	
+				}
 			}
+			for(int i = 0; i < list.size(); i++) {
+				if(list.get(i).getGoHome()) {
+					Buildable closestHouse = null;
+					for(int j = 0; j < buildings.size(); j++) {
+						if((buildings.get(j) instanceof House) || (buildings.get(j) instanceof TownHall)) {
+							if(closestHouse == null) {
+								closestHouse = buildings.get(j);
+							}
+							else {
+								if(list.get(i).getPoint().distance(buildings.get(j).getClosestPoint(list.get(i).getPoint())) <
+								   list.get(i).getPoint().distance(closestHouse.getClosestPoint(list.get(i).getPoint()))) {
+									closestHouse = buildings.get(j);
+								}		
+							}
+						}
+						// A variable that will set is healing to true when myTask.isEmpty
+						list.get(i).setBusy(true);
+						if(!list.get(i).foundHome()) {
+							list.get(i).setFoundHome(true);
+							ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),buildings);
+							list.get(i).toLocation(calc.getShortestPath(list.get(i).getPoint(), closestHouse.getClosestPoint(list.get(i).getPoint())));
+							list.get(i).setJob(closestHouse.getClosestPoint(list.get(i).getPoint()));
+							setChange();
+						}
+					}
+				}
+			}
+			int tempWood = 0;
+			int tempStone = 0;
+			int tempFood = 0;
+			int tempMax = 0;
+			for(int i = 0; i < buildings.size(); i++) {
+				if((buildings.get(i) instanceof Storage) || (buildings.get(i) instanceof TownHall)) {
+					Storage storage = (Storage) buildings.get(i);
+					tempWood += storage.getWoodCount();
+					tempStone += storage.getStoneCount();
+					tempFood += storage.getFoodCount(); 
+					tempMax += 200;
+				}
+			}
+			totalWood = tempWood;
+			totalStone = tempStone;
+			totalFood = tempFood;
+			totalMax = tempMax;
+			
+			if(totalWood > totalMax) {
+				totalWood = totalMax;
+			}
+			if(totalStone > totalMax) {
+				totalStone = totalMax;
+			}
+			if(totalFood > totalMax) {
+				totalFood = totalMax;
+			}
+			
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
+			if(seasonsCounter == lengthOfSeasons-3) {
+				WinterScreen screen = new WinterScreen(isWinter);
+			}
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START
-				saveTheGame();
+				//  saveTheGame();
 				if(!isWinter)
 					wintersSurvived ++;
 			}
@@ -222,7 +293,7 @@ public class Game extends Observable implements Serializable {
 						break;
 					}
 					
-					//  Need to make sure there is a path to beable to get there... that has to be done otherwise it will cycle through
+					//  Need to make sure there is a path to be able to get there... that has to be done otherwise it will cycle through
 					//  wanting to get salty fish when it's impossible leading to nothing happening Q.Q
 					ShortestPathCalculator calc = new ShortestPathCalculator(getMap(), buildings);
 					ArrayList<Direction> toThere = calc.getShortestPath(jobDoer.getPoint(), dest.getLocation());
@@ -238,7 +309,6 @@ public class Game extends Observable implements Serializable {
 					jobDoer.setBusy(true);
 				}
 			}
-			
 			int listSize = list.size();
 			if(listSize == 0) {
 				GGScreen wp = new GGScreen(gameLength, wintersSurvived);
@@ -246,6 +316,54 @@ public class Game extends Observable implements Serializable {
 				SpeedMeter.stop();
 			}
 
+			//checks to see if they go back home to heal
+			for(int i = 0; i < listSize; i++){
+				if(list.get(i).getGoHome() && list.get(i).nextToJob()) {
+					list.get(i).setIsHealing(true);
+					list.get(i).setGoHome(false);
+					list.get(i).setFoundHome(false);
+					list.get(i).setDoneHealing(false);
+				}
+			}
+			
+			boolean doneWithHunger = false;
+			boolean doneWithColdness = false;
+			boolean doneWithFatigue = false;
+			// Checks to see if they're done healing
+			for(int i = 0; i < listSize; i++) {
+				if(list.get(i).isHealing()) {
+					if(list.get(i).doneHealing()) {
+						list.get(i).setIsHealing(false);
+						list.get(i).setBusy(false);
+						System.out.println("DONE HEALING");
+					}
+					else {
+						if(list.get(i).getFatigue() >= 1) {
+							list.get(i).decrementFatigue();
+						}
+						else {
+							doneWithFatigue = true;
+						}
+						if((totalFood > 0) && (list.get(i).getHunger() >= 1)) {
+							list.get(i).decrementHunger();
+							totalFood -= 2;
+						}
+						else {
+							doneWithHunger = true;
+						}
+						if((totalWood > 0) && (list.get(i).getColdness() >= 1)) {
+							list.get(i).decrementColdness();
+							totalWood -= 5;
+						}
+						else {
+							doneWithColdness = true;
+						}
+						if(doneWithFatigue && doneWithHunger && doneWithColdness) {
+							list.get(i).setDoneHealing(true);
+						}
+					}
+				}
+			}
 			//checks to see if they have full resource
 			for(int i = 0; i <listSize; i++){
 				if(list.get(i).atMaxCap()){
@@ -294,6 +412,9 @@ public class Game extends Observable implements Serializable {
 		// TODO Auto-generated method stub
 		return theMap.getMapTiles();
 	}
+	public boolean isWinter() {
+		return isWinter;
+	}
 
 	public void saveTheGame() {
 		try {
@@ -315,5 +436,21 @@ public class Game extends Observable implements Serializable {
 		SpeedMeter = new Timer((NORMAL_SPEED*250)/speed,  new MovementTimerListener());
 		gameTimer.start();
 		SpeedMeter.start();
+	}
+	
+	public int getTotalWood() {
+		return totalWood;
+	}
+	
+	public int getTotalStone() {
+		return totalStone;
+	}
+	
+	public int getTotalFood() {
+		return totalFood;
+	}
+	
+	public int getTotalMax() {
+		return totalMax;
 	}
 }
