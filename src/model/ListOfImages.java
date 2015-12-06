@@ -48,6 +48,11 @@ public class ListOfImages {
 	public ArrayList<ImageAndName> winterWater = new ArrayList<ImageAndName>();
 	public ArrayList<ImageAndName> summerWater = new ArrayList<ImageAndName>();
 	
+	// BEACH BITCH
+	public ArrayList<ImageAndName> winterSand = new ArrayList<ImageAndName>();
+	public ArrayList<ImageAndName> summerSand = new ArrayList<ImageAndName>();
+	
+	
 	public ListOfImages() {
 		//  LETS LOAD SOME FUCKING IMAGES!!!
 		for(int i = 1; i <= 4; i++) {
@@ -113,6 +118,51 @@ public class ListOfImages {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		// BEACHN IT UP!!!!
+		try {
+			// SUMMER LEFT and full sand and water
+			for(int i=1; i<9; i++){
+				Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
+				summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + ".png", temp));
+			}
+			// SUMMER BOTTOM
+			for(int i=1; i<9; i++){
+				if(i!=2 || i!=6){
+					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
+					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "B.png", temp));
+				}
+			}
+			// SUMMER RIGHT
+			for(int i=1; i<9; i++){
+				if(i!=2 || i!=6){
+					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
+					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "B.png", temp));
+				}
+			}
+			// SUMMER TOP
+			for(int i=1; i<9; i++){
+				if(i!=2 || i!=6){
+					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
+					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "B.png", temp));
+				}
+			}
+			
+			
+			
+			
+			// WINTER
+			for(int i=1; i<9; i++){
+				Image temp = ImageIO.read(new File("./Graphics/Water/wSand_0" + i + ".png"));
+				winterSand.add(new ImageAndName("./Graphics/Water/wSand_0"+ i + ".png", temp));
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		//  LETS GET SUM BUILDINGS
 		try {
 			Image temp = ImageIO.read(new File("./Graphics/Buildings/bridge.png"));
@@ -202,6 +252,34 @@ public class ListOfImages {
 			}
 		}
 		
+		try {
+			throw new FileNotFoundException();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	// GET SAND METHOD TO GET IMAGES FOR SAND 
+	public Image getSand(String fileName, boolean isWinter) {
+		// is winter
+		if(isWinter){
+			fileName = fileName.replace("sand","wSand");
+			//  System.out.println(fileName);
+			for(int i = 0; i < winterSand.size(); i++) {
+				if(winterSand.get(i).equal(fileName))
+					return winterSand.get(i).getImage();
+			}
+		}
+		// summer
+		else{
+			for(int i = 0; i < summerSand.size(); i++) {
+				if(summerSand.get(i).equal(fileName))
+					return summerSand.get(i).getImage();
+			}
+		}
+			
 		try {
 			throw new FileNotFoundException();
 		} catch (FileNotFoundException e) {
