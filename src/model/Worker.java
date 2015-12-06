@@ -342,7 +342,12 @@ public abstract class Worker extends Observable implements Serializable {
 		else if(coldness >= 4) {
 			goHome = true;
 		}
-		addColdness(1.0);
+		if(this.clothedUp) {
+			addColdness(0.5);
+		}
+		else {
+			addColdness(1.0);
+		}
 	}
 	
 	/**************************************
@@ -647,10 +652,20 @@ public abstract class Worker extends Observable implements Serializable {
 		//if next to job resource
 		else{
 			if(tile.getResource().getHarvestable()) {
-				tile.getResource().subResource(1);
-				if(carryingCapacity > 0)
-				inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
-				subtractCarryingCapacity();
+				if(this.harvestGod) {
+					tile.getResource().subResource(2);
+					if(carryingCapacity > 0)
+					inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
+					subtractCarryingCapacity();
+					inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
+					subtractCarryingCapacity();
+				}
+				else {
+					tile.getResource().subResource(1);
+					if(carryingCapacity > 0)
+					inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
+					subtractCarryingCapacity();
+				}
 			}
 			else {
 				//  it is not harvestable so GO HOME
