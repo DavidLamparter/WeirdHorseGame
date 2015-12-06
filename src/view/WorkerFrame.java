@@ -129,7 +129,7 @@ public class WorkerFrame extends JFrame implements Observer {
 		exit.addActionListener(new ExitListener());
 		
 		//  adds everything to holder for what purpose? yes.
-		holder.setBackground(Color.WHITE);
+		holder.setBackground(new Color(127, 106, 69));
 		holder.add(nameOfResource);
 		holder.add(exit);
 		holder.add(imageGoesHere);

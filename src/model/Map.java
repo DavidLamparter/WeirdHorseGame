@@ -135,7 +135,7 @@ public class Map implements Serializable, Observer {
 	}
 	public boolean canBuildBuildingsAt(Point p) {
 		boolean canBuild = false; 
-		if((board[p.y][p.y].getLand()==Terrain.PLAIN))
+		if((board[p.y][p.x].getLand()==Terrain.PLAIN))
 			if(board[p.y][p.x].getResource().getResourceT()==ResourceType.NONE)
 				canBuild = true;
 		return canBuild;
