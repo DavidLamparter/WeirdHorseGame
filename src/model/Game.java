@@ -28,6 +28,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -238,8 +239,37 @@ public class Game extends Observable implements Serializable {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {			
-			//Updates all of the resources
+			//sets the harvestable variable
 			theMap.setHarvestable();
+			
+			//adds workers based on pop cap
+			
+			int currentPop = list.size();
+			if(currentPop < softPopCap && gameLength % 7 == 0){
+				Random gen = new Random();
+				int chance = gen.nextInt(100);
+				Point TH = theMap.getTH();
+
+				if(chance <25){
+					Worker James = new KJG(new Point(TH.x,TH.y));
+					list.add(James);
+				}
+				
+				else if(chance <50){
+					Worker James = new KJD(new Point(TH.x,TH.y));
+					list.add(James);
+				}
+				
+				else if(chance <75){
+					Worker SleepingBeauty = new Brett(new Point(TH.x,TH.y));
+					list.add(SleepingBeauty);
+				}
+			
+				else if(chance <100){
+					Worker BeardedWonder = new David(new Point(TH.x,TH.y));
+					list.add(BeardedWonder);
+				}		
+			}
 			
 			// Increment workers conditions every 5 seconds
 			if((isWinter)&&(gameLength %5 == 0)) {
@@ -285,6 +315,7 @@ public class Game extends Observable implements Serializable {
 			int tempStone = 0;
 			int tempFood = 0;
 			int tempMax = 0;
+			int tempCap = 0;
 			for(int i = 0; i < buildings.size(); i++) {
 				if((buildings.get(i) instanceof Storage) || (buildings.get(i) instanceof TownHall)) {
 					Storage storage = (Storage) buildings.get(i);
@@ -293,7 +324,10 @@ public class Game extends Observable implements Serializable {
 					tempFood += storage.getFoodCount(); 
 					tempMax += storage.getCapacity();
 				}
+				if(buildings.get(i) instanceof House)
+				tempCap+=5;
 			}
+			softPopCap = tempCap + 5;
 			totalWood = tempWood;
 			totalStone = tempStone;
 			totalFood = tempFood;
