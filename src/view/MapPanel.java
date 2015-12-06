@@ -283,7 +283,7 @@ public class MapPanel extends JPanel implements Observer{
 				// Ocean
 				else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
 					g2d.setColor(new Color(20, 20, 200));
-					g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+					g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 				// Sand
 				else if (graph[j][i].getLand().equals(Terrain.BEACH)) {

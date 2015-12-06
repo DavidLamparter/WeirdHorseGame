@@ -18,7 +18,7 @@ public class ListOfImages {
 			this.name = name;
 		}
 		
-		public boolean equals(String arg0) {
+		public boolean equal(String arg0) {
 			return name.compareTo(arg0) == 0;
 		}
 		
@@ -138,7 +138,7 @@ public class ListOfImages {
 	
 	public Image getWorker(String fileName, boolean isWinter) {
 		for(int i = 0; i < workers.size(); i++) {
-			if(workers.get(i).equals(fileName))
+			if(workers.get(i).equal(fileName))
 				return workers.get(i).getImage();
 		}
 		return null;
@@ -146,12 +146,12 @@ public class ListOfImages {
 	public Image getResource(String fileName, boolean isWinter) {
 		if(!isWinter) {
 			for(int i = 0; i < summerResources.size(); i++) {
-				if(summerResources.get(i).equals(fileName))
+				if(summerResources.get(i).equal(fileName))
 					return summerResources.get(i).getImage();
 			}
 		}
 		for(int i = 0; i < winterResources.size(); i++) {
-			if(winterResources.get(i).equals(fileName))
+			if(winterResources.get(i).equal(fileName))
 				return winterResources.get(i).getImage();
 		}
 		
@@ -166,12 +166,12 @@ public class ListOfImages {
 	public Image getBuilding(String fileName, boolean isWinter) {
 		if(!isWinter) {
 			for(int i = 0; i < summerBuildings.size(); i++) {
-				if(summerBuildings.get(i).equals(fileName))
+				if(summerBuildings.get(i).equal(fileName))
 					return summerBuildings.get(i).getImage();
 			}
 		}
 		for(int i = 0; i < winterBuildings.size(); i++) {
-			if(winterBuildings.get(i).equals(fileName))
+			if(winterBuildings.get(i).equal(fileName))
 				return winterBuildings.get(i).getImage();
 		}
 		
@@ -187,15 +187,17 @@ public class ListOfImages {
 	public Image getWater(String fileName, boolean isWinter) {
 		// is winter
 		if(isWinter){
+			fileName = fileName.replace("river","wRiver");
+			System.out.println(fileName);
 			for(int i = 0; i < winterWater.size(); i++) {
-				if(winterWater.get(i).equals(fileName))
+				if(winterWater.get(i).equal(fileName))
 					return winterWater.get(i).getImage();
 			}
 		}
 		// summer
 		else{
 			for(int i = 0; i < summerWater.size(); i++) {
-				if(summerWater.get(i).equals(fileName))
+				if(summerWater.get(i).equal(fileName))
 					return summerWater.get(i).getImage();
 			}
 		}
