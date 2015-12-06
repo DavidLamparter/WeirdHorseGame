@@ -629,6 +629,9 @@ public abstract class Worker extends Observable implements Serializable {
 		//if next to a storage
 		if(tile.getResource().getResourceT() == ResourceType.NONE){
 			while (i < getInventorySize()) { //  was 20;
+				//  Base cases
+				if(i >= inventory.length)
+					break;
 				if(inventory[i]!=null)
 					storage.addResource(inventory[i]);
 				i++;
@@ -662,6 +665,9 @@ public abstract class Worker extends Observable implements Serializable {
 	public String animationFrameFileName() {
 		// TODO Auto-generated method stub
 		return "./Graphics/Workers/male_" + 1 + ".png";
+	}
+	public void resetStorage() {
+		onlyOneStorageCall = false;
 	}
 }
 
