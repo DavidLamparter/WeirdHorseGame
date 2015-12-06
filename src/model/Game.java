@@ -28,7 +28,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -313,6 +312,10 @@ public class Game extends Observable implements Serializable {
 			}
 			if(seasonsCounter >= lengthOfSeasons) {
 				isWinter = !isWinter;
+				
+				if(!isWinter){
+					theMap.regenFood();
+				}
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START
 				//  saveTheGame();

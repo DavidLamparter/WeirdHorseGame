@@ -18,12 +18,8 @@
 
 package model;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-
-import javax.imageio.ImageIO;
+import java.util.Random;
 
 public class MapTile implements Serializable {
 
@@ -74,6 +70,11 @@ public class MapTile implements Serializable {
 	public void setResource(Resource toSet) {
 		//System.out.println(toSet);
 		resource = toSet;
+	}
+	
+	//regens the resource, only ever called by fish and berrys
+	public void regenResource(){
+		resource.regen();
 	}
 	
 	/**************************************

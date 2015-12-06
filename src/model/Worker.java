@@ -387,7 +387,7 @@ public abstract class Worker extends Observable implements Serializable {
 	// This method is used to pass a path to the worker to walk along
 	public void toLocation(ArrayList<Direction> directions) {
 		myTask = directions;
-		System.out.printf("A TASK OF SIZE %d HAS BEEN FOUND\n", myTask.size());
+		//System.out.printf("A TASK OF SIZE %d HAS BEEN FOUND\n", myTask.size());
 	}
 	// This method performs the actual movement for the worker
 	public void move() {
@@ -533,7 +533,7 @@ public abstract class Worker extends Observable implements Serializable {
 		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
 		if(closest!=null) {
 			toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
-			System.out.println("FINDING PREFERENCE ^\n");
+			//System.out.println("FINDING PREFERENCE ^\n");
 			job = closest;
 			isBusy = true;
 			setChanged();
@@ -568,7 +568,7 @@ public abstract class Worker extends Observable implements Serializable {
 			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),
 					theMap.getBuildings());
 			toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
-			System.out.println("STORAGE ^\n");
+			//System.out.println("STORAGE ^\n");
 			job = closest;
 			isBusy = true;
 			onlyOneStorageCall = true;

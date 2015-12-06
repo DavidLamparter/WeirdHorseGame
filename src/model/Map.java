@@ -626,6 +626,7 @@ public class Map implements Serializable, Observer {
 				point.y = gen.nextInt(size);
 			}
 			board[point.y][point.x].setResource(new SaltyFish());
+			FishList.add(new Job(new Point(point.y,point.x), board[point.y][point.x].getResource()));
 		} 
 	}
 	
@@ -670,6 +671,25 @@ public class Map implements Serializable, Observer {
 		//board[point.x][point.y].setResource(new Meese());
 	}
 	
+	
+
+	public void regenFood() {
+		int BerrySize = BerryList.size();
+		int FishSize = FishList.size();
+		
+		for(int i = 0; i < BerrySize; i ++){
+			Job temp = BerryList.get(i);
+			
+			board[temp.location.y][temp.location.x].regenResource();
+		}
+		
+		for(int i = 0; i < FishSize; i ++){
+			Job temp = FishList.get(i);
+			
+			board[temp.location.y][temp.location.x].regenResource();
+		}
+		
+	}
 	/**~~~~~~~~~~~~~~ STONE ~~~~~~~~~~~~**/
 	
 	// Spawns stone across the map in small "clusters"
