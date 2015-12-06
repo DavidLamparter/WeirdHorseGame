@@ -379,6 +379,9 @@ public class Game extends Observable implements Serializable {
 					if(list.get(i).doneHealing()) {
 						list.get(i).setIsHealing(false);
 						list.get(i).setBusy(false);
+						if(list.get(i).getInventorySize() > 0) {
+							list.get(i).doTheWork(theMap.getMapTiles()[list.get(i).getJob().y][list.get(i).getJob().x],theMap);
+						}
 						System.out.println("DONE HEALING");
 					}
 					else {
