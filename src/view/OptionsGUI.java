@@ -111,8 +111,8 @@ public class OptionsGUI extends JFrame {
 		options.addActionListener(maxWindow);
 		options.setBackground(new Color(127, 106, 69));
 		options.setForeground(Color.LIGHT_GRAY);
-		speedHolder.setBackground(new Color(127, 106, 69));
 		this.setBackground(new Color(127, 106, 69));
+		speedHolder.setBackground(new Color(127, 106, 69));
 		this.add(saver);
 		this.add(closeThis);
 		this.add(options);
