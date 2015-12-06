@@ -31,9 +31,9 @@ public abstract class Worker extends Observable implements Serializable {
 	 **************************************/
 	
 	// Conditions (bad stuff) begin at 0, and increment to dangerous levels
-	private int hunger;
-	private int fatigue;
-	private int coldness;
+	private double hunger;
+	private double fatigue;
+	private double coldness;
 	
 	// The current X and Y position this worker is located at
 	private int XPos;
@@ -58,6 +58,15 @@ public abstract class Worker extends Observable implements Serializable {
 	
 	// inDanger represents if the worker should go home to eat/sleep
 	private boolean goHome;
+	
+	// isHealing represents if the worker is heading home to heal
+	private boolean isHealing;
+	
+	// foudHome is true if a worker has begun their journey home
+	private boolean foundHome;
+	
+	// Determines if a worker is done healing
+	private boolean doneHealing;
 	
 	// Stores the list of directions for a specific task
 	private ArrayList<Direction> myTask = new ArrayList<>();
@@ -99,6 +108,8 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		// isAlive begins at true
 		isAlive = true;
+		goHome = false;
+		isHealing = false;
 		
 		// Set the current location of the worker when spawned
 		XPos = currentLocation.x;
@@ -126,16 +137,17 @@ public abstract class Worker extends Observable implements Serializable {
 		return carryingCapacity <= 0;
 	}
 	
-	public int getHunger() {
+	public double getHunger() {
 		return hunger;
 	}
 	
-	public int getFatigue() {
+	public double getFatigue() {
 		return fatigue;
 	}
 	
-	public int getColdness() {
+	public double getColdness() {
 		return coldness;
+		
 	}
 	
 	public int getHappiness() {
@@ -156,6 +168,14 @@ public abstract class Worker extends Observable implements Serializable {
 	
 	public boolean isBusy() {
 		return isBusy;
+	}
+	
+	public boolean isHealing() {
+		return isHealing;
+	}
+	
+	public boolean foundHome() {
+		return foundHome;
 	}
 	
 	public int getX() {
@@ -201,11 +221,27 @@ public abstract class Worker extends Observable implements Serializable {
 	}
 	
 	/**************************************
-	 *          Setter for tool           *
+	 *              Setters               *
 	 **************************************/
 	
 	public void setTool(Tool tool) {
 		this.tool = tool;
+	}
+	
+	public void setGoHome(boolean home) {
+		goHome = home;
+	}
+	
+	public void setIsHealing(boolean heal) {
+		isHealing = heal;
+	}
+	
+	public void setFoundHome(boolean home) {
+		foundHome = home;
+	}
+	
+	public void setDoneHealing(boolean heal) {
+		doneHealing = heal;
 	}
 	
 	/**************************************
@@ -225,7 +261,7 @@ public abstract class Worker extends Observable implements Serializable {
 			inDanger(hunger);
 		}
 		// If hunger is above 5, workers should run home
-		else if(hunger >= 5) {
+		else if(hunger >= 4) {
 			goHome = true;
 		}
 		addHunger(1.0);
@@ -244,7 +280,7 @@ public abstract class Worker extends Observable implements Serializable {
 			inDanger(fatigue);
 		}
 		// If fatigue is above 5, workers should run home
-		else if(fatigue >= 5) {
+		else if(fatigue >= 4) {
 			goHome = true;
 		}
 		addFatigue(1.0);
@@ -263,10 +299,40 @@ public abstract class Worker extends Observable implements Serializable {
 			inDanger(coldness);
 		}
 		// If coldness is above 5, workers should run home
-		else if(coldness >= 5) {
+		else if(coldness >= 4) {
 			goHome = true;
 		}
 		addColdness(1.0);
+	}
+	
+	/**************************************
+	 *     Subtractors for Conditions     *
+	 **************************************/
+	
+	public void decrementHunger() {
+		if(hunger >= 1) {
+			hunger -= 1;
+		}
+		else {
+			hunger = 0;
+		}
+	}
+	
+	public void decrementFatigue() {
+		if(fatigue >= 1) {
+			fatigue -= 1;
+		}
+		else {
+			fatigue = 0;
+		}
+	}
+	
+	public void decrementColdness() {
+			coldness = 0;
+	}
+	
+	public boolean doneHealing() {
+		return doneHealing;
 	}
 	
 	/**************************************
@@ -292,8 +358,8 @@ public abstract class Worker extends Observable implements Serializable {
 	
 	// This method is ((TRIGGERED)) when a worker hits the cap of a condition meter. 
 	// It will calculate if the worker dies, or if they somehow survive another round
-	public void inDanger(int status) {
-		double dubStatus = (((double) status) / 100 - 0.1) * Math.pow(1.25,(status));
+	public void inDanger(double status) {
+		double dubStatus = (status / 100 - 0.1) * Math.pow(1.25,(status));
 		double rand = Math.random();
 		if(rand > (0.66 - dubStatus)) {
 			isAlive = false; 
@@ -321,8 +387,8 @@ public abstract class Worker extends Observable implements Serializable {
 	// This method is used to pass a path to the worker to walk along
 	public void toLocation(ArrayList<Direction> directions) {
 		myTask = directions;
+		//System.out.printf("A TASK OF SIZE %d HAS BEEN FOUND\n", myTask.size());
 	}
-	
 	// This method performs the actual movement for the worker
 	public void move() {
 		if(!myTask.isEmpty()) {
@@ -357,7 +423,10 @@ public abstract class Worker extends Observable implements Serializable {
 	public void getClosestPreference(Map theMap) {
 		double distance = Double.MAX_VALUE;
 		Point closest = new Point();
-
+		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
+		ArrayList<Direction> goingToGo;
+		int breakCounter = 0;
+		
 		//for if the preference is berry
 		if(preference == ResourceType.BERRY_BUSH){			
 			ArrayList<Job> BerryList = theMap.getBerryList();
@@ -366,7 +435,6 @@ public abstract class Worker extends Observable implements Serializable {
 			for(int i = 0; i < size; i++){
 				Resource temp = BerryList.get(i).resource;
 				if(temp.getHarvestable()){
-					System.out.println(temp.getHarvestable());
 			int BerryX = BerryList.get(i).location.x;
 			int BerryY = BerryList.get(i).location.y;
 			
@@ -374,8 +442,11 @@ public abstract class Worker extends Observable implements Serializable {
 			double distanceToResource = getPoint().distance(BerryList.get(i).location);
 			
 			if(distanceToResource < distance){
-				distance = distanceToResource;
-				closest = new Point(BerryX,BerryY);
+				goingToGo = calc.getShortestPath(getPoint(), new Point(BerryX,BerryY));
+				if(goingToGo.size()!=0) {
+					distance = distanceToResource;
+					closest = new Point(BerryX,BerryY);
+				}
 			}
 				}
 			}
@@ -396,8 +467,11 @@ public abstract class Worker extends Observable implements Serializable {
 				double distanceToResource = getPoint().distance(FishList.get(i).location);
 		
 			if(distanceToResource < distance){
-				distance = distanceToResource;
-				closest = new Point(FishX,FishY);
+				goingToGo = calc.getShortestPath(getPoint(), new Point(FishX,FishY));
+				if(goingToGo.size()!=0) {
+					distance = distanceToResource;
+					closest = new Point(FishX,FishY);
+				}
 			}
 				}
 			}
@@ -421,8 +495,11 @@ public abstract class Worker extends Observable implements Serializable {
 			double distanceToResource = getPoint().distance(TreeList.get(i).location);
 
 			if(distanceToResource < distance){
+				goingToGo = calc.getShortestPath(getPoint(), new Point(TreeX,TreeY));
+				if(goingToGo.size()!=0) {
 				distance = distanceToResource;
 				closest = new Point(TreeX,TreeY);
+				}
 			}
 				}
 			}
@@ -444,24 +521,30 @@ public abstract class Worker extends Observable implements Serializable {
 			double distanceToResource = getPoint().distance(StoneList.get(i).location);
 			
 			if(distanceToResource < distance){
+				goingToGo = calc.getShortestPath(getPoint(), new Point(StoneX,StoneY));
+				if(goingToGo.size()!=0) {
 				distance = distanceToResource;
 				closest = new Point(StoneX,StoneY);
+				}
 			}
 				}
 			}
 		}
-		
 		//System.out.println("X for res: " + closest.x + " Y for res: " + closest.y + "\n XPos " + XPos + "YPos " + YPos);
-		ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(), theMap.getBuildings());
-
-		myTask = calc.getShortestPath(getPoint(), new Point(closest));
-		job = closest;
-		isBusy = true;
-		setChanged();
-		notifyObservers();
+		if(closest!=null) {
+			toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
+			//System.out.println("FINDING PREFERENCE ^\n");
+			job = closest;
+			isBusy = true;
+			setChanged();
+			notifyObservers();
+		}
 	}	
 	
+	private boolean onlyOneStorageCall = false;
 	public void goToStorage(Map theMap){
+		if(onlyOneStorageCall)
+			return;
 		double distance = Double.MAX_VALUE;
 		Point closest = new Point();
 	
@@ -469,9 +552,9 @@ public abstract class Worker extends Observable implements Serializable {
 			int size = theMap.getStorageList().size();
 					
 			for(int i = 0; i < size; i++){
-
-			int StorageX = storageList.get(i).getPoints().get(0).x;
-			int StorageY = storageList.get(i).getPoints().get(0).y;
+			Point closestStorage =  storageList.get(i).getClosestPoint(getPoint());
+			int StorageX = closestStorage.x;
+			int StorageY = closestStorage.y;
 			
 			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
 			double distanceToResource = getPoint().distance(storageList.get(i).getPoints().get(0));
@@ -484,9 +567,11 @@ public abstract class Worker extends Observable implements Serializable {
 		}
 			ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),
 					theMap.getBuildings());
-			myTask = calc.getShortestPath(getPoint(), new Point(closest));
+			toLocation(calc.getShortestPath(getPoint(), new Point(closest)));
+			//System.out.println("STORAGE ^\n");
 			job = closest;
 			isBusy = true;
+			onlyOneStorageCall = true;
 			setChanged();
 			notifyObservers();
 	}
@@ -495,7 +580,9 @@ public abstract class Worker extends Observable implements Serializable {
 	*                 Harvest and deposit                 *
 	******************************************************/
 	
-	public void doTheWork(MapTile tile){
+	public void doTheWork(MapTile tile, Map theMap){
+		if(isHealing)
+			return;
 		isBusy = true;
 		int i = 0;
 		
@@ -508,18 +595,27 @@ public abstract class Worker extends Observable implements Serializable {
 			carryingCapacity = 20;
 			inventory = new ResourceType[20];
 			isBusy = false;
+			onlyOneStorageCall = false;
 		}
 		
 		//if next to job resource
 		else{
-			while(i < 4){
+			if(tile.getResource().getHarvestable()) {
 				tile.getResource().subResource(1);
 				if(carryingCapacity > 0)
 				inventory[carryingCapacity - 1] = tile.getResource().getResourceT();
 				subtractCarryingCapacity();
-			i++;
+			}
+			else {
+				//  it is not harvestable so GO HOME
+				goToStorage(theMap);
 			}
 		}
+		if(carryingCapacity < 0)
+			goToStorage(theMap);
+	}
+	public int getInventorySize() {
+		return 20-carryingCapacity;
 	}
 
 	public String animationFrameFileName() {

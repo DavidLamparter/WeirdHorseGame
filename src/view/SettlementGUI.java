@@ -46,6 +46,7 @@ public class SettlementGUI extends JFrame {
 	private MapPanel mapPanel = null;
 	private BuildingPanel buildings;
 	private QueueFrame theQueueFrame;
+	private GameStatsView gameStats;
 	private Map map = null;
 	private MapTile[][] board = null;
 	private Game game;
@@ -54,7 +55,7 @@ public class SettlementGUI extends JFrame {
 		size = sizeOfMap;
 		map = new Map(getMapSize());
 		this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
-		//this.setSize(new Dimension(1080, 720));
+		this.setSize(this.getWidth(), this.getHeight());
 		this.setLayout(null);
 		mapPanel = new MapPanel(this);
 		mapPanel.setSize(this.getSize());
@@ -76,11 +77,15 @@ public class SettlementGUI extends JFrame {
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		board = map.getMapTiles();
 		
-		buildings = new BuildingPanel(this, 4);
+		buildings = new BuildingPanel(this, 3);
 		
 		theQueueFrame = new QueueFrame(this);
 		
+		gameStats = new GameStatsView(this);
+		
 		game = new Game(map);	
+		game.addObserver(buildings);
+		game.addObserver(gameStats);
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
 		game.addObserver(map);
@@ -109,8 +114,8 @@ public class SettlementGUI extends JFrame {
 		this.addWindowListener(new WindogeListener());
 		minimap = new MiniMap(this);
 		
-		buildings = new BuildingPanel(this, 4);
-
+		buildings = new BuildingPanel(this, 3);
+		
 		options = new OptionsGUI(this);
 		
 		minimap.relocateToBottomRight();
@@ -118,9 +123,13 @@ public class SettlementGUI extends JFrame {
 				
 		theQueueFrame = new QueueFrame(this);
 		
+		gameStats = new GameStatsView(this);
+		
 		mapPanel.addMouseMotionListener(new MapMotionListener());
 		
 		this.game = game;	
+		game.addObserver(buildings);
+		game.addObserver(gameStats);
 		game.addObserver(mapPanel);
 		game.addObserver(minimap.getGraphPanel());
 		game.addObserver(map);
@@ -466,5 +475,12 @@ public class SettlementGUI extends JFrame {
 	public MapPanel getMapPanel() {
 		// TODO Auto-generated method stub
 		return mapPanel;
+	}
+	public int getWidthMinusExtras() {
+		// TODO Auto-generated method stub
+		return this.getWidth()-buildings.getWidth()-theQueueFrame.getWidth();
+	}
+	public int getBuildingsFrameWidth() {
+		return buildings.getWidth();
 	}
 }

@@ -61,6 +61,7 @@ public abstract class Resource extends Observable implements Serializable {
 	// the amount it will be created with for harvest
 	public Resource(double q, ResourceType x) {
 		quantity = q;
+		max = q;
 		type = x;
 		Offset = num.nextInt(16)-8;
 		harvestable = true;
@@ -96,9 +97,6 @@ public abstract class Resource extends Observable implements Serializable {
 	 *   Setters / Adders / Subtractors   *
 	 **************************************/
 	
-	// Sets the max of this resource
-	public void setMax(double number){}	
-	
 	// Adds to the quantity of this resource (regneration)
 	public void addResource(double n){
 		quantity += n;
@@ -113,13 +111,17 @@ public abstract class Resource extends Observable implements Serializable {
 		notifyObservers();
 	}
 	
+	//sets the resource quantity to input value
+	public void regen(){
+		System.out.println(quantity + "     " + type);
+		quantity = max;
+		setChanged();
+		notifyObservers();
+	}
+	
 	/**************************************
 	 *          Abstract Methods          *
 	 **************************************/
-	
-	// Allows resources to regenerate so that the player
-	// (if good enough) could play forever
-	public abstract void regen();
 	
 	// Returns the name of this resource
 	public abstract String getName();
@@ -154,11 +156,7 @@ class Nothing extends Resource {
 	public Nothing() {
 		super(0, ResourceType.NONE);
 	}
-	
-	// This type of resource can't regenerate as it is nothing
-	@Override
-	public void regen() {}
-	
+
 	// Returns the name of this resource, in this case "Nothing is here"
 	@Override
 	public String getName() {
@@ -200,18 +198,6 @@ class Tree extends Resource {
 		winterFileName = "./Graphics/Trees/Tree Redux_" + filenum + "_Winter.png";
 	}
 	
-	// Tree regenerates over time to allow more playtime
-	@Override
-	public void regen() {
-		if (this.getQuantity() == 0)
-			this.addResource(10);		
-		else if (this.getQuantity() > this.getMax())
-			this.subResource(1);
-		else
-			this.addResource(.5);
-		
-	}
-	
 	// Returns the name of this resource, in this case "Tree"
 	@Override
 	public String getName() {
@@ -247,17 +233,6 @@ class Fish extends Resource {
 	// Fish constructed with a randomly generated quantity
 	public Fish() {
 		super(num.nextInt(20)+10, ResourceType.FISH);
-	}
-	
-	// Fish regenerates over time to allow more playtime
-	@Override
-	public void regen() {
-		if (this.getQuantity() == 0)
-			this.addResource(5);		
-		else if (this.getQuantity() > this.getMax())
-			this.subResource(3);
-		else
-			this.addResource(2.3);
 	}
 	
 	// Returns the name of this resource, in this case "Fish"
@@ -296,18 +271,7 @@ class SaltyFish extends Resource {
 	public SaltyFish() {
 		super(num.nextInt(40)+10, ResourceType.SALTY_FISH);
 	}
-	
-	// SaltyFish regenerates over time to allow more playtime
-	@Override
-	public void regen() {
-		if (this.getQuantity() == 0)
-			this.addResource(5);		
-		else if (this.getQuantity() > this.getMax())
-			this.subResource(1);
-		else
-			this.addResource(.1);
-	}
-	
+
 	// Returns the name of this resource, in this case "Salty Fish"
 	@Override
 	public String getName() {
@@ -345,12 +309,6 @@ class Stone extends Resource {
 		super(num.nextInt(200)+200, ResourceType.STONE);
 	}
 	
-	// Stone does NOT regenerate over time (limited resource)
-	@Override
-	public void regen() {
-		this.addResource(0);
-	}
-	
 	// Returns the name of this resource, in this case "Stone"
 	@Override
 	public String getName() {
@@ -386,12 +344,6 @@ class BerryBush extends Resource {
 	// BerryBush constructed with a randomly generated quantity
 	public BerryBush() {
 		super(num.nextInt(15)+50, ResourceType.BERRY_BUSH);
-	}
-	
-	// BerryBush regenerates over time to allow more playtime
-	@Override
-	public void regen() {
-		this.addResource(this.getMax());
 	}
 	
 	// Returns the name of this resource, in this case "Berry Bush"

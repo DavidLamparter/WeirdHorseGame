@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,13 +25,16 @@ public class QueueFrame extends JFrame implements Observer {
 		this.setSize(200, 500);
 		this.setUndecorated(true);
 		this.setLayout(null);
-		this.setBackground(null);
 		queueListModel = new DefaultListModel();
 		displayList = new JList();
 		displayList.setSize(this.getSize());
 		displayList.setLocation(0, 0);
 		displayList.setModel(queueListModel);
+		//this.setOpacity(0);
 		//  displayList.setOpaque(false);
+		displayList.setBackground(new Color(127, 106, 69));
+		displayList.setFont(displayList.getFont().deriveFont(Font.BOLD, 14f));
+		displayList.setForeground(Color.LIGHT_GRAY);
 		this.add(displayList);
 		this.setAlwaysOnTop(true);
 		this.setVisible(true);

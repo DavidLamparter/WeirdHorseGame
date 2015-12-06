@@ -114,24 +114,38 @@ public class Map implements Serializable, Observer {
 		return initialWorkers;
 	}
 
-	public ArrayList getBerryList() {
+	public ArrayList<Job> getBerryList() {
 		return BerryList;
 	}
 
-	public ArrayList getStoneList() {
+	public ArrayList<Job> getStoneList() {
 		return StoneList;
 	}
 
-	public ArrayList getTreeList() {
+	public ArrayList<Job> getTreeList() {
 		return TreeList;
 	}
 	
-	public ArrayList getFishList() {
+	public ArrayList<Job> getFishList() {
 		return FishList;
 	}
 	
 	public ArrayList getStorageList(){
 		return storageList;
+	}
+	public boolean canBuildBuildingsAt(Point p) {
+		boolean canBuild = false; 
+		if((board[p.y][p.y].getLand()==Terrain.PLAIN))
+			if(board[p.y][p.x].getResource().getResourceT()==ResourceType.NONE)
+				canBuild = true;
+		return canBuild;
+	}
+	public boolean canBuildBridgesAt(Point p) {
+		boolean canBuild = false; 
+		if((board[p.y][p.x].getLand()==Terrain.OCEAN)||(board[p.y][p.x].getLand()==Terrain.RIVER))
+			if(board[p.y][p.x].getResource().getResourceT()==ResourceType.NONE)
+				canBuild = true;
+		return canBuild;
 	}
 	
 	/**************************************
@@ -158,6 +172,7 @@ public class Map implements Serializable, Observer {
 	public void generate() {
 		createOcean();
 		createRiver();
+		cleanUpRiver();
 		createTrees();
 		spawnFood();
 		spawnStone();
@@ -167,7 +182,7 @@ public class Map implements Serializable, Observer {
 	/**************************************
 	 *    Create Methods (and helpers)    *
 	 **************************************/
-	
+
 	/**~~~~~~~~~~~~~~ OCEAN ~~~~~~~~~~~~~**/
 	
 	// Generates the ocean on one side of the map
@@ -452,7 +467,34 @@ public class Map implements Serializable, Observer {
 			}
 		}
 	}
+	
+	
+	
+	/**~~~~~~~~~~~~~~ River Cleanup ~~~~~~~~~~~~~**/
+	private void cleanUpRiver() {
+		int watCount = 0;
+		for(int x = 1; x < 99; x++){
+			for(int y = 1; y < 99; y++){
+				if(board[x][y].getLand().equals(Terrain.RIVER)){
+					
+					if(board[x][y+1].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					if(board[x+1][y].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					if(board[x][y-1].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					if(board[x-1][y].getLand().equals(Terrain.RIVER))
+						watCount+=1;
+					
+					if(watCount == 1)
+						board[x][y].setLand(Terrain.PLAIN);
+					watCount = 0;
+				}
+			}
+		}
+	}
 
+	
 	/**~~~~~~~~~~~~~~ TREES ~~~~~~~~~~~~**/
 	
 	// Generates the trees in spread "clusters" across the map
@@ -584,6 +626,7 @@ public class Map implements Serializable, Observer {
 				point.y = gen.nextInt(size);
 			}
 			board[point.y][point.x].setResource(new SaltyFish());
+			FishList.add(new Job(new Point(point.y,point.x), board[point.y][point.x].getResource()));
 		} 
 	}
 	
@@ -628,6 +671,25 @@ public class Map implements Serializable, Observer {
 		//board[point.x][point.y].setResource(new Meese());
 	}
 	
+	
+
+	public void regenFood() {
+		int BerrySize = BerryList.size();
+		int FishSize = FishList.size();
+		
+		for(int i = 0; i < BerrySize; i ++){
+			Job temp = BerryList.get(i);
+			
+			board[temp.location.y][temp.location.x].regenResource();
+		}
+		
+		for(int i = 0; i < FishSize; i ++){
+			Job temp = FishList.get(i);
+			
+			board[temp.location.y][temp.location.x].regenResource();
+		}
+		
+	}
 	/**~~~~~~~~~~~~~~ STONE ~~~~~~~~~~~~**/
 	
 	// Spawns stone across the map in small "clusters"
@@ -728,6 +790,12 @@ public class Map implements Serializable, Observer {
 	public void update(Observable arg0, Object arg1) {
 		ThePackage packages = (ThePackage)arg1;
 		buildings = packages.getBuildings();
+		ArrayList<Storage> store = new ArrayList<>();
+		for(int i = 0; i < buildings.size(); i++) {
+			if(buildings.get(i)instanceof Storage)
+				store.add((Storage)buildings.get(i));
+		}
+		storageList = store;
 	}
 	public ArrayList<Buildable> getBuildings() {
 		return buildings;

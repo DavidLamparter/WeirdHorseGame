@@ -25,7 +25,7 @@ public class WinterScreen extends JFrame {
 		this.setUndecorated(true);
 		this.setOpacity(0);
 		JTextArea winterText = null;
-		if(isWinter)
+		if(this.isWinter)
 			winterText = new JTextArea("Winter is upon us");
 		else
 			winterText = new JTextArea("\n\n\nThe ice starts to thaw...\nThe snow begins to melt...\nYou've survived the Winter");

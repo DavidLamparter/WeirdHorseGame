@@ -50,7 +50,7 @@ public class WorkerFrame extends JFrame implements Observer {
 	private JTextArea description = new JTextArea();
 	private JTextField nameOfResource = new JTextField();
 	private JButton exit = new JButton("X");
-	private JButton harvest = new JButton("HARVEST!");
+	private JButton harvest = new JButton("DROP SHIT");
 	private Font titleFont = new Font("Arial", Font.BOLD, 20);
 	private Font descriptionFont = new Font("Arial", Font.PLAIN, 14);
 	private PicPanel imageGoesHere;
@@ -176,6 +176,7 @@ public class WorkerFrame extends JFrame implements Observer {
 		for(int i = 0; i < timesToRun; i++) {
 			tempDistribution-=.001;
 		}
+		harvest.setText("Deposit goods");
 		if(workmen.isBusy()) {
 			description.setText("They are busy");
 		}
@@ -186,7 +187,10 @@ public class WorkerFrame extends JFrame implements Observer {
 				+ workmen.getHunger() + "\nFatigue: "
 				+ workmen.getFatigue() + "\nTemp: "
 				+ round((10-(workmen.getColdness()*.041))*(9.852+tempDistribution)) 
-				+ "\nPref: " + workmen.getPreference());
+				+ "\nPref: " + workmen.getPreference()
+				+ "\nTask: " + workmen.getJob().x + ","
+				+ workmen.getJob().y 
+				+ "\nCarrying: " + workmen.getInventorySize());
 		
 	}
 	public void moveRight() {
