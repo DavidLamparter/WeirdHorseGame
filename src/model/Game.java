@@ -104,6 +104,8 @@ public class Game extends Observable implements Serializable {
 		setChange();
 		SpeedMeter.start();
 		gameTimer.start();
+		for(int i = 0; i < 250; i++)
+			((Storage)buildings.get(0)).addResource(ResourceType.TREE);
 	}
 
 	public void startTimers() {
@@ -189,7 +191,7 @@ public class Game extends Observable implements Serializable {
 			if(number == 0)
 				break;
 			if(buildings.get(i) instanceof Storage) {
-				while(!((Storage)buildings.get(i)).isEmpty()&&(number != 0)) {
+				while((((Storage)buildings.get(i)).hasResource(type))&&(number != 0)) {
 					((Storage)buildings.get(i)).removeResource(type);
 					number -= 1;
 				}

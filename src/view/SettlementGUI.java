@@ -212,7 +212,7 @@ public class SettlementGUI extends JFrame {
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			
+			System.out.println(toBuild);
 			topLeftBuildingPoint = mapPanel.getArrayLocationOfClicked(arg0.getX(), arg0.getY());
 			toBuild = game.addNewBuildingUsingID(toBuild, topLeftBuildingPoint);
 			if(toBuild == -1) {

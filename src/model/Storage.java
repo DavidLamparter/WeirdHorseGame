@@ -55,7 +55,7 @@ public abstract class Storage extends Buildable {
 				return;
 			}
 			if(toRemove == ResourceType.TREE)
-			if(theGoods.get(i).equals(ResourceType.TREE)) {
+			if(theGoods.get(i) == ResourceType.TREE) {
 				theGoods.remove(i);
 				return;
 			}
@@ -185,6 +185,35 @@ public abstract class Storage extends Buildable {
 	
 	public abstract String getName();
 	public abstract String getImageFile();
+	public boolean hasResource(ResourceType type) {	
+		for(int i = 0; i < theGoods.size(); i++) {
+			if(type == ResourceType.STONE)
+				if(theGoods.get(i).equals(ResourceType.STONE)) {
+					return true;
+				}
+				if(type == ResourceType.TREE)
+				if(theGoods.get(i) == ResourceType.TREE) {
+					return true;
+				}
+				if(type == ResourceType.BERRY_BUSH)
+				if(theGoods.get(i).equals(ResourceType.BERRY_BUSH)) {
+					return true;
+				}
+				if(type == ResourceType.SALTY_FISH)
+				if(theGoods.get(i).equals(ResourceType.SALTY_FISH)) {
+					return true;
+				}
+				if(type == ResourceType.FISH)
+				if(theGoods.get(i).equals(ResourceType.FISH)) {
+					return true;
+				}
+				if(type == ResourceType.POISION_BUSH)
+				if(theGoods.get(i).equals(ResourceType.POISION_BUSH)) {
+					return true;
+				}
+			}
+		return false;
+	}
 }
 
 //TOWNHALL
