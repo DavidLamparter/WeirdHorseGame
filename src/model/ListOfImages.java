@@ -188,7 +188,7 @@ public class ListOfImages {
 		// is winter
 		if(isWinter){
 			fileName = fileName.replace("river","wRiver");
-			System.out.println(fileName);
+			//  System.out.println(fileName);
 			for(int i = 0; i < winterWater.size(); i++) {
 				if(winterWater.get(i).equal(fileName))
 					return winterWater.get(i).getImage();
