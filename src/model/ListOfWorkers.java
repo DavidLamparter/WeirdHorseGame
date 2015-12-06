@@ -79,9 +79,15 @@ public class ListOfWorkers implements Serializable {
 	public void removeAt(int i) {
 		
 		// Ensure we're removing at a valid index
-		if((i >= 0) && (i < pos)) { 
-			for(int j = i; j < (pos-1); j++)
-				theWorkmen[i] = theWorkmen[i+1];
+		if((i >= 0) && (i < pos)) {
+			Worker[] workmenReplacement = new Worker[theWorkmen.length];
+			for(int j = 0; j < pos; j++) {
+				if(j < i)
+					workmenReplacement[j] = theWorkmen[j];
+				if(j > i)
+					workmenReplacement[j-1] = theWorkmen[j];
+			}
+			theWorkmen = workmenReplacement;	
 			pos--;
 		}
 	}

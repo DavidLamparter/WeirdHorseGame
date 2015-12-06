@@ -100,6 +100,7 @@ public class MapPanel extends JPanel implements Observer{
 					summerTiles[i][j] = ImageIO.read(new File(sTileNames[i][j]));
 					winterTiles[i][j] = ImageIO.read(new File(wTileNames[i][j]));
 				} catch (Exception e) {
+					System.out.println(i +" , "  +j);
 					e.printStackTrace();
 				}
 			}

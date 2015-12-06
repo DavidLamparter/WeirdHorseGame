@@ -70,6 +70,11 @@ public abstract class Resource extends Observable implements Serializable {
 	/**************************************
 	 *   Getters for Instance Variables   *
 	 **************************************/
+	// If a resource is empty it's gone
+	public void setEmpty() {
+		type = ResourceType.NONE;
+	}
+	
 	// Returns max possible value of this resource
 	public double getMax(){
 		return this.max;

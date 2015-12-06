@@ -141,7 +141,7 @@ public class Game extends Observable implements Serializable {
 		}
 		if(toBuild == BuildingPanel.HOUSE_ID) {
 			build = new House(topLeftBuildingPoint);
-			System.out.println("ADDED NEW HOUSE");
+			//System.out.println("ADDED NEW HOUSE");
 		}
 		if(toBuild == BuildingPanel.STOREHOUSE_ID) {
 			build = new Storehouse(topLeftBuildingPoint);
@@ -294,6 +294,7 @@ public class Game extends Observable implements Serializable {
 					Buildable closestHouse = null;
 					for(int j = 0; j < buildings.size(); j++) {
 						if((buildings.get(j) instanceof House) || (buildings.get(j) instanceof TownHall)) {
+							//System.out.println("I AM A " + buildings.get(j).getImageFile() + "\n");
 							if(closestHouse == null) {
 								closestHouse = buildings.get(j);
 							}
@@ -301,12 +302,15 @@ public class Game extends Observable implements Serializable {
 								if(list.get(i).getPoint().distance(buildings.get(j).getClosestPoint(list.get(i).getPoint())) <
 								   list.get(i).getPoint().distance(closestHouse.getClosestPoint(list.get(i).getPoint()))) {
 									closestHouse = buildings.get(j);
+									//System.out.println("I AM THE SHORTEST KAPPA " + buildings.get(j).getImageFile());
 								}		
 							}
 						}
 						// A variable that will set is healing to true when myTask.isEmpty
 						list.get(i).setBusy(true);
-						if(!list.get(i).foundHome()) {
+
+						if(true) {						//!list.get(i).foundHome()) {
+							//System.out.println("HIII IM MR MEESEEKS LOOK AT ME!!! IM GOING TO " + closestHouse.getImageFile());
 							list.get(i).setFoundHome(true);
 							ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),buildings);
 							list.get(i).toLocation(calc.getShortestPath(list.get(i).getPoint(), closestHouse.getClosestPoint(list.get(i).getPoint())));
@@ -351,7 +355,7 @@ public class Game extends Observable implements Serializable {
 			seasonsCounter++;
 			
 			// Either begin or end winter based on seasonsCounter
-			if(seasonsCounter == lengthOfSeasons-3) {
+			if(seasonsCounter == lengthOfSeasons-2) {
 				WinterScreen screen = new WinterScreen(isWinter);
 			}
 			if(seasonsCounter >= lengthOfSeasons) {
