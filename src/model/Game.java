@@ -142,6 +142,10 @@ public class Game extends Observable implements Serializable {
 			for(int i = 0; i < buildings.size(); i++) {
 				allOtherBuildings.addAll(buildings.get(i).getPoints());
 			}
+			//int sizeOfBerryBush = theMap.getBerryList().size();
+			//for(int i = 0; i < sizeOfBerryBush; i++) {
+			//	allOtherBuildings.add(theMap.getBerryList().get(i))
+			//}
 			ArrayList<Point> buildPoints = build.getPoints();
 			for(int i = 0; i < allOtherBuildings.size(); i++) {
 				for(int j = 0; j < buildPoints.size(); j++) {
@@ -150,13 +154,48 @@ public class Game extends Observable implements Serializable {
 					}
 				}
 			}
-			if(canBuild) {
+			boolean canBuildCheck2 = true;
+			if(build instanceof HorizontalBridge) {
+				for(int i = 0; i < buildPoints.size(); i++) {
+					if(!theMap.canBuildBridgesAt(buildPoints.get(i)))
+						canBuildCheck2 = false;
+				}
+			}
+			else {
+				for(int i = 0; i < buildPoints.size(); i++) {
+					if(!theMap.canBuildBuildingsAt(buildPoints.get(i)))
+						canBuildCheck2 = false;
+				}
+			}
+			
+			if(canBuild&&canBuildCheck2) {
 				buildings.add(build);
-				
+				//  magic numbers 
+				if(build instanceof House) {
+					removeResources(40, ResourceType.STONE);
+					removeResources(160, ResourceType.TREE);
+				}
+				if(build instanceof Storehouse)
+					removeResources(100, ResourceType.TREE);
+				if(build instanceof HorizontalBridge)
+					removeResources(100, ResourceType.STONE);
+			
 				return -1;
 			}
 		}
 		return toBuild;
+	}
+	private void removeResources(int number, ResourceType type) {
+		for(int i = 0; i < buildings.size(); i++) {
+			if(number == 0)
+				break;
+			if(buildings.get(i) instanceof Storage) {
+				while(!((Storage)buildings.get(i)).isEmpty()&&(number != 0)) {
+					((Storage)buildings.get(i)).removeResource(type);
+					number -= 1;
+				}
+			}
+		}
 	}
 	public ArrayList<Buildable> getBuildings() {
 		return buildings;

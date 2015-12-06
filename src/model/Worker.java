@@ -611,6 +611,8 @@ public abstract class Worker extends Observable implements Serializable {
 				goToStorage(theMap);
 			}
 		}
+		if(carryingCapacity < 0)
+			goToStorage(theMap);
 	}
 	public int getInventorySize() {
 		return 20-carryingCapacity;

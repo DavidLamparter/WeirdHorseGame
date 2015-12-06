@@ -114,24 +114,38 @@ public class Map implements Serializable, Observer {
 		return initialWorkers;
 	}
 
-	public ArrayList getBerryList() {
+	public ArrayList<Job> getBerryList() {
 		return BerryList;
 	}
 
-	public ArrayList getStoneList() {
+	public ArrayList<Job> getStoneList() {
 		return StoneList;
 	}
 
-	public ArrayList getTreeList() {
+	public ArrayList<Job> getTreeList() {
 		return TreeList;
 	}
 	
-	public ArrayList getFishList() {
+	public ArrayList<Job> getFishList() {
 		return FishList;
 	}
 	
 	public ArrayList getStorageList(){
 		return storageList;
+	}
+	public boolean canBuildBuildingsAt(Point p) {
+		boolean canBuild = false; 
+		if((board[p.y][p.y].getLand()==Terrain.PLAIN))
+			if(board[p.y][p.x].getResource().getResourceT()==ResourceType.NONE)
+				canBuild = true;
+		return canBuild;
+	}
+	public boolean canBuildBridgesAt(Point p) {
+		boolean canBuild = false; 
+		if((board[p.y][p.x].getLand()==Terrain.OCEAN)||(board[p.y][p.x].getLand()==Terrain.RIVER))
+			if(board[p.y][p.x].getResource().getResourceT()==ResourceType.NONE)
+				canBuild = true;
+		return canBuild;
 	}
 	
 	/**************************************
