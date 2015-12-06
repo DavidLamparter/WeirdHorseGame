@@ -187,15 +187,17 @@ public class ListOfImages {
 	public Image getWater(String fileName, boolean isWinter) {
 		// is winter
 		if(isWinter){
+			String fName = "./Graphics/Water/wRiver_"+fileName;
 			for(int i = 0; i < winterWater.size(); i++) {
-				if(winterWater.get(i).equals(fileName))
+				if(winterWater.get(i).equals(fName))
 					return winterWater.get(i).getImage();
 			}
 		}
 		// summer
 		else{
+			String fName = "./Graphics/Water/river_"+fileName;
 			for(int i = 0; i < summerWater.size(); i++) {
-				if(summerWater.get(i).equals(fileName))
+				if(summerWater.get(i).equals(fName))
 					return summerWater.get(i).getImage();
 			}
 		}
