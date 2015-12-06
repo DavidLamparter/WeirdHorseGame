@@ -50,6 +50,9 @@ public class Map implements Serializable, Observer {
 	// A boolean used for the generation of the rivers on the map
 	private boolean riverNotFinished;
 	
+	//TH top left point
+	private Point TH = new Point(0,0);
+	
 	//Arrays of the resources, used to determine closest Resource of working type
 	private ArrayList<Job> TreeList = new ArrayList<Job>();
 	private ArrayList<Job> StoneList = new ArrayList<Job>();
@@ -103,6 +106,10 @@ public class Map implements Serializable, Observer {
 	/**************************************
 	 *   Getters for Instance Variables   *
 	 **************************************/
+	//returns the TH's position
+	public Point getTH(){
+		return TH;
+	}
 	
 	// returns the generated map
 	public MapTile[][] getMapTiles(){
@@ -173,6 +180,7 @@ public class Map implements Serializable, Observer {
 		createOcean();
 		createRiver();
 		cleanUpRiver();
+		cleanUpBeach();
 		createTrees();
 		spawnFood();
 		spawnStone();
@@ -183,8 +191,47 @@ public class Map implements Serializable, Observer {
 	 *    Create Methods (and helpers)    *
 	 **************************************/
 
+
 	/**~~~~~~~~~~~~~~ OCEAN ~~~~~~~~~~~~~**/
 	
+	//removes solo blocks of sand
+	
+	private void cleanUpBeach() {
+		int sandCount = 0;
+		int oceanCount = 0;
+		for(int x = 1; x < 98; x++){
+			for(int y = 1; y < 98; y++){
+				if(board[x][y].getLand().equals(Terrain.BEACH)){
+					
+					if(board[x][y+1].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					if(board[x+1][y].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					if(board[x][y-1].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					if(board[x-1][y].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					
+					if(board[x][y+1].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					if(board[x+1][y].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					if(board[x][y-1].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					if(board[x-1][y].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					
+					if(sandCount == 1)
+						if(oceanCount == 0)
+						board[x][y].setLand(Terrain.PLAIN);
+						else
+						board[x][y].setLand(Terrain.OCEAN);
+					oceanCount = 0;
+					sandCount = 0;
+				}		
+			}
+		}
+	}
 	// Generates the ocean on one side of the map
 	private void createOcean() {
 		double num = gen.nextDouble();
@@ -477,13 +524,13 @@ public class Map implements Serializable, Observer {
 			for(int y = 1; y < 99; y++){
 				if(board[x][y].getLand().equals(Terrain.RIVER)){
 					
-					if(board[x][y+1].getLand().equals(Terrain.RIVER))
+					if(board[x][y+1].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
-					if(board[x+1][y].getLand().equals(Terrain.RIVER))
+					if(board[x+1][y].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
-					if(board[x][y-1].getLand().equals(Terrain.RIVER))
+					if(board[x][y-1].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
-					if(board[x-1][y].getLand().equals(Terrain.RIVER))
+					if(board[x-1][y].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
 					
 					if(watCount == 1)
@@ -756,6 +803,7 @@ public class Map implements Serializable, Observer {
 		//  TownHall!!!!
 		TownHall highHrothgar = new TownHall(new Point(X + 1,Y + 1));
 		storageList.add(highHrothgar);
+		TH = new Point(X+1,Y+1);
 	
 
 		int initialNoWorker = 4;
@@ -775,10 +823,33 @@ public class Map implements Serializable, Observer {
 						continue;
 					}
 					if(gen.nextDouble()<.25) {
+						int chance = gen.nextInt(100);
+						
 						if(initialNoWorker != 0) {
-							Worker brett = new Brett(new Point(i,j));
-							initialWorkers.add(brett);
-							initialNoWorker --;
+							if(chance <25){
+								Worker James = new KJG(new Point(i,j));
+								initialNoWorker --;
+								initialWorkers.add(James);
+							}
+							
+							else if(chance <50){
+								Worker James = new KJD(new Point(i,j));
+								initialNoWorker --;
+								initialWorkers.add(James);
+							}
+							
+							else if(chance <75){
+								Worker SleepingBeauty = new Brett(new Point(i,j));
+								initialNoWorker --;
+								initialWorkers.add(SleepingBeauty);
+							}
+						
+							else if(chance <100){
+								Worker BeardedWonder = new David(new Point(i,j));
+								initialNoWorker --;
+								initialWorkers.add(BeardedWonder);
+							}
+							
 						}
 					}
 				}

@@ -45,6 +45,7 @@ public class OptionsGUI extends JFrame {
 	JButton oneX = new JButton("1X");
 	JButton twoX = new JButton("2X");
 	JButton fiveX = new JButton("5X");
+	JPanel menuPanel = new JPanel();
 	//  JButton loader = new JButton("Load?");
 	private boolean wasSaved = false;
 	SettlementGUI caller;
@@ -111,13 +112,16 @@ public class OptionsGUI extends JFrame {
 		options.addActionListener(maxWindow);
 		options.setBackground(new Color(127, 106, 69));
 		options.setForeground(Color.LIGHT_GRAY);
+		menuPanel.setBackground(new Color(127, 106, 69));
 		speedHolder.setBackground(new Color(127, 106, 69));
-		this.setBackground(new Color(127, 106, 69));
-		this.add(saver);
-		this.add(closeThis);
+		menuPanel.setSize(this.getSize());
+		menuPanel.setLayout(null);
+		menuPanel.add(saver);
+		menuPanel.add(closeThis);
 		this.add(options);
-		this.add(close);
-		this.add(speedHolder);
+		menuPanel.add(close);
+		menuPanel.add(speedHolder);
+		this.add(menuPanel);
 		//  this.add(loader);
 		this.setVisible(true);
 		this.setAlwaysOnTop(true);
@@ -168,12 +172,14 @@ public class OptionsGUI extends JFrame {
 			if(max) {
 				setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
 				setLocation(caller.getWidth()/3, caller.getHeight()/6);
+				menuPanel.setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
 			}
 			else {
 				setSize(150, 50);
 				setLocation(0, caller.getHeight()-getHeight());
 				//  setLocation(caller.getWidth()-getWidth(), 0);
 			}
+			menuPanel.setVisible(max);
 			options.setVisible(!max);
 			close.setVisible(max);
 			closeThis.setVisible(max);

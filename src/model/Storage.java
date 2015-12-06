@@ -50,7 +50,7 @@ public abstract class Storage extends Buildable {
 		int goodsSize = theGoods.size();
 		for(int i = 0; i < goodsSize; i++) {
 			if(toRemove == ResourceType.STONE)
-			if(theGoods.get(i).equals(ResourceType.STONE)) {
+			if(theGoods.get(i) == ResourceType.STONE) {
 				theGoods.remove(i);
 				return;
 			}
@@ -60,22 +60,22 @@ public abstract class Storage extends Buildable {
 				return;
 			}
 			if(toRemove == ResourceType.BERRY_BUSH)
-			if(theGoods.get(i).equals(ResourceType.BERRY_BUSH)) {
+			if(theGoods.get(i) == ResourceType.BERRY_BUSH) {
 				theGoods.remove(i);
 				return;
 			}
 			if(toRemove == ResourceType.SALTY_FISH)
-			if(theGoods.get(i).equals(ResourceType.SALTY_FISH)) {
+			if(theGoods.get(i) == ResourceType.SALTY_FISH) {
 				theGoods.remove(i);
 				return;
 			}
 			if(toRemove == ResourceType.FISH)
-			if(theGoods.get(i).equals(ResourceType.FISH)) {
+			if(theGoods.get(i) == ResourceType.FISH) {
 				theGoods.remove(i);
 				return;
 			}
 			if(toRemove == ResourceType.POISION_BUSH)
-			if(theGoods.get(i).equals(ResourceType.POISION_BUSH)) {
+			if(theGoods.get(i) == ResourceType.POISION_BUSH) {
 				theGoods.remove(i);
 				return;
 			}
@@ -187,8 +187,8 @@ public abstract class Storage extends Buildable {
 	public abstract String getImageFile();
 	public boolean hasResource(ResourceType type) {	
 		for(int i = 0; i < theGoods.size(); i++) {
-			if(type == ResourceType.STONE)
-				if(theGoods.get(i).equals(ResourceType.STONE)) {
+				if(type == ResourceType.STONE)
+				if(theGoods.get(i) == ResourceType.STONE) {
 					return true;
 				}
 				if(type == ResourceType.TREE)
@@ -196,15 +196,15 @@ public abstract class Storage extends Buildable {
 					return true;
 				}
 				if(type == ResourceType.BERRY_BUSH)
-				if(theGoods.get(i).equals(ResourceType.BERRY_BUSH)) {
+				if(theGoods.get(i) == ResourceType.BERRY_BUSH) {
 					return true;
 				}
 				if(type == ResourceType.SALTY_FISH)
-				if(theGoods.get(i).equals(ResourceType.SALTY_FISH)) {
+				if(theGoods.get(i) == ResourceType.SALTY_FISH) {
 					return true;
 				}
 				if(type == ResourceType.FISH)
-				if(theGoods.get(i).equals(ResourceType.FISH)) {
+				if(theGoods.get(i) == ResourceType.FISH) {
 					return true;
 				}
 				if(type == ResourceType.POISION_BUSH)

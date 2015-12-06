@@ -68,13 +68,22 @@ public abstract class Worker extends Observable implements Serializable {
 	// Determines if a worker is done healing
 	private boolean doneHealing;
 	
+	// True if the worker has been upgraded to move faster
+	private boolean isFast;
+	
+	// True if the worker has been upgraded to harvest faster
+	private boolean harvestGod;
+	
+	// True if the worker has been upgraded to wear clothes
+	private boolean clothedUp;
+	
 	// Stores the list of directions for a specific task
 	private ArrayList<Direction> myTask = new ArrayList<>();
 	
 	// Stores the last direction used by the worker (for animation use)
 	private Direction last;
 	
-	// keeps track of the workers preferance
+	// keeps track of the workers preference
 	private ResourceType preference;
 	
 	private Point job;
@@ -108,8 +117,15 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		// isAlive begins at true
 		isAlive = true;
+		// go Home begins at false
 		goHome = false;
+		// isHealing begins at false
 		isHealing = false;
+		
+		// All upgrades begin at false until upgraded
+		isFast = false;
+		harvestGod = false;
+		clothedUp = false;
 		
 		// Set the current location of the worker when spawned
 		XPos = currentLocation.x;
@@ -178,6 +194,18 @@ public abstract class Worker extends Observable implements Serializable {
 		return foundHome;
 	}
 	
+	public boolean isFast() {
+		return isFast;
+	}
+	
+	public boolean isHarvestGod() {
+		return harvestGod;
+	}
+	
+	public boolean clothedUp() {
+		return clothedUp;
+	}
+	
 	public int getX() {
 		return XPos;
 	}
@@ -242,6 +270,18 @@ public abstract class Worker extends Observable implements Serializable {
 	
 	public void setDoneHealing(boolean heal) {
 		doneHealing = heal;
+	}
+	
+	public void setFast(boolean fast) {
+		isFast = fast;
+	}
+	
+	public void setHarvestGod(boolean God) {
+		harvestGod = God;
+	}
+	
+	public void setClothed(boolean clothes) {
+		clothedUp = clothes;
 	}
 	
 	/**************************************
@@ -588,8 +628,12 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		//if next to a storage
 		if(tile.getResource().getResourceT() == ResourceType.NONE){
-			while (i < 20){
-				storage.addResource(inventory[i]);
+			while (i < getInventorySize()) { //  was 20;
+				//  Base cases
+				if(i >= inventory.length)
+					break;
+				if(inventory[i]!=null)
+					storage.addResource(inventory[i]);
 				i++;
 			}
 			carryingCapacity = 20;
@@ -621,6 +665,9 @@ public abstract class Worker extends Observable implements Serializable {
 	public String animationFrameFileName() {
 		// TODO Auto-generated method stub
 		return "./Graphics/Workers/male_" + 1 + ".png";
+	}
+	public void resetStorage() {
+		onlyOneStorageCall = false;
 	}
 }
 
