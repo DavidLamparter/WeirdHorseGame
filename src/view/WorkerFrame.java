@@ -50,17 +50,20 @@ public class WorkerFrame extends JFrame implements Observer {
 	private JTextArea description = new JTextArea();
 	private JTextField nameOfResource = new JTextField();
 	private JButton exit = new JButton("X");
-	private JButton harvest = new JButton("DROP SHIT");
+//	private JButton harvest = new JButton("DROP SHIT");
 	private Font titleFont = new Font("Arial", Font.BOLD, 20);
 	private Font descriptionFont = new Font("Arial", Font.PLAIN, 14);
 	private PicPanel imageGoesHere;
 	private Worker workmen;
 	private Point arrayPos;
+	private JButton speedUp = new JButton("SPEED UP");
+	private JButton harvestUp = new JButton("HARVEST UP");
+	private JButton clothesUp = new JButton("CLOTHES");
 	
 	//Image resourcePic;  cuz that would be dope
 	
 	public WorkerFrame(Point mousePos, Point arrayPos, Worker workmen) {
-		this.setSize(200, 200);
+		this.setSize(300, 200);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
@@ -96,9 +99,17 @@ public class WorkerFrame extends JFrame implements Observer {
 		description.setSize(imageGoesHere.getWidth(),imageGoesHere.getHeight()-25);
 		description.setFont(descriptionFont);
 		
+		//  the speed button!
+		speedUp.setLocation(0, description.getHeight()+25);
+		speedUp.setSize(this.getWidth()/3, 25);
+		
 		//  the harvest button!
-		harvest.setLocation(imageGoesHere.getWidth(), description.getHeight()+25);
-		harvest.setSize(imageGoesHere.getWidth(), 25);
+		harvestUp.setLocation(100, description.getHeight()+25);
+		harvestUp.setSize(this.getWidth()/3, 25);
+			
+		//  the clothes button!
+		clothesUp.setLocation(200, description.getHeight()+25);
+		clothesUp.setSize(this.getWidth()/3, 25);
 		
 		//  adds some text
 		//  nameOfResource.setText(resource.getName());
@@ -125,17 +136,19 @@ public class WorkerFrame extends JFrame implements Observer {
 					//  till it gets below 94.5 I don't think this should change unless it's winter
 			
 		//  our action listeners
-		harvest.addActionListener(new HarvestListener());
+		speedUp.addActionListener(new UpgradeListener());
+		harvestUp.addActionListener(new UpgradeListener());
+		clothesUp.addActionListener(new UpgradeListener());
 		exit.addActionListener(new ExitListener());
 		
 		//  adds everything to holder for what purpose? yes.
-		holder.setBackground(new Color(127, 106, 69));
 		holder.add(nameOfResource);
 		holder.add(exit);
-		holder.add(imageGoesHere);
 		holder.add(description);
-		holder.add(harvest);
-		
+		holder.add(speedUp);
+		holder.add(harvestUp);
+		holder.add(clothesUp);
+		holder.add(imageGoesHere);
 		this.add(holder);
 		this.setVisible(true);
 	}
@@ -147,16 +160,26 @@ public class WorkerFrame extends JFrame implements Observer {
 		return toRound;
 	}
 	
-	private class HarvestListener implements ActionListener {
+	private class UpgradeListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == speedUp) {
+				System.out.println("SpeedUp!");
+			}
+			else if(e.getSource() == harvestUp) {
+				System.out.println("harvestUp!");
+			}
+			else if(e.getSource() == clothesUp) {
+				System.out.println("clothesUp!");
+			}
+			
 			//  game.addJob(new Job(arrayPos, curr));
 			/*Worker theJobDoer = theWorkmen.findClosest(arrayPos);
 			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
 			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));
 			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), arrayPos)); */
-			dispose(); 
+			//dispose(); 
 			//  curr.incrementNumberOfHarvesters();  we could add this so they know how many workers are working this tile
 		}
 	}
@@ -176,7 +199,6 @@ public class WorkerFrame extends JFrame implements Observer {
 		for(int i = 0; i < timesToRun; i++) {
 			tempDistribution-=.001;
 		}
-		harvest.setText("Deposit goods");
 		if(workmen.isBusy()) {
 			description.setText("They are busy");
 		}
