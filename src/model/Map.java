@@ -53,6 +53,9 @@ public class Map implements Serializable, Observer {
 	//TH top left point
 	private Point TH = new Point(0,0);
 	
+	//
+	private char oceanSide = 'X';
+	
 	//Arrays of the resources, used to determine closest Resource of working type
 	private ArrayList<Job> TreeList = new ArrayList<Job>();
 	private ArrayList<Job> StoneList = new ArrayList<Job>();
@@ -106,6 +109,11 @@ public class Map implements Serializable, Observer {
 	/**************************************
 	 *   Getters for Instance Variables   *
 	 **************************************/
+	//gets the side the ocean is on
+	public char getOceanSide(){
+		return oceanSide;
+	}
+	
 	//returns the TH's position
 	public Point getTH(){
 		return TH;
@@ -266,6 +274,22 @@ public class Map implements Serializable, Observer {
 	
 	// Ensures that the ocean is generated together and doesnt turn out as a river
 	private ArrayList<Direction> OceanMaking(Point init, Direction initial) {
+		//bottom
+		if(init.x > 50 && initial == Direction.EAST)
+			oceanSide = 'B';
+		//top
+		if(init.x < 50 && initial == Direction.EAST)
+			oceanSide = 'T';
+		
+		//right
+		if(init.x > 50 && initial == Direction.SOUTH)
+			oceanSide = 'R';
+		
+		//left
+		if(init.x < 50 && initial == Direction.SOUTH)
+			oceanSide = 'L';
+							
+		
 		ArrayList<Direction> theCoast = new ArrayList<>();
 		double noLeft = .0;
 		int i = 0;
@@ -606,11 +630,8 @@ public class Map implements Serializable, Observer {
 
 		if(StoneList.get(i).resource.getQuantity() < 4.0){
 			StoneList.get(i).resource.setHarvestable(false);
+			StoneList.get(i).getResource().setEmpty();
 			}	
-		else{
-			if(StoneList.get(i).resource.getQuantity()>=20)
-				StoneList.get(i).resource.setHarvestable(true);
-		}
 		}
 			
 			
@@ -631,11 +652,8 @@ public class Map implements Serializable, Observer {
 		for(int i = 0; i < treeSize; i++){
 		if(TreeList.get(i).resource.getQuantity() < 4.0){
 			TreeList.get(i).resource.setHarvestable(false);
+			TreeList.get(i).getResource().setEmpty();
 			}	
-		else{
-			if(TreeList.get(i).resource.getQuantity()>=20)
-				TreeList.get(i).resource.setHarvestable(true);
-		}
 		}
 	}
 	

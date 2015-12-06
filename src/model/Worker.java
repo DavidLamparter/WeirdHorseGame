@@ -624,6 +624,8 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		//if next to a storage
 		if(tile.getResource().getResourceT() == ResourceType.NONE){
+			if(storage == null)
+				goToStorage(theMap);
 			while (i < getInventorySize()) { //  was 20;
 				//  Base cases
 				if(i >= inventory.length)

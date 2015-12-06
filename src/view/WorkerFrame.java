@@ -59,6 +59,7 @@ public class WorkerFrame extends JFrame implements Observer {
 	private JButton speedUp = new JButton("SPEED UP");
 	private JButton harvestUp = new JButton("HARVEST UP");
 	private JButton clothesUp = new JButton("CLOTHES");
+	private Worker thisWorker = null;
 	
 	//Image resourcePic;  cuz that would be dope
 	
@@ -165,15 +166,14 @@ public class WorkerFrame extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == speedUp) {
-				System.out.println("SpeedUp!");
+				thisWorker.setFast(true);
 			}
 			else if(e.getSource() == harvestUp) {
-				System.out.println("harvestUp!");
+				thisWorker.setHarvestGod(true);
 			}
 			else if(e.getSource() == clothesUp) {
-				System.out.println("clothesUp!");
+				thisWorker.setClothed(true);
 			}
-			
 			//  game.addJob(new Job(arrayPos, curr));
 			/*Worker theJobDoer = theWorkmen.findClosest(arrayPos);
 			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
@@ -192,6 +192,7 @@ public class WorkerFrame extends JFrame implements Observer {
 	}
 	@Override
 	public void update(Observable o, Object arg) {
+		thisWorker = (Worker) o;
 		double tempDistribution = .01;
 		//  0 to 4 times
 		//  running times
