@@ -630,11 +630,8 @@ public class Map implements Serializable, Observer {
 
 		if(StoneList.get(i).resource.getQuantity() < 4.0){
 			StoneList.get(i).resource.setHarvestable(false);
+			StoneList.get(i).getResource().setEmpty();
 			}	
-		else{
-			if(StoneList.get(i).resource.getQuantity()>=20)
-				StoneList.get(i).resource.setHarvestable(true);
-		}
 		}
 			
 			
@@ -655,11 +652,8 @@ public class Map implements Serializable, Observer {
 		for(int i = 0; i < treeSize; i++){
 		if(TreeList.get(i).resource.getQuantity() < 4.0){
 			TreeList.get(i).resource.setHarvestable(false);
+			TreeList.get(i).getResource().setEmpty();
 			}	
-		else{
-			if(TreeList.get(i).resource.getQuantity()>=20)
-				TreeList.get(i).resource.setHarvestable(true);
-		}
 		}
 	}
 	
