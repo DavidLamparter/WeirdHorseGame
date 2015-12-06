@@ -30,7 +30,7 @@ public class QueueFrame extends JFrame implements Observer {
 		displayList.setSize(this.getSize());
 		displayList.setLocation(0, 0);
 		displayList.setModel(queueListModel);
-		this.setOpacity(0);
+		//this.setOpacity(0);
 		//  displayList.setOpaque(false);
 		displayList.setBackground(new Color(127, 106, 69));
 		displayList.setFont(displayList.getFont().deriveFont(Font.BOLD, 14f));
