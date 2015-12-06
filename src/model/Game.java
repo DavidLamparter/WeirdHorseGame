@@ -85,6 +85,9 @@ public class Game extends Observable implements Serializable {
 
 	public static final int NORMAL_SPEED = 1;
 	
+	//soft cap on workers
+	public int softPopCap = 5;
+	
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/

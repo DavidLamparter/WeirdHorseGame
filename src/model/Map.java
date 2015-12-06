@@ -775,10 +775,28 @@ public class Map implements Serializable, Observer {
 						continue;
 					}
 					if(gen.nextDouble()<.25) {
+						int chance = gen.nextInt(100);
 						if(initialNoWorker != 0) {
-							Worker brett = new Brett(new Point(i,j));
-							initialWorkers.add(brett);
-							initialNoWorker --;
+							if(chance <25){
+								Worker James = new KJG(new Point(i,j));
+								initialNoWorker --;
+							}
+							
+							else if(chance <50){
+								Worker James = new KJD(new Point(i,j));
+								initialNoWorker --;
+							}
+							
+							else if(chance <75){
+								Worker SleepingBeauty = new Brett(new Point(i,j));
+								initialNoWorker --;
+							}
+						
+							else if(chance <100){
+								Worker BeardedWonder = new David(new Point(i,j));
+								initialNoWorker --;
+							}
+							
 						}
 					}
 				}
