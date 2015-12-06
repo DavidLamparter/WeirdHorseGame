@@ -62,6 +62,7 @@ public class OptionsGUI extends JFrame {
 		saver.addActionListener(new Saver());
 		saver.setSize(this.getWidth()-20, caller.getHeight()/12);
 		saver.setLocation(10, 20);
+		saver.setBackground(new Color(210,180,140));
 		saver.setVisible(false);
 		
 		//  SAVAGRY WILL BE ADDED
@@ -73,11 +74,13 @@ public class OptionsGUI extends JFrame {
 		closeThis.addActionListener(maxWindow);
 		closeThis.setSize(this.getWidth()-20, caller.getHeight()/12);
 		closeThis.setLocation(10, 40 + saver.getHeight()); //+ loader.getHeight());
+		closeThis.setBackground(new Color(210,180,140));
 		closeThis.setVisible(false);
 		
 		close.addActionListener(new CloseListener());
 		close.setSize(this.getWidth()-20, caller.getHeight()/12);
 		close.setLocation(10, saver.getHeight() + 60 + closeThis.getHeight()); // + loader.getHeight();
+		close.setBackground(new Color(210,180,140));
 		close.setVisible(false);
 		
 		//  SPEED BUTTONS
@@ -91,10 +94,13 @@ public class OptionsGUI extends JFrame {
 		
 		speedHolder.add(oneX);
 		oneX.setPreferredSize(new Dimension(speedHolder.getWidth()/3, speedHolder.getHeight()));
+		oneX.setBackground(new Color(210,180,140));
 		speedHolder.add(twoX);
+		twoX.setBackground(new Color(210,180,140));
 		twoX.setPreferredSize(new Dimension(speedHolder.getWidth()/4, speedHolder.getHeight()));
 		speedHolder.add(fiveX);
 		fiveX.setPreferredSize(new Dimension(speedHolder.getWidth()/3, speedHolder.getHeight()));
+		fiveX.setBackground(new Color(210,180,140));
 		
 		this.setSize(150, 50);
 		//setLocation(caller.getWidth()-getWidth(), 0);
@@ -105,7 +111,8 @@ public class OptionsGUI extends JFrame {
 		options.addActionListener(maxWindow);
 		options.setBackground(new Color(127, 106, 69));
 		options.setForeground(Color.LIGHT_GRAY);
-		
+		speedHolder.setBackground(new Color(127, 106, 69));
+		this.setBackground(new Color(127, 106, 69));
 		this.add(saver);
 		this.add(closeThis);
 		this.add(options);
