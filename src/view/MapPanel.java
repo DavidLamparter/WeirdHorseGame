@@ -267,10 +267,10 @@ public class MapPanel extends JPanel implements Observer{
 					// PURE WATER
 					else
 					
-						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					catch(ArrayIndexOutOfBoundsException oman) {
-						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 
 				}

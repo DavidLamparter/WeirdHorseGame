@@ -105,8 +105,8 @@ public class ListOfImages {
 			}
 			// WINTER
 			for(int i=1; i<10; i++){
-				Image temp = ImageIO.read(new File("./Graphics/Water/wRiver_0" + i + ".jpg"));
-				winterWater.add(new ImageAndName("./Graphics/Water/wRiver_0"+ i + ".jpg", temp));
+				Image temp = ImageIO.read(new File("./Graphics/Water/wRiver_0" + i + ".png"));
+				winterWater.add(new ImageAndName("./Graphics/Water/wRiver_0"+ i + ".png", temp));
 			}
 			
 		}
@@ -187,9 +187,9 @@ public class ListOfImages {
 	public Image getWater(String fileName, boolean isWinter) {
 		// is winter
 		if(isWinter){
-			for(int i = 0; i < summerWater.size(); i++) {
-				if(summerWater.get(i).equals(fileName))
-					return summerWater.get(i).getImage();
+			for(int i = 0; i < winterWater.size(); i++) {
+				if(winterWater.get(i).equals(fileName))
+					return winterWater.get(i).getImage();
 			}
 		}
 		// summer
