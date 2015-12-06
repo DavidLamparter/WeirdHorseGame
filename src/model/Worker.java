@@ -483,7 +483,6 @@ public abstract class Worker extends Observable implements Serializable {
 			int BerryX = BerryList.get(i).location.x;
 			int BerryY = BerryList.get(i).location.y;
 			
-			//double distanceToResource = Math.sqrt(Math.pow((XPos - BerryX),2) + Math.pow((YPos - BerryY),2));
 			double distanceToResource = getPoint().distance(BerryList.get(i).location);
 			
 			if(distanceToResource < distance){
@@ -508,8 +507,7 @@ public abstract class Worker extends Observable implements Serializable {
 			int FishX = FishList.get(i).location.x;
 			int FishY = FishList.get(i).location.y;
 			
-//			double distanceToResource = Math.sqrt(Math.pow((XPos - FishX),2) + Math.pow((YPos - FishY),2));
-				double distanceToResource = getPoint().distance(FishList.get(i).location);
+			double distanceToResource = getPoint().distance(FishList.get(i).location);
 		
 			if(distanceToResource < distance){
 				goingToGo = calc.getShortestPath(getPoint(), new Point(FishX,FishY));
@@ -534,8 +532,6 @@ public abstract class Worker extends Observable implements Serializable {
 				if(temp.getHarvestable()){
 			int TreeX = TreeList.get(i).location.x;
 			int TreeY = TreeList.get(i).location.y;
-			
-			//double distanceToResource = Math.sqrt(Math.pow((XPos - TreeX),2) + Math.pow((YPos - TreeY),2));
 			
 			double distanceToResource = getPoint().distance(TreeList.get(i).location);
 
