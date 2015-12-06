@@ -180,6 +180,7 @@ public class Map implements Serializable, Observer {
 		createOcean();
 		createRiver();
 		cleanUpRiver();
+		cleanUpBeach();
 		createTrees();
 		spawnFood();
 		spawnStone();
@@ -190,8 +191,47 @@ public class Map implements Serializable, Observer {
 	 *    Create Methods (and helpers)    *
 	 **************************************/
 
+
 	/**~~~~~~~~~~~~~~ OCEAN ~~~~~~~~~~~~~**/
 	
+	//removes solo blocks of sand
+	
+	private void cleanUpBeach() {
+		int sandCount = 0;
+		int oceanCount = 0;
+		for(int x = 1; x < 98; x++){
+			for(int y = 1; y < 98; y++){
+				if(board[x][y].getLand().equals(Terrain.BEACH)){
+					
+					if(board[x][y+1].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					if(board[x+1][y].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					if(board[x][y-1].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					if(board[x-1][y].getLand().equals(Terrain.BEACH))
+						sandCount+=1;
+					
+					if(board[x][y+1].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					if(board[x+1][y].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					if(board[x][y-1].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					if(board[x-1][y].getLand().equals(Terrain.OCEAN))
+						oceanCount+=1;
+					
+					if(sandCount == 1)
+						if(oceanCount == 0)
+						board[x][y].setLand(Terrain.PLAIN);
+						else
+						board[x][y].setLand(Terrain.OCEAN);
+					oceanCount = 0;
+					sandCount = 0;
+				}		
+			}
+		}
+	}
 	// Generates the ocean on one side of the map
 	private void createOcean() {
 		double num = gen.nextDouble();
@@ -484,13 +524,13 @@ public class Map implements Serializable, Observer {
 			for(int y = 1; y < 99; y++){
 				if(board[x][y].getLand().equals(Terrain.RIVER)){
 					
-					if(board[x][y+1].getLand().equals(Terrain.RIVER))
+					if(board[x][y+1].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
-					if(board[x+1][y].getLand().equals(Terrain.RIVER))
+					if(board[x+1][y].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
-					if(board[x][y-1].getLand().equals(Terrain.RIVER))
+					if(board[x][y-1].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
-					if(board[x-1][y].getLand().equals(Terrain.RIVER))
+					if(board[x-1][y].getLand().equals(Terrain.RIVER)|| board[x][y+1].getLand().equals(Terrain.OCEAN))
 						watCount+=1;
 					
 					if(watCount == 1)

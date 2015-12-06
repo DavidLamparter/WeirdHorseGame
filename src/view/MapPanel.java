@@ -159,41 +159,10 @@ public class MapPanel extends JPanel implements Observer{
 			for (int jlol = 0; jlol < length2; jlol++) {
 				int i = ilol + initialx;
 				int j = jlol + initialy;
-				
-				// Fish
-				/*if (graph[j][i].getResource().getResourceT().equals(ResourceType.FISH)) {
-					g2d.setColor(Color.CYAN);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				} */
+	
+				try{
 				// River
 				if (graph[j][i].getLand().equals(Terrain.RIVER)) {
-					
-					int watercount = 0;
-					//if there are 3 adjacent water tiles
-					try {
-					if(graph[i+1][j].getLand().equals(Terrain.RIVER)){
-						watercount++;
-
-					}
-					if(graph[i][j+1].getLand().equals(Terrain.RIVER)){
-						watercount++;
-					}
-					if(graph[i-1][j].getLand().equals(Terrain.RIVER)){
-						watercount++;
-					}
-					if(graph[i][j-1].getLand().equals(Terrain.RIVER)){
-						watercount++;
-					}
-					}
-					catch(ArrayIndexOutOfBoundsException brettWai) {
-						watercount = 2;
-					}
-					try {
-					if(watercount == 1){
-						//we do nothing, no rendering of tiles
-
-						watercount = 0;
-					}
 					// IF There's a lonely water tile
 					/*else if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
@@ -201,8 +170,9 @@ public class MapPanel extends JPanel implements Observer{
 						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/river_01.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}*/
+				
 					// RIGHT AND BOTTOM
-					else if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
+					if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j-1][i].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
@@ -267,22 +237,14 @@ public class MapPanel extends JPanel implements Observer{
 					
 					// PURE WATER
 					else
-					
 						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-					}
-					catch(ArrayIndexOutOfBoundsException oman) {
-						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-					}
-
 				}
-				
-				// SaltyFish
-				/* else if (graph[j][i].getResource().getResourceT().equals(ResourceType.SALTY_FISH)) {
-					g2d.setColor(Color.magenta);
-					g2d.fillRect(ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, MAP_TILE_WIDTH, MAP_TILE_HEIGHT);
-				} */
-				// Ocean
-				else if (graph[j][i].getLand().equals(Terrain.OCEAN)) {
+				}
+				catch(ArrayIndexOutOfBoundsException e){
+					
+				}
+					
+				if(graph[j][i].getLand().equals(Terrain.OCEAN)) {
 					g2d.setColor(new Color(20, 20, 200));
 					g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
@@ -322,8 +284,9 @@ public class MapPanel extends JPanel implements Observer{
 				 * if (i % 2 == 0 || j % 2 == 0) {
 				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
 				 */
+				}
 			}
-		}
+		
 		drawThemBuildings(g2d);
 		drawThemWorkers(g2d);
 		for (int ilol = 0; ilol < width2; ilol++) {
