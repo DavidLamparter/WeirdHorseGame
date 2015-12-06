@@ -108,8 +108,13 @@ public class Game extends Observable implements Serializable {
 		setChange();
 		SpeedMeter.start();
 		gameTimer.start();
-		for(int i = 0; i < 250; i++)
+		for(int i = 0; i < 250; i++) {
 			((Storage)buildings.get(0)).addResource(ResourceType.TREE);
+		}
+		for(int i = 0; i < 20; i++) {
+			((Storage)buildings.get(0)).addResource(ResourceType.STONE);
+		}
+		
 	}
 
 	public void startTimers() {
@@ -419,7 +424,9 @@ public class Game extends Observable implements Serializable {
 						list.get(i).setIsHealing(false);
 						list.get(i).setBusy(false);
 						if(list.get(i).getInventorySize() > 0) {
-							list.get(i).doTheWork(theMap.getMapTiles()[list.get(i).getJob().y][list.get(i).getJob().x],theMap);
+							list.get(i).resetStorage();
+							list.get(i).goToStorage(theMap);
+						//	list.get(i).doTheWork(theMap.getMapTiles()[list.get(i).getJob().y][list.get(i).getJob().x],theMap);
 						}
 						System.out.println("DONE HEALING");
 					}
