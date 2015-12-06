@@ -588,8 +588,9 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		//if next to a storage
 		if(tile.getResource().getResourceT() == ResourceType.NONE){
-			while (i < 20){
-				storage.addResource(inventory[i]);
+			while (i < getInventorySize()) { //  was 20;
+				if(inventory[i]!=null)
+					storage.addResource(inventory[i]);
 				i++;
 			}
 			carryingCapacity = 20;
