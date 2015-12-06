@@ -214,7 +214,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j-1][i].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_01.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_01.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// LEFT AND RIGHT AND BOTTOM
@@ -222,7 +222,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j][i-1].getLand().equals(Terrain.RIVER) &&	
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_02.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_02.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// LEFT AND BOTTOM W
@@ -230,7 +230,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_03.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_03.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND RIGHT AND BOTTOM W
@@ -238,7 +238,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
 						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i-1].getLand().equals(Terrain.RIVER)){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_04.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_04.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND LEFT AND BOTTOM W
@@ -246,7 +246,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
 						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i+1].getLand().equals(Terrain.RIVER)){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_06.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND RIGHT W
@@ -254,7 +254,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i-1].getLand().equals(Terrain.RIVER) &&
 						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_07.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_07.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND LEFT AND RIGHT W
@@ -262,7 +262,7 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
 						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_08.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_08.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND LEFT
@@ -270,12 +270,12 @@ public class MapPanel extends JPanel implements Observer{
 						graph[j][i-1].getLand().equals(Terrain.RIVER) &&
 						!graph[j][i+1].getLand().equals(Terrain.RIVER) &&
 						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
-							g2d.drawImage(images.getWater("./Graphics/Water/river_09.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+							g2d.drawImage(images.getWater("./Graphics/Water/river_09.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// PURE WATER
 					else
-						g2d.drawImage(images.getWater("./Graphics/Water/river_05.jpg", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
+						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 	
 				}
 				

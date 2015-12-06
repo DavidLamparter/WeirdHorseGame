@@ -98,19 +98,16 @@ public class ListOfImages {
 		
 		// WATER LET IT FLO
 		try {
-			Image temp = ImageIO.read(new File("./Graphics/Water/water.jpg"));
-			summerWater.add(new ImageAndName("./Graphics/Water/water.jpg", temp));
-			winterWater.add(new ImageAndName("./Graphics/Water/water.jpg", temp));
-			
+			// SUMMER
 			for(int i=1; i<10; i++){
-				temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".jpg"));
-				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".jpg", temp));
+				Image temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".png"));
+				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".png", temp));
 			}
-			/* WINTER
+			// WINTER
 			for(int i=1; i<10; i++){
-				temp = ImageIO.read(new File("./Graphics/Water/river_0" + i + ".jpg"));
-				summerWater.add(new ImageAndName("./Graphics/Water/river_0"+ i + ".jpg", temp));
-			}*/
+				Image temp = ImageIO.read(new File("./Graphics/Water/wRiver_0" + i + ".jpg"));
+				winterWater.add(new ImageAndName("./Graphics/Water/wRiver_0"+ i + ".jpg", temp));
+			}
 			
 		}
 		catch(Exception e) {
