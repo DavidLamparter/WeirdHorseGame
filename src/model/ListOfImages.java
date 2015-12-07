@@ -147,10 +147,7 @@ public class ListOfImages {
 					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "T.png", temp));
 				}
 			}
-			
-			
-			
-			
+
 			// WINTER
 			for(int i=1; i<9; i++){
 				Image temp = ImageIO.read(new File("./Graphics/Water/wSand_0" + i + ".png"));
@@ -235,7 +232,8 @@ public class ListOfImages {
 	}
 	
 	public Image getWater(String fileName, boolean isWinter) {
-		// is winter
+		try {
+			// is winter
 		if(isWinter){
 			fileName = fileName.replace("river","wRiver");
 			//  System.out.println(fileName);
@@ -252,9 +250,9 @@ public class ListOfImages {
 			}
 		}
 		
-		try {
-			throw new FileNotFoundException();
-		} catch (FileNotFoundException e) {
+		
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

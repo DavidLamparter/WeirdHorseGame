@@ -275,10 +275,10 @@ public class Map implements Serializable, Observer {
 	// Ensures that the ocean is generated together and doesnt turn out as a river
 	private ArrayList<Direction> OceanMaking(Point init, Direction initial) {
 		//bottom
-		if(init.x > 50 && initial == Direction.EAST)
+		if(init.y > 50 && initial == Direction.EAST)
 			oceanSide = 'B';
 		//top
-		if(init.x < 50 && initial == Direction.EAST)
+		if(init.y < 50 && initial == Direction.EAST)
 			oceanSide = 'T';
 		
 		//right
