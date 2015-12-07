@@ -256,38 +256,42 @@ public class Game extends Observable implements Serializable {
 			int currentPop = list.size();
 			if(currentPop < softPopCap && gameLength % 7 == 0){
 				Random gen = new Random();
-				int chance = gen.nextInt(100);
-				Point TH = theMap.getTH();
-
-				if(chance <25){
-					Worker James = new KJG(new Point(TH.x,TH.y));
-					list.add(James);
-				}
+				int birthChance = gen.nextInt(totalFood+1);
+				//  You need at least 15 food to even think about getting more workers :)
+				if(birthChance > 15) {
+					int chance = gen.nextInt(100);
+					Point TH = theMap.getTH();
+	
+					if(chance <25){
+						Worker James = new KJG(new Point(TH.x,TH.y));
+						list.add(James);
+					}
+					
+					else if(chance <50){
+						Worker James = new KJD(new Point(TH.x,TH.y));
+						list.add(James);
+					}
+					
+					else if(chance <75){
+						Worker SleepingBeauty = new Brett(new Point(TH.x,TH.y));
+						list.add(SleepingBeauty);
+					}
 				
-				else if(chance <50){
-					Worker James = new KJD(new Point(TH.x,TH.y));
-					list.add(James);
+					else if(chance <100){
+						Worker BeardedWonder = new David(new Point(TH.x,TH.y));
+						list.add(BeardedWonder);
+						//  same
+					}		
 				}
-				
-				else if(chance <75){
-					Worker SleepingBeauty = new Brett(new Point(TH.x,TH.y));
-					list.add(SleepingBeauty);
-				}
-			
-				else if(chance <100){
-					Worker BeardedWonder = new David(new Point(TH.x,TH.y));
-					list.add(BeardedWonder);
-					//  same
-				}		
 			}
 			
 			// Increment workers conditions every 5 seconds
-			if((isWinter)&&(gameLength %5 == 0)) {
+			if((isWinter)&&(gameLength %3 == 0)) {
 				list.incrementColdness();
 				if(list.removeDead())
 					setChange();
 			}
-			if((gameLength % 10) == 0) {
+			if((gameLength % 7) == 0) {
 				list.incrementHunger();
 				list.incrementFatigue();
 				if(list.removeDead()) {

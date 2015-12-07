@@ -648,6 +648,9 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		//if next to job resource
 		else{
+			for(int harvestTwice = 0; harvestTwice < 2; harvestTwice++) {
+				if(carryingCapacity==0)
+					break;
 			if(tile.getResource().getHarvestable()) {
 				if(this.harvestGod) {
 					tile.getResource().subResource(2);
@@ -672,6 +675,7 @@ public abstract class Worker extends Observable implements Serializable {
 			else {
 				//  it is not harvestable so GO HOME
 				goToStorage(theMap);
+			}
 			}
 		}
 		if(carryingCapacity < 0)

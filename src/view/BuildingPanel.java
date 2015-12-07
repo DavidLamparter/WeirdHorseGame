@@ -84,7 +84,7 @@ public class BuildingPanel extends JFrame implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Game game = (Game)arg0;
-		if(game.getTotalStone()>=100)
+		if(game.getTotalStone()>=50)
 			buttonsState[BRIDGE_ID] = true;
 		else
 			buttonsState[BRIDGE_ID] = false;
@@ -92,7 +92,7 @@ public class BuildingPanel extends JFrame implements Observer {
 			buttonsState[STOREHOUSE_ID] = true;
 		else 
 			buttonsState[STOREHOUSE_ID] = false;
-		if((game.getTotalStone()>=40)&&(game.getTotalWood()>=160))
+		if((game.getTotalStone()>=50)&&(game.getTotalWood()>=120))
 			buttonsState[HOUSE_ID] = true;
 		else
 			buttonsState[HOUSE_ID] = false;
