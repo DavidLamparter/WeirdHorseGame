@@ -124,7 +124,7 @@ public abstract class Resource extends Observable implements Serializable {
 	//sets the resource quantity to input value
 	public void regen(){
 		System.out.println(quantity + "     " + type);
-		quantity = max;
+		setQuantity(max);
 		setChanged();
 		notifyObservers();
 	}
@@ -368,10 +368,10 @@ class BerryBush extends Resource {
 		super(num.nextInt(15)+50, ResourceType.BERRY_BUSH);
 	}
 	
-	@Override
+	/* @Override
 	public void regen(){
 		setQuantity(getQuantity());
-	}
+	} */
 	
 	// Returns the name of this resource, in this case "Berry Bush"
 	@Override

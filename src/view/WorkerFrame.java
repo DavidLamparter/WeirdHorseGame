@@ -215,8 +215,10 @@ public class WorkerFrame extends JFrame implements Observer {
 						}
 						break;
 					}
-					thisWorker.setFast(true);
-					speedUp.setEnabled(false);
+					if(thisWorker != null) {
+						thisWorker.setFast(true);
+						speedUp.setEnabled(false);
+					}
 					speedUp.setText("<HTML><b><center>SHOES<br>(PURCHASED)</b></center></HTML>");
 				}
 			}
