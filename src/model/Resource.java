@@ -303,7 +303,7 @@ class SaltyFish extends Resource {
 	}
 	@Override
 	public void regen() {
-		this.addResource(num.nextInt((int)(getMax()-getQuantity())));
+		setQuantity(getQuantity() + getMax()/8);
 	}
 	
 	@Override
