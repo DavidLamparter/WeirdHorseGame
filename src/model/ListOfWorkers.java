@@ -87,7 +87,8 @@ public class ListOfWorkers implements Serializable {
 				if(j > i)
 					workmenReplacement[j-1] = theWorkmen[j];
 			}
-			theWorkmen = workmenReplacement;	
+			theWorkmen[i] = null;
+			theWorkmen = workmenReplacement;
 			pos--;
 		}
 	}

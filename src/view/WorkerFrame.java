@@ -56,15 +56,15 @@ public class WorkerFrame extends JFrame implements Observer {
 	private PicPanel imageGoesHere;
 	private Worker workmen;
 	private Point arrayPos;
-	private JButton speedUp = new JButton("SPEED UP");
-	private JButton harvestUp = new JButton("HARVEST UP");
-	private JButton clothesUp = new JButton("CLOTHES");
+	private JButton speedUp = new JButton("<HTML><b><center>2X SPEED<br>(69 Food)</b></center></HTML>");
+	private JButton harvestUp = new JButton("<HTML><b><center>2X HARVEST<br>(69 Stone)</b></center></HTML>");
+	private JButton clothesUp = new JButton("<HTML><b><center>1/2 COLDNESS<br>(69 Wood)</b></center></HTML>");
 	private Worker thisWorker = null;
 	
 	//Image resourcePic;  cuz that would be dope
 	
 	public WorkerFrame(Point mousePos, Point arrayPos, Worker workmen) {
-		this.setSize(300, 200);
+		this.setSize(300, 225);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
@@ -73,7 +73,9 @@ public class WorkerFrame extends JFrame implements Observer {
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
 		this.arrayPos = arrayPos;
-		
+		speedUp.setFont(new Font("Arial", Font.PLAIN, 12));
+		harvestUp.setFont(new Font("Arial", Font.PLAIN, 12));
+		clothesUp.setFont(new Font("Arial", Font.PLAIN, 12));
 		//  sets up all the Java Swing
 		//imageGoesHere.setLayout(new BorderLayout());
 		//  what if we added the image from what was clicked
@@ -91,7 +93,7 @@ public class WorkerFrame extends JFrame implements Observer {
 		
 		//  Sets up the image location
 		imageGoesHere = new PicPanel(workmen.animationFrameFileName());
-		imageGoesHere.setSize(getWidth()/2, getHeight()-25);
+		imageGoesHere.setSize(getWidth()/2, getHeight()-50);
 		imageGoesHere.setBackground(Color.WHITE);
 		imageGoesHere.setLocation(0, 25);
 		
@@ -102,15 +104,15 @@ public class WorkerFrame extends JFrame implements Observer {
 		
 		//  the speed button!
 		speedUp.setLocation(0, description.getHeight()+25);
-		speedUp.setSize(this.getWidth()/3, 25);
+		speedUp.setSize(this.getWidth()/3, 50);
 		
 		//  the harvest button!
 		harvestUp.setLocation(100, description.getHeight()+25);
-		harvestUp.setSize(this.getWidth()/3, 25);
+		harvestUp.setSize(this.getWidth()/3, 50);
 			
 		//  the clothes button!
 		clothesUp.setLocation(200, description.getHeight()+25);
-		clothesUp.setSize(this.getWidth()/3, 25);
+		clothesUp.setSize(this.getWidth()/3, 50);
 		
 		//  adds some text
 		//  nameOfResource.setText(resource.getName());

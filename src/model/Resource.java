@@ -196,7 +196,7 @@ class Tree extends Resource {
 	private String summerFileName;
 	private String winterFileName;
 	public Tree() {
-		super(num.nextInt(50)+75, ResourceType.TREE);
+		super(num.nextInt(20)+45, ResourceType.TREE);
 		
 		int filenum = num.nextInt(3)+1;
 		summerFileName = "./Graphics/Trees/Tree Redux_" + filenum + ".png";
@@ -237,7 +237,7 @@ class Fish extends Resource {
 	
 	// Fish constructed with a randomly generated quantity
 	public Fish() {
-		super(num.nextInt(20)+10, ResourceType.FISH);
+		super(num.nextInt(30)+50, ResourceType.FISH);
 	}
 	
 	// Returns the name of this resource, in this case "Fish"
@@ -251,7 +251,12 @@ class Fish extends Resource {
 	public String getFileName() {
 		return "./Graphics/Water/fish.png";
 	}
-
+	
+	@Override
+	public void regen() {
+		this.addResource(num.nextInt((int)(getMax()-10-getQuantity()))+10);
+	}
+	
 	@Override
 	public String getWinterFileName() {
 		// TODO Auto-generated method stub
@@ -274,7 +279,7 @@ class SaltyFish extends Resource {
 	
 	// SaltyFish constructed with a randomly generated quantity
 	public SaltyFish() {
-		super(num.nextInt(40)+10, ResourceType.SALTY_FISH);
+		super(num.nextInt(485)+ 15, ResourceType.SALTY_FISH);
 	}
 
 	// Returns the name of this resource, in this case "Salty Fish"
@@ -288,7 +293,11 @@ class SaltyFish extends Resource {
 	public String getFileName() {
 		return "./Graphics/Water/fishSalty.png";
 	}
-
+	@Override
+	public void regen() {
+		this.addResource(num.nextInt((int)(getMax()-getQuantity())));
+	}
+	
 	@Override
 	public String getWinterFileName() {
 		// TODO Auto-generated method stub
