@@ -28,7 +28,7 @@ public class BuildingPanel extends JFrame implements Observer {
 		
 		lastClicked = -1;
 		this.caller = caller;
-		this.setSize(numberOfBuildings*75+20,75);
+		this.setSize(numberOfBuildings*80+20,100);
 		buildings = new JButton[numberOfBuildings];
 		buttonsState = new boolean[numberOfBuildings];
 		holder = new JPanel();
@@ -45,9 +45,9 @@ public class BuildingPanel extends JFrame implements Observer {
 	}
 
 	private void renameButtons() {
-		buildings[HOUSE_ID].setText("House");                // 0
-		buildings[STOREHOUSE_ID].setText("Storehouse");      // 1
-		buildings[BRIDGE_ID].setText("Bridge");				 // 2	
+		buildings[HOUSE_ID].setText("<HTML><center>House<br>(160 Wood / 40 Stone)</center></HTML>");                // 0
+		buildings[STOREHOUSE_ID].setText("<HTML><center>Storehouse<br>(100 Wood)</center></HTML>");      // 1
+		buildings[BRIDGE_ID].setText("<HTML><center>Bridge<br>(100 Stone)</center></HTML>");				 // 2	
 	}
 
 	private void instantiateTheButtons() {
