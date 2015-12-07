@@ -220,7 +220,7 @@ public class WorkerFrame extends JFrame implements Observer {
 					speedUp.setText("<HTML><b><center>SHOES<br>(PURCHASED)</b></center></HTML>");
 				}
 			}
-			else if(e.getSource() == harvestUp) {
+			if(e.getSource() == harvestUp) {
 				if(game.getTotalStone() >= 69) {
 					game.removeResources(69, ResourceType.STONE);
 					thisWorker.setHarvestGod(true);
@@ -228,7 +228,7 @@ public class WorkerFrame extends JFrame implements Observer {
 					harvestUp.setText("<HTML><b><center>GLOVES<br>(PURCHASED)</b></center></HTML>");
 				}
 			}
-			else if(e.getSource() == clothesUp) {
+			if(e.getSource() == clothesUp) {
 				if(game.getTotalStone() >= 69) {
 					game.removeResources(69, ResourceType.TREE);
 					thisWorker.setClothed(true);

@@ -144,7 +144,6 @@ public class Game extends Observable implements Serializable {
 		}
 		if(toBuild == BuildingPanel.HOUSE_ID) {
 			build = new House(topLeftBuildingPoint);
-			//System.out.println("ADDED NEW HOUSE");
 		}
 		if(toBuild == BuildingPanel.STOREHOUSE_ID) {
 			build = new Storehouse(topLeftBuildingPoint);
@@ -583,5 +582,9 @@ public class Game extends Observable implements Serializable {
 	
 	public int getSoftCap() {
 		return softPopCap;
+	}
+	
+	public int getWintersSurvived() {
+		return wintersSurvived;
 	}
 }
