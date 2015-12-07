@@ -745,13 +745,13 @@ public class Map implements Serializable, Observer {
 		for(int i = 0; i < BerrySize; i ++){
 			Job temp = BerryList.get(i);
 			
-			board[temp.location.y][temp.location.x].regenResource();
+			temp.resource.regen();
 		}
 		
 		for(int i = 0; i < FishSize; i ++){
 			Job temp = FishList.get(i);
 			
-			board[temp.location.y][temp.location.x].regenResource();
+			temp.resource.regen();
 		}
 		
 	}

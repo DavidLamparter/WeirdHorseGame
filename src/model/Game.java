@@ -369,6 +369,7 @@ public class Game extends Observable implements Serializable {
 				
 				if(!isWinter){
 					theMap.regenFood();
+					System.out.println("Wubba dub dub duuub");
 				}
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START

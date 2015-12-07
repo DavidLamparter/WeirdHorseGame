@@ -368,6 +368,11 @@ class BerryBush extends Resource {
 		super(num.nextInt(15)+50, ResourceType.BERRY_BUSH);
 	}
 	
+	@Override
+	public void regen(){
+		setQuantity(getQuantity());
+	}
+	
 	// Returns the name of this resource, in this case "Berry Bush"
 	@Override
 	public String getName() {
