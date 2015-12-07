@@ -228,7 +228,7 @@ public class MapPanel extends JPanel implements Observer{
 						(!graph[j+1][i].getLand().equals(Terrain.RIVER)&& !graph[j+1][i].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_09.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
-					
+				
 					// PURE WATER
 					else
 						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
@@ -299,7 +299,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the left
 					
 					// IF OCEAN IS ON THE BOTTOM
-					else if(caller.getMap().getOceanSide() == 'B'){
+					if(caller.getMap().getOceanSide() == 'B'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -355,7 +355,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the bottom
 					
 					// IF OCEAN IS ON THE RIGHT
-					else if(caller.getMap().getOceanSide() == 'R'){
+					if(caller.getMap().getOceanSide() == 'R'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -411,7 +411,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the right
 					
 					// OCEAN IS ON THE TOP
-					else{ //if(caller.getMap().getOceanSide() == 'T')
+					if(caller.getMap().getOceanSide() == 'T'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -466,10 +466,12 @@ public class MapPanel extends JPanel implements Observer{
 							g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}//end of ocean on the top
 					
+					
 				}// END OF BEACH DRAWING
-				
 				}//END OF GIANT ASS TRY
-				catch(ArrayIndexOutOfBoundsException e){	
+				catch(Exception e){	
+					e.printStackTrace();
+					g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 
 
@@ -479,32 +481,7 @@ public class MapPanel extends JPanel implements Observer{
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					else
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-				}
-				// Berry Bush
-				/*else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
-					try {
-						g2d.drawImage(ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}}
-				// Stone
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)){
-						//&& graph[j+1][i+1].getResource().getResourceT().equals(ResourceType.STONE)){
-					try {
-						g2d.drawImage(ImageIO.read(new File("./Graphics/Stone/Stone_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				} */
-				
-				/*
-				 * if (i % 2 == 0 || j % 2 == 0) {
-				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
-				 */
-				
+				}	
 				} //END OF GIANT J FOR LOOP
 			}//END OF GIANT I FOR LOOP
 		
