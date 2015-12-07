@@ -621,7 +621,7 @@ public abstract class Worker extends Observable implements Serializable {
 	*                 Harvest and deposit                 *
 	******************************************************/
 	
-	public void doTheWork(MapTile tile, Map theMap){
+	public void doTheWork(MapTile tile, Map theMap, Game game){
 		if(isHealing)
 			return;
 		isBusy = true;
@@ -635,8 +635,21 @@ public abstract class Worker extends Observable implements Serializable {
 				//  Base cases
 				if(i >= inventory.length)
 					break;
-				if(inventory[i]!=null)
-					storage.addResource(inventory[i]);
+				if(inventory[i]!=null) {
+					if(inventory[i] == ResourceType.TREE) {
+						if(game.getTotalWood()<game.getTotalMax()) 
+							storage.addResource(inventory[i]);
+					}
+					else if(inventory[i] == ResourceType.STONE) {
+						if(game.getTotalStone()<game.getTotalMax())
+							storage.addResource(inventory[i]);
+					}
+					//  then it will be foods
+					else {
+						if(game.getTotalFood()<game.getTotalMax())
+							storage.addResource(inventory[i]);
+					}
+				}
 				i++;
 			}
 			carryingCapacity = 20;

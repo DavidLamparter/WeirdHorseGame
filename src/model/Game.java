@@ -89,12 +89,15 @@ public class Game extends Observable implements Serializable {
 	//soft cap on workers
 	public int softPopCap = 5;
 	
+	private Game game;
+	
 	/**************************************
 	 *          Worker Constructor        *
 	 **************************************/
 	// Creates the game using a randomly generated map from map.java 
 	public Game(Map theMap) {
 		this.theMap = theMap;
+		this.game = this;
 		list = new ListOfWorkers(MAX_NUMBER_OF_WORKERS);
 		ArrayList<Worker> init = theMap.getInitialWorkers();
 		int initSize = init.size();
@@ -273,6 +276,7 @@ public class Game extends Observable implements Serializable {
 				else if(chance <100){
 					Worker BeardedWonder = new David(new Point(TH.x,TH.y));
 					list.add(BeardedWonder);
+					//  same
 				}		
 			}
 			
@@ -479,7 +483,7 @@ public class Game extends Observable implements Serializable {
 			for(int i = 0; i <listSize; i++){
 				Worker dummy = list.get(i);
 				if(dummy.nextToJob()){
-					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().y][dummy.getJob().x],theMap);
+					dummy.doTheWork(theMap.getMapTiles()[dummy.getJob().y][dummy.getJob().x],theMap, game);
 				}
 			}
 		}
