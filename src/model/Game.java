@@ -70,7 +70,7 @@ public class Game extends Observable implements Serializable {
 	private int totalMax = 0;
 	
 	// These variables are for changing seasons in-game (winter is coming)
-	private int lengthOfSeasons = 60;
+	private int lengthOfSeasons = 90;
 	private int seasonsCounter;
 	private boolean isWinter;
 	private short wintersSurvived;
@@ -111,12 +111,12 @@ public class Game extends Observable implements Serializable {
 		setChange();
 		SpeedMeter.start();
 		gameTimer.start();
-		for(int i = 0; i < 250; i++) {
-			((Storage)buildings.get(0)).addResource(ResourceType.TREE);
-		}
-		for(int i = 0; i < 20; i++) {
-			((Storage)buildings.get(0)).addResource(ResourceType.STONE);
-		}
+//		for(int i = 0; i < 250; i++) {
+//			((Storage)buildings.get(0)).addResource(ResourceType.TREE);
+//		}
+//		for(int i = 0; i < 20; i++) {
+//			((Storage)buildings.get(0)).addResource(ResourceType.STONE);
+//		}
 		
 	}
 
@@ -198,7 +198,7 @@ public class Game extends Observable implements Serializable {
 		}
 		return toBuild;
 	}
-	private void removeResources(int number, ResourceType type) {
+	public int removeResources(int number, ResourceType type) {
 		for(int i = 0; i < buildings.size(); i++) {
 			if(number == 0)
 				break;
@@ -209,6 +209,7 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 		}
+		return number;
 	}
 	public ArrayList<Buildable> getBuildings() {
 		return buildings;
@@ -294,11 +295,10 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			for(int i = 0; i < list.size(); i++) {
-				if(list.get(i).getGoHome()) {
+				if(list.get(i).shouldGoHome(game)) {
 					Buildable closestHouse = null;
 					for(int j = 0; j < buildings.size(); j++) {
 						if((buildings.get(j) instanceof House) || (buildings.get(j) instanceof TownHall)) {
-							//System.out.println("I AM A " + buildings.get(j).getImageFile() + "\n");
 							if(closestHouse == null) {
 								closestHouse = buildings.get(j);
 							}
@@ -306,21 +306,17 @@ public class Game extends Observable implements Serializable {
 								if(list.get(i).getPoint().distance(buildings.get(j).getClosestPoint(list.get(i).getPoint())) <
 								   list.get(i).getPoint().distance(closestHouse.getClosestPoint(list.get(i).getPoint()))) {
 									closestHouse = buildings.get(j);
-									//System.out.println("I AM THE SHORTEST KAPPA " + buildings.get(j).getImageFile());
 								}		
 							}
 						}
 						// A variable that will set is healing to true when myTask.isEmpty
 						list.get(i).setBusy(true);
 
-						if(true) {						//!list.get(i).foundHome()) {
-							//System.out.println("HIII IM MR MEESEEKS LOOK AT ME!!! IM GOING TO " + closestHouse.getImageFile());
-							list.get(i).setFoundHome(true);
-							ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),buildings);
-							list.get(i).toLocation(calc.getShortestPath(list.get(i).getPoint(), closestHouse.getClosestPoint(list.get(i).getPoint())));
-							list.get(i).setJob(closestHouse.getClosestPoint(list.get(i).getPoint()));
-							setChange();
-						}
+						list.get(i).setFoundHome(true);
+						ShortestPathCalculator calc = new ShortestPathCalculator(theMap.getMapTiles(),buildings);
+						list.get(i).toLocation(calc.getShortestPath(list.get(i).getPoint(), closestHouse.getClosestPoint(list.get(i).getPoint())));
+						list.get(i).setJob(closestHouse.getClosestPoint(list.get(i).getPoint()));
+						setChange();
 					}
 				}
 			}
@@ -414,9 +410,8 @@ public class Game extends Observable implements Serializable {
 
 			//checks to see if they go back home to heal
 			for(int i = 0; i < listSize; i++){
-				if(list.get(i).getGoHome() && list.get(i).nextToJob()) {
+				if(list.get(i).shouldGoHome(game) && list.get(i).nextToJob()) {
 					list.get(i).setIsHealing(true);
-					list.get(i).setGoHome(false);
 					list.get(i).setFoundHome(false);
 					list.get(i).setDoneHealing(false);
 				}
@@ -445,16 +440,31 @@ public class Game extends Observable implements Serializable {
 						else {
 							doneWithFatigue = true;
 						}
-						if((totalFood > 0) && (list.get(i).getHunger() >= 1)) {
+						if((totalFood > 1) && (list.get(i).getHunger() >= 1)) {
 							list.get(i).decrementHunger();
-							totalFood -= 2;
+							int number = 2;
+							while(true) {
+								number = removeResources(number, ResourceType.BERRY_BUSH);
+								if(number == 0) {
+									break;
+								}
+								number = removeResources(number, ResourceType.FISH);
+								if(number == 0) {
+									break;
+								}
+								number = removeResources(number, ResourceType.SALTY_FISH);
+								if(number == 0) {
+									break;
+								}
+								break;
+							}
 						}
 						else {
 							doneWithHunger = true;
 						}
-						if((totalWood > 0) && (list.get(i).getColdness() >= 1)) {
+						if((totalWood > 9) && (list.get(i).getColdness() >= 1)) {
 							list.get(i).decrementColdness();
-							totalWood -= 5;
+							removeResources(10, ResourceType.TREE);
 						}
 						else {
 							doneWithColdness = true;

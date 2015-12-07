@@ -187,6 +187,9 @@ public class ListOfWorkers implements Serializable {
 	// them to move to the next desired tile
 	public void moveWorkers() {
 		for(int i = 0; i < pos; i++) {
+			if(theWorkmen[i].isFast()) {
+				theWorkmen[i].move();
+			}
 			theWorkmen[i].move();
 		}
 	}

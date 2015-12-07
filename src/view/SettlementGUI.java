@@ -351,7 +351,7 @@ public class SettlementGUI extends JFrame {
 			if(clicked != null) {
 				if(workFrame != null)
 					workFrame.dispose();
-				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked);
+				workFrame = new WorkerFrame(arg0.getPoint(), point, clicked, game);
 				clicked.addObserver(workFrame);
 			}
 		}
