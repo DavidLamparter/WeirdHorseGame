@@ -150,7 +150,7 @@ public class WorkerFrame extends JFrame implements Observer {
 		
 		if(workmen.isFast()) {
 			speedUp.setEnabled(false);
-			speedUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+			speedUp.setText("<HTML><b><center>SHOES<br>(PURCHASED)</b></center></HTML>");
 		}
 		else if(game.getTotalFood() < 69) {
 			speedUp.setEnabled(false);
@@ -158,7 +158,7 @@ public class WorkerFrame extends JFrame implements Observer {
 		}
 		if(workmen.isHarvestGod()) {
 			harvestUp.setEnabled(false);
-			harvestUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+			harvestUp.setText("<HTML><b><center>GLOVES<br>(PURCHASED)</b></center></HTML>");
 		}
 		else if(game.getTotalStone() < 69) {
 			harvestUp.setEnabled(false);
@@ -166,7 +166,7 @@ public class WorkerFrame extends JFrame implements Observer {
 		}
 		if(workmen.clothedUp()) {
 			clothesUp.setEnabled(false);
-			clothesUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+			clothesUp.setText("<HTML><b><center>SCARF<br>(PURCHASED)</b></center></HTML>");
 		}
 		else if(game.getTotalWood() < 69) {
 			clothesUp.setEnabled(false);
@@ -217,7 +217,7 @@ public class WorkerFrame extends JFrame implements Observer {
 					}
 					thisWorker.setFast(true);
 					speedUp.setEnabled(false);
-					speedUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+					speedUp.setText("<HTML><b><center>SHOES<br>(PURCHASED)</b></center></HTML>");
 				}
 			}
 			else if(e.getSource() == harvestUp) {
@@ -225,7 +225,7 @@ public class WorkerFrame extends JFrame implements Observer {
 					game.removeResources(69, ResourceType.STONE);
 					thisWorker.setHarvestGod(true);
 					harvestUp.setEnabled(false);
-					harvestUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+					harvestUp.setText("<HTML><b><center>GLOVES<br>(PURCHASED)</b></center></HTML>");
 				}
 			}
 			else if(e.getSource() == clothesUp) {
@@ -233,7 +233,7 @@ public class WorkerFrame extends JFrame implements Observer {
 					game.removeResources(69, ResourceType.TREE);
 					thisWorker.setClothed(true);
 					clothesUp.setEnabled(false);
-					clothesUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+					clothesUp.setText("<HTML><b><center>SCARF<br>(PURCHASED)</b></center></HTML>");
 				}
 			}
 		}

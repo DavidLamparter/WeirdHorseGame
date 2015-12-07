@@ -470,7 +470,7 @@ public class MapPanel extends JPanel implements Observer{
 				}// END OF BEACH DRAWING
 				}//END OF GIANT ASS TRY
 				catch(Exception e){	
-					e.printStackTrace();
+//					e.printStackTrace();
 					g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 

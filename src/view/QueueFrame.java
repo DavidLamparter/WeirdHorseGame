@@ -8,7 +8,9 @@ import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 
 import model.Job;
 import model.WorkQueue;
@@ -18,13 +20,22 @@ public class QueueFrame extends JFrame implements Observer {
 	private WorkQueue model;
 	private DefaultListModel<String> queueListModel;
 	private JList<String> displayList;
+	private JLabel title;
+	private JPanel panel;
 	
 	public QueueFrame(SettlementGUI caller) {
 		this.caller = caller;
-		this.setLocation(caller.getWidth()-200, 0);
-		this.setSize(200, 500);
+		this.setLocation(caller.getWidth()-100, 0);
+		this.setSize(100, 200);
 		this.setUndecorated(true);
-		this.setLayout(null);
+		title = new JLabel();
+		title.setText("<HTML><U><b>Worker Queue</b></U></HTML>");
+//		title.setFont(font);
+		title.setForeground(Color.LIGHT_GRAY);
+		panel = new JPanel();
+		panel.setBackground(new Color(127, 106, 69));
+		panel.add(title);
+//		this.setLayout(null);
 		queueListModel = new DefaultListModel();
 		displayList = new JList();
 		displayList.setSize(this.getSize());
@@ -35,7 +46,8 @@ public class QueueFrame extends JFrame implements Observer {
 		displayList.setBackground(new Color(127, 106, 69));
 		displayList.setFont(displayList.getFont().deriveFont(Font.BOLD, 14f));
 		displayList.setForeground(Color.LIGHT_GRAY);
-		this.add(displayList);
+		panel.add(displayList);
+		this.add(panel);
 		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 	    queueListModel = new DefaultListModel<String>();

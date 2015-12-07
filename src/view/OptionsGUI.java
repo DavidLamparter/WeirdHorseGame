@@ -101,8 +101,8 @@ public class OptionsGUI extends JFrame {
 		oneX.setBackground(new Color(210,180,140));
 		speedHolder.add(twoX);
 		twoX.setBackground(new Color(210,180,140));
-		twoX.setPreferredSize(new Dimension(speedHolder.getWidth()/4, speedHolder.getHeight()));
-		speedHolder.add(fiveX);
+		twoX.setPreferredSize(new Dimension(speedHolder.getWidth()/3, speedHolder.getHeight()));
+//		speedHolder.add(fiveX);
 		fiveX.setPreferredSize(new Dimension(speedHolder.getWidth()/3, speedHolder.getHeight()));
 		fiveX.setBackground(new Color(210,180,140));
 		
@@ -189,9 +189,9 @@ public class OptionsGUI extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			max=!max;
 			if(max) {
-				setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
+				setSize(caller.getWidth()/3, (int)(caller.getHeight()/2));
 				setLocation(caller.getWidth()/3, caller.getHeight()/6);
-				menuPanel.setSize(caller.getWidth()/3, (int)(caller.getHeight()/1.5));
+				menuPanel.setSize(caller.getWidth()/3, (int)(caller.getHeight()/2));
 			}
 			else {
 				setSize(150, 50);
