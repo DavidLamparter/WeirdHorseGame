@@ -480,7 +480,15 @@ public class MapPanel extends JPanel implements Observer{
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					else
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-				}	
+				}
+				try{
+				if((graph[j][i].getResource().getResourceT()==ResourceType.STONE)&&(graph[j+1][i+1].getResource().getResourceT()==ResourceType.STONE)) {
+					g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH+25, jlol*MAP_TILE_HEIGHT+25, null);
+				}
+				}
+				catch(ArrayIndexOutOfBoundsException f) {
+					
+				}
 				} //END OF GIANT J FOR LOOP
 			}//END OF GIANT I FOR LOOP
 		

@@ -241,7 +241,7 @@ class TownHall extends Storage {
 class Storehouse extends Storage {
 	
 	public Storehouse(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+1, topPoint.y+2), 1);
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+1), 1);
 	}
 
 	@Override
