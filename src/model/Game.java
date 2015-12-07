@@ -564,4 +564,8 @@ public class Game extends Observable implements Serializable {
 	public int getTotalMax() {
 		return totalMax;
 	}
+	
+	public int getSoftCap() {
+		return softPopCap;
+	}
 }
