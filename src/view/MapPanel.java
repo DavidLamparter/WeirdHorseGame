@@ -455,10 +455,10 @@ public class MapPanel extends JPanel implements Observer{
 						}
 						
 						// TOP AND LEFT AND RIGHT Sand
-						else if (graph[j+1][i].getLand().equals(Terrain.BEACH) &&
+						else if (graph[j-1][i].getLand().equals(Terrain.BEACH) &&
 							graph[j][i-1].getLand().equals(Terrain.BEACH) &&
 							graph[j][i+1].getLand().equals(Terrain.BEACH) &&
-							!graph[j-1][i].getLand().equals(Terrain.BEACH) ){
+							!graph[j+1][i].getLand().equals(Terrain.BEACH) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/sand_04T.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}
 						
