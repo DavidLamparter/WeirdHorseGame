@@ -128,23 +128,23 @@ public class ListOfImages {
 			}
 			// SUMMER BOTTOM
 			for(int i=1; i<9; i++){
-				if(i!=2 || i!=6){
-					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
+				if(i!=2 && i!=6){
+					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + "B.png"));
 					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "B.png", temp));
 				}
 			}
 			// SUMMER RIGHT
 			for(int i=1; i<9; i++){
-				if(i!=2 || i!=6){
-					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
-					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "B.png", temp));
+				if(i!=2 && i!=6){
+					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + "R.png"));
+					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "R.png", temp));
 				}
 			}
 			// SUMMER TOP
 			for(int i=1; i<9; i++){
-				if(i!=2 || i!=6){
-					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + ".png"));
-					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "B.png", temp));
+				if(i!=2 && i!=6){
+					Image temp = ImageIO.read(new File("./Graphics/Water/sand_0" + i + "T.png"));
+					summerSand.add(new ImageAndName("./Graphics/Water/sand_0"+ i + "T.png", temp));
 				}
 			}
 			

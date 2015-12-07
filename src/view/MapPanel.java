@@ -299,7 +299,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the left
 					
 					// IF OCEAN IS ON THE BOTTOM
-					if(caller.getMap().getOceanSide() == 'B'){
+					else if(caller.getMap().getOceanSide() == 'B'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -355,7 +355,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the bottom
 					
 					// IF OCEAN IS ON THE RIGHT
-					if(caller.getMap().getOceanSide() == 'R'){
+					else if(caller.getMap().getOceanSide() == 'R'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -411,7 +411,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the right
 					
 					// OCEAN IS ON THE TOP
-					if(caller.getMap().getOceanSide() == 'T'){
+					else{ //if(caller.getMap().getOceanSide() == 'T')
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -466,8 +466,8 @@ public class MapPanel extends JPanel implements Observer{
 							g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}//end of ocean on the top
 					
-					
 				}// END OF BEACH DRAWING
+				
 				}//END OF GIANT ASS TRY
 				catch(ArrayIndexOutOfBoundsException e){	
 				}
