@@ -286,12 +286,12 @@ public class Game extends Observable implements Serializable {
 			}
 			
 			// Increment workers conditions every 5 seconds
-			if((isWinter)&&(gameLength %3 == 0)) {
+			if((isWinter)&&(gameLength %5 == 0)) {
 				list.incrementColdness();
 				if(list.removeDead())
 					setChange();
 			}
-			if((gameLength % 7) == 0) {
+			if((gameLength % 10) == 0) {
 				list.incrementHunger();
 				list.incrementFatigue();
 				if(list.removeDead()) {
@@ -374,7 +374,7 @@ public class Game extends Observable implements Serializable {
 				//  AUTO SAVE ON WINTER COMPLETION OR START
 				//  saveTheGame();
 				if(!isWinter) {
-					if(wintersSurvived >= 3) {
+					if(wintersSurvived >= 2) {
 						int reply = JOptionPane.showConfirmDialog(null, "Congrats!\nYou have survived three winters!\nDo You wish to continue?", "Victory!" , JOptionPane.YES_NO_OPTION);
 						if(reply == JOptionPane.NO_OPTION) {
 							game.saveTheGame();
