@@ -291,8 +291,13 @@ public class Game extends Observable implements Serializable {
 				if(list.removeDead())
 					setChange();
 			}
-			if((gameLength % 10) == 0) {
+			if((gameLength % 8) == 0) {
 				list.incrementHunger();
+				if(list.removeDead()) {
+					setChange();
+				}
+			}
+			if((gameLength % 9 == 0)) {
 				list.incrementFatigue();
 				if(list.removeDead()) {
 					setChange();
