@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import view.BuildingPanel;
@@ -111,12 +112,11 @@ public class Game extends Observable implements Serializable {
 		setChange();
 		SpeedMeter.start();
 		gameTimer.start();
-//		for(int i = 0; i < 250; i++) {
-//			((Storage)buildings.get(0)).addResource(ResourceType.TREE);
-//		}
-//		for(int i = 0; i < 20; i++) {
-//			((Storage)buildings.get(0)).addResource(ResourceType.STONE);
-//		}
+		for(int i = 0; i < 150; i++) {
+			((Storage)buildings.get(0)).addResource(ResourceType.TREE);
+			((Storage)buildings.get(0)).addResource(ResourceType.STONE);
+			((Storage)buildings.get(0)).addResource(ResourceType.BERRY_BUSH);
+		}
 		
 	}
 
@@ -320,9 +320,9 @@ public class Game extends Observable implements Serializable {
 					}
 				}
 			}
-			int tempWood = 150;
-			int tempStone = 150;
-			int tempFood = 150;
+			int tempWood = 0;
+			int tempStone = 0;
+			int tempFood = 0;
 			int tempMax = 0;
 			int tempCap = 0;
 			for(int i = 0; i < buildings.size(); i++) {
@@ -367,8 +367,17 @@ public class Game extends Observable implements Serializable {
 				seasonsCounter = 0;
 				//  AUTO SAVE ON WINTER COMPLETION OR START
 				//  saveTheGame();
-				if(!isWinter)
+				if(!isWinter) {
+					if(wintersSurvived >= 3) {
+						int reply = JOptionPane.showConfirmDialog(null, "Congrats!\nYou have survived three winters!\nDo You wish to continue?", "Victory!" , JOptionPane.YES_NO_OPTION);
+						if(reply == JOptionPane.NO_OPTION) {
+							game.saveTheGame();
+							System.exit(0);
+							}
+						}
+				
 					wintersSurvived ++;
+				}
 			}
 			gameLength++;
 			if(!workQueue.isEmpty()) {
