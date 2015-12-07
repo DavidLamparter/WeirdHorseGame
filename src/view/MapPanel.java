@@ -166,76 +166,75 @@ public class MapPanel extends JPanel implements Observer{
 				if (graph[j][i].getLand().equals(Terrain.RIVER)) {
 					
 					// RIGHT AND BOTTOM
-					if (graph[j+1][i].getLand().equals(Terrain.RIVER) && 
-						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						!graph[j-1][i].getLand().equals(Terrain.RIVER) &&
-						!graph[j][i-1].getLand().equals(Terrain.RIVER) ){
+					if ((graph[j+1][i].getLand().equals(Terrain.RIVER) || graph[j+1][i].getLand().equals(Terrain.OCEAN)) && 
+						(graph[j][i+1].getLand().equals(Terrain.RIVER) || graph[j][i+1].getLand().equals(Terrain.OCEAN)) &&
+						(!graph[j-1][i].getLand().equals(Terrain.RIVER)&& !graph[j-1][i].getLand().equals(Terrain.OCEAN)) &&
+						(!graph[j][i-1].getLand().equals(Terrain.RIVER)&& !graph[j][i-1].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_01.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// LEFT AND RIGHT AND BOTTOM
-					else if (graph[j+1][i].getLand().equals(Terrain.RIVER) &&
-						graph[j][i-1].getLand().equals(Terrain.RIVER) &&	
-						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
+					else if ((graph[j+1][i].getLand().equals(Terrain.RIVER)|| graph[j+1][i].getLand().equals(Terrain.OCEAN))&&
+						(graph[j][i-1].getLand().equals(Terrain.RIVER) || graph[j][i-1].getLand().equals(Terrain.OCEAN))&&	
+						(graph[j][i+1].getLand().equals(Terrain.RIVER) || graph[j][i+1].getLand().equals(Terrain.OCEAN)) &&
+						(!graph[j-1][i].getLand().equals(Terrain.RIVER)&& !graph[j-1][i].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_02.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// LEFT AND BOTTOM W
-					else if (graph[j][i-1].getLand().equals(Terrain.RIVER) && 
-						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
-						!graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
+					else if ((graph[j][i-1].getLand().equals(Terrain.RIVER)|| graph[j][i-1].getLand().equals(Terrain.OCEAN)) && 
+						(graph[j+1][i].getLand().equals(Terrain.RIVER) || graph[j+1][i].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j][i+1].getLand().equals(Terrain.RIVER)&& !graph[j][i+1].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j-1][i].getLand().equals(Terrain.RIVER)&& !graph[j-1][i].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_03.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND RIGHT AND BOTTOM W
-					else if (graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
-						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
-						!graph[j][i-1].getLand().equals(Terrain.RIVER)){
+					else if ((graph[j][i+1].getLand().equals(Terrain.RIVER)|| graph[j][i+1].getLand().equals(Terrain.OCEAN)) &&
+						(graph[j-1][i].getLand().equals(Terrain.RIVER) || graph[j-1][i].getLand().equals(Terrain.OCEAN))&&
+						(graph[j+1][i].getLand().equals(Terrain.RIVER) || graph[j+1][i].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j][i-1].getLand().equals(Terrain.RIVER)&& !graph[j][i-1].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_04.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND LEFT AND BOTTOM W
-					else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
-						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
-						graph[j+1][i].getLand().equals(Terrain.RIVER) &&
-						!graph[j][i+1].getLand().equals(Terrain.RIVER)){
+					else if ((graph[j][i-1].getLand().equals(Terrain.RIVER)|| graph[j][i-1].getLand().equals(Terrain.OCEAN)) &&
+						(graph[j-1][i].getLand().equals(Terrain.RIVER) || graph[j-1][i].getLand().equals(Terrain.OCEAN))&&
+						(graph[j+1][i].getLand().equals(Terrain.RIVER) || graph[j+1][i].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j][i+1].getLand().equals(Terrain.RIVER)&& !graph[j][i+1].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND RIGHT W
-					else if (graph[j-1][i].getLand().equals(Terrain.RIVER) && 
-						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						!graph[j][i-1].getLand().equals(Terrain.RIVER) &&
-						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
+					else if ((graph[j-1][i].getLand().equals(Terrain.RIVER)|| graph[j-1][i].getLand().equals(Terrain.OCEAN)) && 
+						(graph[j][i+1].getLand().equals(Terrain.RIVER) || graph[j][i+1].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j][i-1].getLand().equals(Terrain.RIVER)&& !graph[j][i-1].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j+1][i].getLand().equals(Terrain.RIVER)&& !graph[j+1][i].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_07.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND LEFT AND RIGHT W
-					else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
-						graph[j-1][i].getLand().equals(Terrain.RIVER) &&
-						graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
+					else if ((graph[j][i-1].getLand().equals(Terrain.RIVER)|| graph[j][i-1].getLand().equals(Terrain.OCEAN)) &&
+						(graph[j-1][i].getLand().equals(Terrain.RIVER) || graph[j-1][i].getLand().equals(Terrain.OCEAN))&&
+						(graph[j][i+1].getLand().equals(Terrain.RIVER) || graph[j][i+1].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j+1][i].getLand().equals(Terrain.RIVER)&& !graph[j+1][i].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_08.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
 					
 					// TOP AND LEFT
-					else if (graph[j-1][i].getLand().equals(Terrain.RIVER) && 
-						graph[j][i-1].getLand().equals(Terrain.RIVER) &&
-						!graph[j][i+1].getLand().equals(Terrain.RIVER) &&
-						!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
+					else if ((graph[j-1][i].getLand().equals(Terrain.RIVER)|| graph[j-1][i].getLand().equals(Terrain.OCEAN)) && 
+						(graph[j][i-1].getLand().equals(Terrain.RIVER) || graph[j][i-1].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j][i+1].getLand().equals(Terrain.RIVER)&& !graph[j][i+1].getLand().equals(Terrain.OCEAN))&&
+						(!graph[j+1][i].getLand().equals(Terrain.RIVER)&& !graph[j+1][i].getLand().equals(Terrain.OCEAN))){
 							g2d.drawImage(images.getWater("./Graphics/Water/river_09.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}
-					
+				
 					// PURE WATER
 					else
 						g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}// END OF RIVER DRAWING
 				
-				/////////////////
-				//DRAWS THE OCEAN
+				// DRAWS THE OCEAN
 				if(graph[j][i].getLand().equals(Terrain.OCEAN)) {
 					g2d.setColor(new Color(20, 20, 200));
 					g2d.drawImage(images.getWater("./Graphics/Water/river_05.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
@@ -300,7 +299,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the left
 					
 					// IF OCEAN IS ON THE BOTTOM
-					else if(caller.getMap().getOceanSide() == 'B'){
+					if(caller.getMap().getOceanSide() == 'B'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -335,18 +334,18 @@ public class MapPanel extends JPanel implements Observer{
 						}
 						
 						// TOP AND LEFT AND RIGHT Sand
-						else if (graph[j-1][i].getLand().equals(Terrain.BEACH) &&
-							graph[j][i-1].getLand().equals(Terrain.BEACH) &&
-							graph[j][i+1].getLand().equals(Terrain.BEACH) &&
-							!graph[j+1][i].getLand().equals(Terrain.BEACH) ){
+						else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+							graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+							graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+							!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/sand_03B.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}
 						
 						// LEFT AND RIGHT AND BOTTOM
-						else if (graph[j][i-1].getLand().equals(Terrain.BEACH) &&
-							graph[j][i+1].getLand().equals(Terrain.BEACH) &&	
-							graph[j+1][i].getLand().equals(Terrain.BEACH) &&
-							!graph[j-1][i].getLand().equals(Terrain.BEACH) ){
+						else if (graph[j+1][i].getLand().equals(Terrain.RIVER) &&
+							graph[j][i-1].getLand().equals(Terrain.RIVER) &&	
+							graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+							!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/sand_04B.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}
 						
@@ -356,7 +355,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the bottom
 					
 					// IF OCEAN IS ON THE RIGHT
-					else if(caller.getMap().getOceanSide() == 'R'){
+					if(caller.getMap().getOceanSide() == 'R'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -412,7 +411,7 @@ public class MapPanel extends JPanel implements Observer{
 					}//end of ocean on the right
 					
 					// OCEAN IS ON THE TOP
-					else{ //if(caller.getMap().getOceanSide() == 'T')
+					if(caller.getMap().getOceanSide() == 'T'){
 						
 						// RIGHT AND BOTTOM
 						if (graph[j+1][i].getLand().equals(Terrain.BEACH) && 
@@ -447,18 +446,18 @@ public class MapPanel extends JPanel implements Observer{
 						}
 						
 						// LEFT AND RIGHT AND BOTTOM
-						else if (graph[j+1][i].getLand().equals(Terrain.BEACH) &&
-							graph[j][i-1].getLand().equals(Terrain.BEACH) &&	
-							graph[j][i+1].getLand().equals(Terrain.BEACH) &&
-							!graph[j-1][i].getLand().equals(Terrain.BEACH) ){
+						else if (graph[j+1][i].getLand().equals(Terrain.RIVER) &&
+							graph[j][i-1].getLand().equals(Terrain.RIVER) &&	
+							graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+							!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/sand_03T.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}
 						
 						// TOP AND LEFT AND RIGHT Sand
-						else if (graph[j-1][i].getLand().equals(Terrain.BEACH) &&
-							graph[j][i-1].getLand().equals(Terrain.BEACH) &&
-							graph[j][i+1].getLand().equals(Terrain.BEACH) &&
-							!graph[j+1][i].getLand().equals(Terrain.BEACH) ){
+						else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+							graph[j-1][i].getLand().equals(Terrain.RIVER) &&
+							graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+							!graph[j+1][i].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/sand_04T.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}
 						
@@ -467,10 +466,12 @@ public class MapPanel extends JPanel implements Observer{
 							g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					}//end of ocean on the top
 					
+					
 				}// END OF BEACH DRAWING
-				
 				}//END OF GIANT ASS TRY
-				catch(ArrayIndexOutOfBoundsException e){	
+				catch(Exception e){	
+					e.printStackTrace();
+					g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 
 
@@ -480,32 +481,7 @@ public class MapPanel extends JPanel implements Observer{
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 					else
 						g2d.drawImage(images.getResource(graph[j][i].getResource().getWinterFileName(),isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-				}
-				// Berry Bush
-				/*else if (graph[j][i].getResource().getResourceT().equals(ResourceType.BERRY_BUSH)) {
-					try {
-						g2d.drawImage(ImageIO.read(new File("./Graphics/BerryBushes/BerryBush_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}}
-				// Stone
-				else if (graph[j][i].getResource().getResourceT().equals(ResourceType.STONE)){
-						//&& graph[j+1][i+1].getResource().getResourceT().equals(ResourceType.STONE)){
-					try {
-						g2d.drawImage(ImageIO.read(new File("./Graphics/Stone/Stone_1.png")), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				} */
-				
-				/*
-				 * if (i % 2 == 0 || j % 2 == 0) {
-				 * g2d.setColor(Color.BLACK); g2d.fillRect(i*25, j*25, 25, 25); }
-				 */
-				
+				}	
 				} //END OF GIANT J FOR LOOP
 			}//END OF GIANT I FOR LOOP
 		
