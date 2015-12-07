@@ -46,9 +46,9 @@ public class GameStatsView extends JFrame implements Observer{
 		amountOfWood = game.getTotalWood();
 		amountOfStone = game.getTotalStone();
 		amountOfFood = game.getTotalFood();
-		String mT = "/" + game.getTotalMax() + "     ";
+		String mT = "/" + game.getTotalMax() + "                                        ";
 		amountOfWorkers = workmen.size();
-		info.setText("      " + "Food: " + amountOfFood + mT + "Stone: " + amountOfStone + mT + "Wood: " + amountOfWood
-				+ mT + "Workers: " + workmen.size());
+		info.setText("                                                 " + "Food: " + amountOfFood + mT + "Wood: " + amountOfWood + mT + "Stone: " + amountOfStone
+				+ mT + "Workers: " + workmen.size() + "/" + game.getSoftCap());
 	}
 }

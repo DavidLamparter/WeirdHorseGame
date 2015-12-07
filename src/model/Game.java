@@ -320,9 +320,11 @@ public class Game extends Observable implements Serializable {
 					}
 				}
 			}
+
 			int tempWood = 160;
 			int tempStone = 50;
 			int tempFood = 100;
+
 			int tempMax = 0;
 			int tempCap = 0;
 			for(int i = 0; i < buildings.size(); i++) {
@@ -563,5 +565,9 @@ public class Game extends Observable implements Serializable {
 	
 	public int getTotalMax() {
 		return totalMax;
+	}
+	
+	public int getSoftCap() {
+		return softPopCap;
 	}
 }
