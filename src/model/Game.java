@@ -324,9 +324,11 @@ public class Game extends Observable implements Serializable {
 					}
 				}
 			}
+
 			int tempWood = 0;
 			int tempStone = 0;
 			int tempFood = 0;
+
 			int tempMax = 0;
 			int tempCap = 0;
 			for(int i = 0; i < buildings.size(); i++) {
