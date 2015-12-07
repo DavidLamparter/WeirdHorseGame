@@ -45,9 +45,9 @@ public class BuildingPanel extends JFrame implements Observer {
 	}
 
 	private void renameButtons() {
-		buildings[HOUSE_ID].setText("<HTML><center>House<br>(160 Wood / 40 Stone)</center></HTML>");                // 0
+		buildings[HOUSE_ID].setText("<HTML><center>House<br>(120 Wood / 50 Stone)</center></HTML>");                // 0
 		buildings[STOREHOUSE_ID].setText("<HTML><center>Storehouse<br>(100 Wood)</center></HTML>");      // 1
-		buildings[BRIDGE_ID].setText("<HTML><center>Bridge<br>(100 Stone)</center></HTML>");				 // 2	
+		buildings[BRIDGE_ID].setText("<HTML><center>Bridge<br>(50 Stone)</center></HTML>");				 // 2	
 	}
 
 	private void instantiateTheButtons() {
@@ -84,7 +84,7 @@ public class BuildingPanel extends JFrame implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Game game = (Game)arg0;
-		if(game.getTotalStone()>=100)
+		if(game.getTotalStone()>=50)
 			buttonsState[BRIDGE_ID] = true;
 		else
 			buttonsState[BRIDGE_ID] = false;
@@ -92,7 +92,7 @@ public class BuildingPanel extends JFrame implements Observer {
 			buttonsState[STOREHOUSE_ID] = true;
 		else 
 			buttonsState[STOREHOUSE_ID] = false;
-		if((game.getTotalStone()>=40)&&(game.getTotalWood()>=160))
+		if((game.getTotalStone()>=50)&&(game.getTotalWood()>=120))
 			buttonsState[HOUSE_ID] = true;
 		else
 			buttonsState[HOUSE_ID] = false;

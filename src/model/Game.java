@@ -185,13 +185,13 @@ public class Game extends Observable implements Serializable {
 				buildings.add(build);
 				//  magic numbers 
 				if(build instanceof House) {
-					removeResources(40, ResourceType.STONE);
-					removeResources(160, ResourceType.TREE);
+					removeResources(50, ResourceType.STONE);
+					removeResources(120, ResourceType.TREE);
 				}
 				if(build instanceof Storehouse)
 					removeResources(100, ResourceType.TREE);
 				if(build instanceof HorizontalBridge)
-					removeResources(100, ResourceType.STONE);
+					removeResources(50, ResourceType.STONE);
 			
 				return -1;
 			}
