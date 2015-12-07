@@ -10,7 +10,7 @@ public abstract class Storage extends Buildable {
 	
 	public Storage(Point topLeftPoint, Point bottomRightPoint, int multiplier) {
 		super(topLeftPoint, bottomRightPoint, false);
-		capacity = this.getPoints().size()*25*multiplier;
+		capacity = this.getPoints().size()*16*multiplier+2+(10*(Math.abs(4-multiplier)));
 	}
 	//  this will return only food objects as the other will return anything you tell it
 	public ArrayList<ResourceType> getFood(int quanity) {
@@ -219,7 +219,7 @@ public abstract class Storage extends Buildable {
 //TOWNHALL
 class TownHall extends Storage {
 	public TownHall(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+1, topPoint.y+2), 2);
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+2), 3);
 	}
 
 	@Override
@@ -241,7 +241,7 @@ class TownHall extends Storage {
 class Storehouse extends Storage {
 	
 	public Storehouse(Point topPoint) {
-		super(topPoint, new Point(topPoint.x+1, topPoint.y+1), 1);
+		super(topPoint, new Point(topPoint.x+1, topPoint.y+1), 2);
 	}
 
 	@Override
