@@ -56,9 +56,6 @@ public abstract class Worker extends Observable implements Serializable {
 	// isBusy represents if the worker is currently performing a task
 	private boolean isBusy;
 	
-	// inDanger represents if the worker should go home to eat/sleep
-	private boolean goHome;
-	
 	// isHealing represents if the worker is heading home to heal
 	private boolean isHealing;
 	
@@ -117,8 +114,6 @@ public abstract class Worker extends Observable implements Serializable {
 		
 		// isAlive begins at true
 		isAlive = true;
-		// go Home begins at false
-		goHome = false;
 		// isHealing begins at false
 		isHealing = false;
 		
@@ -143,6 +138,19 @@ public abstract class Worker extends Observable implements Serializable {
 		else if(randomize < 1){
 			preference = ResourceType.BERRY_BUSH;
 		}
+	}
+	
+	public boolean shouldGoHome(Game game) {
+		if((hunger >= 5) && (game.getTotalFood() >= 10)) {
+			return true;
+		}
+		if(fatigue >= 5) {
+			return true;
+		}
+		if((coldness >= 5) && (game.getTotalWood() >= 10)) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**************************************************
@@ -234,10 +242,6 @@ public abstract class Worker extends Observable implements Serializable {
 		return last;
 	}
 	
-	public boolean getGoHome() {
-		return goHome;
-	}
-	
 	public ResourceType getPreference() {
 		return preference;
 	}
@@ -254,10 +258,6 @@ public abstract class Worker extends Observable implements Serializable {
 	
 	public void setTool(Tool tool) {
 		this.tool = tool;
-	}
-	
-	public void setGoHome(boolean home) {
-		goHome = home;
 	}
 	
 	public void setIsHealing(boolean heal) {
@@ -300,10 +300,6 @@ public abstract class Worker extends Observable implements Serializable {
 		if(hunger >= 10) {
 			inDanger(hunger);
 		}
-		// If hunger is above 5, workers should run home
-		else if(hunger >= 4) {
-			goHome = true;
-		}
 		addHunger(1.0);
 	}
 	
@@ -319,10 +315,6 @@ public abstract class Worker extends Observable implements Serializable {
 		if(fatigue >= 10) {
 			inDanger(fatigue);
 		}
-		// If fatigue is above 5, workers should run home
-		else if(fatigue >= 4) {
-			goHome = true;
-		}
 		addFatigue(1.0);
 	}
 	
@@ -337,10 +329,6 @@ public abstract class Worker extends Observable implements Serializable {
 		// If coldness rises above 10, this worker may die from frostbite
 		if(coldness >= 10) {
 			inDanger(coldness);
-		}
-		// If coldness is above 5, workers should run home
-		else if(coldness >= 4) {
-			goHome = true;
 		}
 		if(this.clothedUp) {
 			addColdness(0.5);
