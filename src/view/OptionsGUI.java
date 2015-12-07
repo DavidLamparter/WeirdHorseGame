@@ -45,6 +45,9 @@ public class OptionsGUI extends JFrame {
 	JButton oneX = new JButton("1X");
 	JButton twoX = new JButton("2X");
 	JButton fiveX = new JButton("5X");
+	boolean oneON = true;
+	boolean twoON = false;
+	boolean fiveON = false;
 	JPanel menuPanel = new JPanel();
 	//  JButton loader = new JButton("Load?");
 	private boolean wasSaved = false;
@@ -107,6 +110,16 @@ public class OptionsGUI extends JFrame {
 		//setLocation(caller.getWidth()-getWidth(), 0);
 		this.setLocation(0, caller.getHeight()-getHeight());
 		
+		if(oneON) {
+			oneX.setEnabled(false);
+		}
+		else if(twoON) {
+			twoX.setEnabled(false);
+		}
+		else if(fiveON) {
+			fiveX.setEnabled(false);
+		}
+		
 		options.setLocation(0, 0);
 		options.setSize(this.getSize());
 		options.addActionListener(maxWindow);
@@ -130,15 +143,21 @@ public class OptionsGUI extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
+			oneX.setEnabled(true);
+			twoX.setEnabled(true);
+			fiveX.setEnabled(true);
+			
 			if(arg0.getSource().equals(oneX)) {
 				caller.getGame().changeTimers(Game.NORMAL_SPEED);
+				oneX.setEnabled(false);
 			}
 			if(arg0.getSource().equals(twoX)) {
 				caller.getGame().changeTimers(Game.NORMAL_SPEED*2);
+				twoX.setEnabled(false);
 			}
 			if(arg0.getSource().equals(fiveX)) {
 				caller.getGame().changeTimers(Game.NORMAL_SPEED*5);
+				fiveX.setEnabled(false);
 			}
 		}
 	}

@@ -102,6 +102,11 @@ public abstract class Resource extends Observable implements Serializable {
 	 *   Setters / Adders / Subtractors   *
 	 **************************************/
 	
+	//sets quantity
+	public void setQuantity(double max) {
+		quantity = max;
+	}
+	
 	// Adds to the quantity of this resource (regneration)
 	public void addResource(double n){
 		quantity += n;
@@ -254,9 +259,12 @@ class Fish extends Resource {
 	
 	@Override
 	public void regen() {
-		this.addResource(num.nextInt((int)(getMax()-10-getQuantity()))+10);
+		this.addResource(getMax()/10);
+		if(getQuantity() > getMax()){
+			setQuantity(getMax());
+		}
 	}
-	
+
 	@Override
 	public String getWinterFileName() {
 		// TODO Auto-generated method stub

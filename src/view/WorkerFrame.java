@@ -40,6 +40,7 @@ import model.Game;
 import model.Job;
 import model.ListOfWorkers;
 import model.Resource;
+import model.ResourceType;
 import model.ShortestPathCalculator;
 import model.Worker;
 
@@ -56,19 +57,21 @@ public class WorkerFrame extends JFrame implements Observer {
 	private PicPanel imageGoesHere;
 	private Worker workmen;
 	private Point arrayPos;
-	private JButton speedUp = new JButton("<HTML><b><center>2X SPEED<br>(69 Food)</b></center></HTML>");
-	private JButton harvestUp = new JButton("<HTML><b><center>2X HARVEST<br>(69 Stone)</b></center></HTML>");
-	private JButton clothesUp = new JButton("<HTML><b><center>1/2 COLDNESS<br>(69 Wood)</b></center></HTML>");
+	private JButton speedUp = new JButton("<HTML><b><center>SHOES<br>(69 Food)</b></center></HTML>");
+	private JButton harvestUp = new JButton("<HTML><b><center>GLOVES<br>(69 Stone)</b></center></HTML>");
+	private JButton clothesUp = new JButton("<HTML><b><center>SCARF<br>(69 Wood)</b></center></HTML>");
 	private Worker thisWorker = null;
+	private Game game;
 	
 	//Image resourcePic;  cuz that would be dope
 	
-	public WorkerFrame(Point mousePos, Point arrayPos, Worker workmen) {
+	public WorkerFrame(Point mousePos, Point arrayPos, Worker workmen, Game game) {
 		this.setSize(300, 225);
 		this.setLocation(mousePos.x+10, mousePos.y-getHeight()/3);
 		/*
 		 * Need to add if statements to see if this is off the screen cuz that would not be dope
 		 */
+		this.game = game;
 		this.workmen = workmen;
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
@@ -144,6 +147,33 @@ public class WorkerFrame extends JFrame implements Observer {
 		clothesUp.addActionListener(new UpgradeListener());
 		exit.addActionListener(new ExitListener());
 		
+		
+		if(workmen.isFast()) {
+			speedUp.setEnabled(false);
+			speedUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+		}
+		else if(game.getTotalFood() < 69) {
+			speedUp.setEnabled(false);
+			speedUp.setText("<HTML><b><center>SHOES<br>(69 Food)</b></center></HTML>");
+		}
+		if(workmen.isHarvestGod()) {
+			harvestUp.setEnabled(false);
+			harvestUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+		}
+		else if(game.getTotalStone() < 69) {
+			harvestUp.setEnabled(false);
+			harvestUp.setText("<HTML><b><center>GLOVES<br>(69 Stone)</b></center></HTML>");
+		}
+		if(workmen.clothedUp()) {
+			clothesUp.setEnabled(false);
+			clothesUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+		}
+		else if(game.getTotalWood() < 69) {
+			clothesUp.setEnabled(false);
+			clothesUp.setText("<HTML><b><center>SCARF<br>(69 Wood)</b></center></HTML>");
+		}
+		
+		
 		//  adds everything to holder for what purpose? yes.
 		holder.add(nameOfResource);
 		holder.add(exit);
@@ -168,21 +198,44 @@ public class WorkerFrame extends JFrame implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == speedUp) {
-				thisWorker.setFast(true);
+				System.out.println("food = " + game.getTotalFood());
+				if(game.getTotalFood() >= 69) {
+					for(int i = 0; i < 69; i++) {
+						i = game.removeResources(i, ResourceType.BERRY_BUSH);
+						if(i == 0) {
+							break;
+						}
+						i = game.removeResources(i, ResourceType.FISH);
+						if(i == 0) {
+							break;
+						}
+						i = game.removeResources(i, ResourceType.SALTY_FISH);
+						if(i == 0) {
+							break;
+						}
+						break;
+					}
+					thisWorker.setFast(true);
+					speedUp.setEnabled(false);
+					speedUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+				}
 			}
 			else if(e.getSource() == harvestUp) {
-				thisWorker.setHarvestGod(true);
+				if(game.getTotalStone() >= 69) {
+					game.removeResources(69, ResourceType.STONE);
+					thisWorker.setHarvestGod(true);
+					harvestUp.setEnabled(false);
+					harvestUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+				}
 			}
 			else if(e.getSource() == clothesUp) {
-				thisWorker.setClothed(true);
+				if(game.getTotalStone() >= 69) {
+					game.removeResources(69, ResourceType.TREE);
+					thisWorker.setClothed(true);
+					clothesUp.setEnabled(false);
+					clothesUp.setText("<HTML><b><center>PURCHASED</b></center></HTML>");
+				}
 			}
-			//  game.addJob(new Job(arrayPos, curr));
-			/*Worker theJobDoer = theWorkmen.findClosest(arrayPos);
-			ShortestPathCalculator calc = new ShortestPathCalculator(game.getMap());
-			theJobDoer.toLocation(calc.getShortestPath(theJobDoer.getPoint(), arrayPos));
-			System.out.println(calc.getShortestPath(theJobDoer.getPoint(), arrayPos)); */
-			//dispose(); 
-			//  curr.incrementNumberOfHarvesters();  we could add this so they know how many workers are working this tile
 		}
 	}
 	private class ExitListener implements ActionListener {

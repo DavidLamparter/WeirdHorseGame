@@ -446,9 +446,9 @@ public class MapPanel extends JPanel implements Observer{
 						}
 						
 						// LEFT AND RIGHT AND BOTTOM
-						else if (graph[j+1][i].getLand().equals(Terrain.RIVER) &&
-							graph[j][i-1].getLand().equals(Terrain.RIVER) &&	
-							graph[j][i+1].getLand().equals(Terrain.RIVER) &&
+						else if (graph[j][i-1].getLand().equals(Terrain.RIVER) &&
+							graph[j][i+1].getLand().equals(Terrain.RIVER) &&	
+							graph[j+1][i].getLand().equals(Terrain.RIVER) &&
 							!graph[j-1][i].getLand().equals(Terrain.RIVER) ){
 								g2d.drawImage(images.getWater("./Graphics/Water/sand_03T.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 						}
@@ -470,7 +470,7 @@ public class MapPanel extends JPanel implements Observer{
 				}// END OF BEACH DRAWING
 				}//END OF GIANT ASS TRY
 				catch(Exception e){	
-					e.printStackTrace();
+					//e.printStackTrace();
 					g2d.drawImage(images.getSand("./Graphics/Water/sand_06.png", isWinter), ilol*MAP_TILE_WIDTH, jlol*MAP_TILE_HEIGHT, null);
 				}
 
