@@ -251,7 +251,12 @@ class Fish extends Resource {
 	public String getFileName() {
 		return "./Graphics/Water/fish.png";
 	}
-
+	
+	@Override
+	public void regen() {
+		this.addResource(num.nextInt((int)(getMax()-10-getQuantity()))+10);
+	}
+	
 	@Override
 	public String getWinterFileName() {
 		// TODO Auto-generated method stub
@@ -290,6 +295,7 @@ class SaltyFish extends Resource {
 	}
 	@Override
 	public void regen() {
+		this.addResource(num.nextInt((int)(getMax()-getQuantity())));
 	}
 	
 	@Override
